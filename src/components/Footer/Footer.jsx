@@ -29,7 +29,7 @@ const Footer = () => {
             </div>
           </div>
           <p className={classes.footer_sambhav_description}>
-            Intercollege The Annual Techno • Cultural Fest
+            Inter-college Cultural Fest
           </p>
         </div>
         <div className={classes.footer_first}>
@@ -49,7 +49,7 @@ const Footer = () => {
             </div>
           </div>
           <p className={classes.footer_sambhav_description}>
-            EXERGIE '26
+            Shraddhanjali '26
           </p>
           <div className={classes.footer_social_item}>
             <div>
@@ -167,8 +167,8 @@ const Footer = () => {
             <div>
               <p style={{ fontSize: '14px', lineHeight: '1.4' }}>
                 For website related queries contact <br />
-                <a href="tel:7339915052" className={classes.footer_a_link}>
-                  Niraj Ramnani : 7339915052
+                <a href="tel:8177904081" className={classes.footer_a_link}>
+                  Gopal Sharma : 8177904081
                 </a>
               </p>
             </div>

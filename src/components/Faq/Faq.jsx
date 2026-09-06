@@ -3,28 +3,28 @@ import classes from "./Faq.module.css";
 
 const questions = [
   {
-    question: "What is EXERGIE 2026?",
-    answer: "EXERGIE 2026 is one of the biggest Technical, Cultural and E-Sports events featuring 15+ incredible competitions."
+    question: "What is Shraddhanjali 2026?",
+    answer: "Shraddhanjali 2026 is one of the biggest Cultural events."
   },
   {
-    question: "When and where is Exergie 2026 happening?",
-    answer: "The fest spans 3 action-packed days: March 13th to March 15th, 2026, hosted at Arya College of Engineering and IT campus (Arya 1st Old Campus, Estd Yr 2000), SP-42, RIICO Industrial Area, Kukas, Delhi Road, Near Hotel Le-Meridian, Jaipur, Rajasthan."
+    question: "When and where is Shraddhanjali 2026 happening?",
+    answer: "[PLACEHOLDER: Updated answer for Shraddhanjali — to be provided by user]"
   },
   {
     question: "Who can participate in the events?",
-    answer: "As an inter-college event, EXERGIE 2026 is open to all students from any college or university. Some events are individual while others like Campus Combact League and Robo Soccer require teams."
+    answer: "[PLACEHOLDER: Updated answer for Shraddhanjali — to be provided by user]"
   },
   {
     question: "How do I register for events like Cipher Premier League or Gyration?",
-    answer: "You can click on 'View More' on any event card on our Events page to find the specific registration link and details."
+    answer: "[PLACEHOLDER: Updated answer for Shraddhanjali — to be provided by user]"
   },
   {
     question: "Are there entry fees and prizes?",
-    answer: "Yes, nominal entry fees apply for premium events, with massive cash rewards, certificates and goodies for the top performers."
+    answer: "[PLACEHOLDER: Updated answer for Shraddhanjali — to be provided by user]"
   },
   {
     question: "Can I participate in multiple events?",
-    answer: "Absolutely! You can sign up for as many events as your schedule allows, from tech (Robo War) to cultural (JAM, Musi-Mania)."
+    answer: "[PLACEHOLDER: Updated answer for Shraddhanjali — to be provided by user]"
   }
 ];
 

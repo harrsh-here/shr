@@ -58,7 +58,7 @@ const SuccessTicket = ({ data }) => {
                 heightLeft -= pdfHeight;
             }
 
-            pdf.save(`Exergie2026_Tickets_${registrationId}.pdf`);
+            pdf.save(`Shraddhanjali2026_Tickets_${registrationId}.pdf`);
 
         } catch (error) {
             console.error("Error generating PDF:", error);
@@ -76,7 +76,7 @@ const SuccessTicket = ({ data }) => {
                         <span></span>
                         <span></span>
                     </div>
-                    <h1 style={{ fontSize: '1.8rem', marginBottom: '5px', background: 'linear-gradient(135deg, #a88bff, #2fc2ff)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>ARYA EXERGIE 2026</h1>
+                    <h1 style={{ fontSize: '1.8rem', marginBottom: '5px', background: 'linear-gradient(135deg, #a88bff, #2fc2ff)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>ARYA Shraddhanjali 2026</h1>
                     <h2 style={{ fontSize: '1.1rem', fontWeight: '500', color: 'rgba(255,255,255,0.8)' }}>🎉 Thank You For Registering</h2>
                 </div>
 
@@ -128,7 +128,7 @@ const SuccessTicket = ({ data }) => {
 
                 <div className={classes.ticketFooter}>
                     <div className={classes.festDetails}>
-                        <h3>Exergie 2026</h3>
+                        <h3>Shraddhanjali 2026</h3>
                         <p>13–15 March</p>
                     </div>
                 </div>

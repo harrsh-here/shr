@@ -11,7 +11,7 @@ import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 
 import { HashLink as Link } from "react-router-hash-link";
 // import Dropdown from "./Dropdown";
-import Logo from "../../assets/logo/logo.png";
+import Logo from "../../assets/Logo.svg";
 import GrabBitBtn from "../common/GrabBitBtn/GrabBitBtn";
 import { useCart } from "../../context/CartContext";
 

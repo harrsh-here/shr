@@ -32,7 +32,7 @@ const Popup = () => {
           <div className={classes.blur}>
             <div className={classes.card}>
               <img className={classes.grabbit_image} src={logo} alt="logo" />
-              <h2 className={classes.text}>Exploring Exergies  !</h2>
+              <h2 className={classes.text}>Exploring Shraddhanjalis  !</h2>
               <h1 className={classes.subtext}>.</h1>
               <div className={classes.btn_container}>
                 <Button

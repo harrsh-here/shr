@@ -7,9 +7,11 @@ import danceImg from "../../assets/club logos/Arya Dance Club.jpg";
 import hackathonImg from "../../assets/club logos/Arya Hackathon Club.jpg";
 import photoImg from "../../assets/club logos/Arya PhotoSphere Club.jpg";
 import roboticsImg from "../../assets/club logos/Arya Robotics Club.jpg";
+import gdgImg from "../../assets/club logos/gdg.png";
 
 const clubs = [
     { name: "Arya Cipher Coding Club", img: cipherImg },
+    { name: "GDG - Google Developer Group ACEIT", img: gdgImg, bg: "white" },
     { name: "Arya Music Club", img: musicImg },
     { name: "Arya Dance Club", img: danceImg },
     { name: "Arya Hackathon Club", img: hackathonImg },
@@ -29,7 +31,7 @@ const OrganizerCards = () => {
                 {clubs.map((club, i) => (
                     <div key={i} className={classes.card}>
                         <div className={classes.imgWrap}>
-                            <img src={club.img} alt={club.name} className={classes.logo} loading="lazy" decoding="async" />
+                            <img src={club.img} alt={club.name} className={classes.logo} style={{ backgroundColor: club.bg || 'transparent' }} loading="lazy" decoding="async" />
                         </div>
                         <p className={classes.name}>{club.name}</p>
                     </div>

@@ -7,7 +7,7 @@ export const useCart = () => useContext(CartContext);
 
 export const CartProvider = ({ children }) => {
     const [cart, setCart] = useState(() => {
-        const savedCart = localStorage.getItem('exergie_cart');
+        const savedCart = localStorage.getItem('Shraddhanjali_cart');
         return savedCart ? JSON.parse(savedCart) : [];
     });
 
@@ -15,7 +15,7 @@ export const CartProvider = ({ children }) => {
     const [isCartOpen, setIsCartOpen] = useState(false);
 
     useEffect(() => {
-        localStorage.setItem('exergie_cart', JSON.stringify(cart));
+        localStorage.setItem('Shraddhanjali_cart', JSON.stringify(cart));
     }, [cart]);
 
     const addToCart = (event) => {

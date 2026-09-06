@@ -200,7 +200,7 @@ const Register = () => {
         const cloudinaryData = new FormData();
         // Crucial Fix: Explicitly pass the filename as the 3rd argument for Blobs
         cloudinaryData.append("file", compressedFile, screenshotFile.name || "screenshot.jpg");
-        cloudinaryData.append("upload_preset", "exergie_tickets");
+        cloudinaryData.append("upload_preset", "Shraddhanjali_tickets");
         cloudinaryData.append("cloud_name", "dykqdgzhy");
 
         const cloudinaryRes = await fetch("https://api.cloudinary.com/v1_1/dykqdgzhy/image/upload", {
@@ -221,7 +221,7 @@ const Register = () => {
         throw new Error("Screenshot file is missing.");
       }
 
-      setLoadingStep("Generating Exergie Tickets...");
+      setLoadingStep("Generating Shraddhanjali Tickets...");
 
       const response = await fetch(APPS_SCRIPT_URL, {
         method: "POST",
@@ -287,7 +287,7 @@ const Register = () => {
         <div className={classes.form} style={{ padding: '20px', textAlign: 'center' }}>
           <h2 style={{ color: '#ff4d4f', marginBottom: '16px' }}>⚠️ Paused Events in Cart</h2>
           <p style={{ color: '#e2e6f2', marginBottom: '24px', lineHeight: '1.5' }}>
-            Some events in your cart have been paused due to the cancellation of Exergie 2026.
+            Some events in your cart have been paused due to the cancellation of Shraddhanjali 2026.
             Please clear your cart and only add active events (Hack Arya Verse 2.0, Capital Arena Season 2, Projectathon 2.0, Reel Rumble, Moment Grid) to proceed with registration.
           </p>
           <button

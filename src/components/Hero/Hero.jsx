@@ -52,9 +52,9 @@ const Hero = () => {
 
           {/* <img src={logo} width={400} /> */}
           <h3 className={classes.collegeName}>Arya College of Engineering & I.T, Jaipur</h3>
-          <h1 className={classes.heading}>Exergie 2026</h1>
-          <h4 className={classes.caption}>Intercollege The Annual Techno • Cultural Fest</h4>
-          <p className={classes.date}>13 March to 15 March</p>
+          <h1 className={classes.heading}>Shraddhanjali 2026</h1>
+          <h4 className={classes.caption}>Intercollege Cultural Fest</h4>
+          <p className={classes.date}>19 September 2026</p>
           <ScrollLink
             to="events"
             smooth={true}

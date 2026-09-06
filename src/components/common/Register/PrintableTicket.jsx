@@ -15,7 +15,7 @@ const PrintableTicket = forwardRef(({ registrationData, eventsList }, ref) => {
                 <div key={index} className={classes.subTicket}>
                     {/* Header: Fest branding */}
                     <div className={classes.ticketHeader}>
-                        <h1 className={classes.festName}>ARYA EXERGIE 2026</h1>
+                        <h1 className={classes.festName}>ARYA Shraddhanjali 2026</h1>
                         <p className={classes.festDates}>13–15 March 2026</p>
                     </div>
 
