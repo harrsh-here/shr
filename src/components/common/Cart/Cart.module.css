@@ -7,7 +7,7 @@
     height: 70px;
     border-radius: 50%;
     border: 3px solid rgba(255, 255, 255, 0.2);
-    background: linear-gradient(135deg, #7b61ff, #4d8aff);
+    background: linear-gradient(135deg, #FF9933, #FFD700);
     box-shadow: 0 4px 20px rgba(123, 97, 255, 0.6), 0 0 40px rgba(77, 138, 255, 0.4);
     cursor: pointer;
     z-index: 990;
@@ -36,7 +36,7 @@
     position: absolute;
     top: -12px;
     right: -12px;
-    background: #ff4d6d;
+    background: #FFD700;
     color: white;
     font-size: 15px;
     font-weight: 800;
@@ -116,7 +116,7 @@
 
 .cartHeader h2 {
     font-size: 22px;
-    background: linear-gradient(90deg, #fff, #a88bff);
+    background: linear-gradient(90deg, #fff, #FFD700);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -126,7 +126,7 @@
 .closeBtn {
     background: none;
     border: none;
-    color: #a88bff;
+    color: #FFD700;
     font-size: 32px;
     cursor: pointer;
     line-height: 1;
@@ -201,7 +201,7 @@
 .teamInfo {
     display: block;
     font-size: 12px;
-    color: #a88bff;
+    color: #FFD700;
     margin-top: 4px;
 }
 
@@ -263,7 +263,7 @@
     padding: 14px;
     border-radius: 12px;
     border: none;
-    background: linear-gradient(135deg, #7b61ff, #4d8aff);
+    background: linear-gradient(135deg, #FF9933, #FFD700);
     color: white;
     font-size: 16px;
     font-weight: 600;

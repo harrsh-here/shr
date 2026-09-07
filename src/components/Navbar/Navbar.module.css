@@ -2,7 +2,7 @@
   position: fixed;
   width: 100%;
   padding: 1.5rem 5%;
-  color: #fff;
+  color: #F8F1E4;
   z-index: 100;
   transition: all 0.4s ease-in-out;
   background-color: transparent;
@@ -15,14 +15,14 @@
   width: 100%;
   top: 0;
   left: 0;
-  background: rgba(10, 10, 15, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(42, 0, 0, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   padding: 1rem 5%;
-  color: #fff;
+  color: #F8F1E4;
   z-index: 100;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -43,13 +43,13 @@
   cursor: pointer;
   margin-left: -2rem;
   transition: transform 0.3s ease;
-  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.2));
   object-fit: contain;
 }
 
 .logo:hover {
   transform: scale(1.05);
-  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.4));
+  filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.4));
 }
 
 .hamburger {
@@ -67,18 +67,18 @@
 }
 
 .cartLinkBtn {
-  color: #fff;
+  color: #2A0000;
   font-weight: 800;
   text-decoration: none;
   cursor: pointer;
   transition: all 0.4s ease;
   padding: 0.9rem 2.2rem;
   border-radius: 30px;
-  background: linear-gradient(135deg, #7b61ff, #ff4d6d);
-  border: 2px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(135deg, #FF9933, #FFD700);
+  border: 2px solid rgba(255, 215, 0, 0.3);
   font-size: 1.25rem;
   font-family: 'Inter', sans-serif;
-  box-shadow: 0 4px 20px rgba(123, 97, 255, 0.5), 0 0 10px rgba(255, 77, 109, 0.3);
+  box-shadow: 0 4px 20px rgba(255, 153, 51, 0.4), 0 0 10px rgba(255, 215, 0, 0.2);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -88,27 +88,27 @@
 
 .cartLinkBtn:hover {
   transform: translateY(-4px) scale(1.05);
-  box-shadow: 0 8px 30px rgba(123, 97, 255, 0.7), 0 0 20px rgba(255, 77, 109, 0.5);
-  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 30px rgba(255, 153, 51, 0.6), 0 0 20px rgba(255, 215, 0, 0.4);
+  border-color: rgba(255, 215, 0, 0.6);
 }
 
 .cartLinkBtnMobile {
-  color: #fff;
+  color: #2A0000;
   font-weight: 700;
   cursor: pointer;
   font-family: 'Inter', sans-serif;
   border: none;
-  background: linear-gradient(90deg, #7b61ff, #4d8aff);
+  background: linear-gradient(90deg, #FF9933, #FFA500);
   padding: 1rem 2rem;
   border-radius: 12px;
   display: inline-block;
   font-size: 1.5rem;
   margin-top: 1rem;
-  box-shadow: 0 0 15px rgba(123, 97, 255, 0.4);
+  box-shadow: 0 0 15px rgba(255, 153, 51, 0.4);
 }
 
 .cartLinkBtnMobile:hover {
-  background: linear-gradient(90deg, #8a73ff, #5e98ff);
+  background: linear-gradient(90deg, #FFD700, #FF9933);
 }
 
 .nav {
@@ -132,7 +132,7 @@
 }
 
 .homeLink {
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(248, 241, 228, 0.85);
   cursor: pointer;
   text-decoration: none;
   transition: all 0.3s ease;
@@ -141,8 +141,8 @@
 }
 
 .homeLink:hover {
-  color: #fff;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  color: #FFD700;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
 }
 
 .homeLink::after {
@@ -152,12 +152,12 @@
   height: 3px;
   bottom: 0;
   left: 0;
-  background: linear-gradient(90deg, #0263ad, #fd4f8b);
+  background: linear-gradient(90deg, #FFD700, #FF9933);
   transform: scaleX(0);
   transform-origin: right;
   transition: transform 0.3s ease-in-out;
   border-radius: 2px;
-  box-shadow: 0 0 10px rgba(253, 79, 139, 0.5);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
 .homeLink:hover::after,
@@ -167,26 +167,24 @@
 }
 
 .active {
-  color: #fff;
+  color: #FFD700;
   font-weight: 600;
-  text-shadow: 0 0 15px rgba(253, 79, 139, 0.4);
+  text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
 }
 
 .dropLink {
   cursor: pointer;
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(248, 241, 228, 0.85);
   font-weight: 500;
   transition: all 0.3s ease;
   padding-bottom: 5px;
 }
 
 .dropLink:hover {
-  color: #fff;
+  color: #FFD700;
   transform: scale(1.05);
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
 }
-
-
 
 .mobileBox {
   display: none;
@@ -211,12 +209,44 @@
   display: inline;
   padding: 2rem;
   font-size: 2.7rem;
-  background-image: linear-gradient(to bottom right, #ff00ee, #ff0932);
+  background-image: linear-gradient(to bottom right, #FFD700, #FF9933);
   -webkit-background-clip: text;
   background-clip: text;
-  /* -webkit-text-fill-color: transparent; */
   color: transparent;
   font-weight: 700;
+}
+
+/* Hamburger animation */
+.hamburgerIcon {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 24px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.hamburgerBar {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: #F8F1E4;
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  transform-origin: center;
+}
+
+.hamburgerIcon.open .hamburgerBar:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.hamburgerIcon.open .hamburgerBar:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.hamburgerIcon.open .hamburgerBar:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
 }
 
 @media screen and (max-width: 768px) {
@@ -249,7 +279,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(15, 15, 20, 0.98);
+    background: rgba(42, 0, 0, 0.98);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     border: none;
@@ -265,7 +295,6 @@
 
   .mobileBox .btn1 {
     margin-bottom: 4rem;
-    /* Adds space between ACEIT and Home */
   }
 
   .closeIconContainer {
@@ -286,7 +315,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(15, 15, 20, 0.98);
+    background: rgba(42, 0, 0, 0.98);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     opacity: 0;

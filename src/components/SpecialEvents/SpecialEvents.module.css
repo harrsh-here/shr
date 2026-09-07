@@ -9,16 +9,16 @@
 .mainHeading {
     text-align: center;
     font-size: 5rem;
-    font-weight: 800;
+    font-weight: 400;
     margin-bottom: 60px;
-    background: linear-gradient(135deg, #fd4f8b, #7b61ff, #4d8aff);
+    background: linear-gradient(135deg, #FFD700, #FF9933, #FFA500);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 5px 20px rgba(123, 97, 255, 0.4));
+    filter: drop-shadow(0 5px 20px rgba(255, 153, 51, 0.4));
     letter-spacing: 2px;
     text-transform: uppercase;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Yatra One', display;
     line-height: 1.2;
 }
 
@@ -55,8 +55,8 @@
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(255, 255, 255, 0.1);
     cursor: pointer;
-    background-color: #121422;
-}
+    background-color: rgba(60, 5, 5, 0.85);
+    border: 1px solid rgba(255, 215, 0, 0.15);
 
 .card:hover {
     transform: translateY(-8px) scale(1.02);
@@ -97,15 +97,15 @@
 .viewMoreBtn {
     position: relative;
     z-index: 3;
-    background: linear-gradient(135deg, #ff4d6d, #7b61ff);
-    color: #fff;
+    background: linear-gradient(135deg, #FF9933, #FFD700);
+    color: #2A0000;
     border: none;
     border-radius: 8px;
     padding: 12px 28px;
     font-size: 15px;
     font-weight: bold;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
+    box-shadow: 0 4px 15px rgba(255, 153, 51, 0.4);
     transition: all 0.3s ease;
     margin-bottom: 25px;
     font-family: 'Inter', sans-serif;
@@ -115,7 +115,7 @@
 
 .card:hover .viewMoreBtn {
     opacity: 1;
-    box-shadow: 0 6px 20px rgba(255, 77, 109, 0.7);
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
     transform: translateY(-3px);
 }
 

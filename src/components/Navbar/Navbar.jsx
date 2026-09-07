@@ -154,15 +154,11 @@ const Navbar = () => {
           </a>
 
           <div className={classes.hamburger} onClick={() => setMobile(!mobile)}>
-            {mobile ? (
-              <FontAwesomeIcon
-                icon={faXmark}
-                style={{ color: "white" }}
-                size="3x"
-              />
-            ) : (
-              <FiMenu size={20} />
-            )}
+            <div className={`${classes.hamburgerIcon} ${mobile ? classes.open : ""}`}>
+              <span className={classes.hamburgerBar}></span>
+              <span className={classes.hamburgerBar}></span>
+              <span className={classes.hamburgerBar}></span>
+            </div>
           </div>
         </div>
 

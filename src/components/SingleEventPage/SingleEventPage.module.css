@@ -70,8 +70,8 @@
 
 .gyrationSelect:hover,
 .gyrationSelect:focus {
-  border-color: #fd4f8b;
-  box-shadow: 0 0 10px rgba(253, 79, 139, 0.2);
+  border-color: #FFD700;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
   background-color: rgba(255, 255, 255, 0.1);
 }
 
@@ -106,10 +106,10 @@
 }
 
 .closeBtn:hover {
-  background: rgba(253, 79, 139, 0.8);
-  border-color: #fd4f8b;
+  background: rgba(255, 153, 51, 0.8);
+  border-color: #FFD700;
   transform: rotate(90deg) scale(1.15);
-  box-shadow: 0 10px 25px rgba(253, 79, 139, 0.6);
+  box-shadow: 0 10px 25px rgba(255, 215, 0, 0.6);
 }
 
 .col1 {
@@ -145,7 +145,7 @@
 }
 
 .downloadBtn {
-  background: linear-gradient(90deg, #0263ad, #fd4f8b);
+  background: linear-gradient(90deg, #FFD700, #FF9933);
   color: #fff;
   text-decoration: none;
   font-size: 1.6rem;
@@ -164,7 +164,7 @@
 
 .downloadBtn:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(253, 79, 139, 0.5);
+  box-shadow: 0 8px 25px rgba(255, 153, 51, 0.5);
 }
 
 .col2 {
@@ -215,18 +215,18 @@
   background: rgba(255, 255, 255, 0.03);
   padding: 15px 20px;
   border-radius: 10px;
-  border-left: 3px solid #0263ad;
+  border-left: 3px solid #FFD700;
 }
 
 .sectionWrap:nth-child(even) {
-  border-left-color: #fd4f8b;
+  border-left-color: #FF9933;
 }
 
 .heading,
 .headingp {
   font-size: 1.8rem;
   font-weight: 700;
-  background: linear-gradient(90deg, #32b4ed, #fd4f8b);
+  background: linear-gradient(90deg, #FFD700, #FF9933);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -269,7 +269,7 @@
 }
 
 .addToCartBtn {
-  background: linear-gradient(90deg, #0263ad, #fd4f8b);
+  background: linear-gradient(90deg, #FFD700, #FF9933);
   color: #fff;
   border: none;
   font-size: 1.6rem;
@@ -288,7 +288,7 @@
 
 .addToCartBtn:hover:not(:disabled) {
   transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(253, 79, 139, 0.5);
+  box-shadow: 0 8px 25px rgba(255, 153, 51, 0.5);
 }
 
 .inCartBtn {
@@ -300,7 +300,7 @@
 }
 
 .registerBtn {
-  background: linear-gradient(90deg, #fd4f8b, #0263ad);
+  background: linear-gradient(90deg, #FF9933, #FFD700);
   color: #fff;
   text-decoration: none;
   font-size: 1.6rem;
@@ -319,7 +319,7 @@
 
 .registerBtn:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(253, 79, 139, 0.5);
+  box-shadow: 0 8px 25px rgba(255, 153, 51, 0.5);
 }
 
 .cartIcon {
@@ -327,7 +327,7 @@
 }
 
 .soon {
-  color: #fd4f8b;
+  color: #FFD700;
   font-size: 1.2rem;
   font-weight: 500;
   text-align: center;
@@ -337,7 +337,7 @@
   margin-top: 20px;
   padding: 10px 20px;
   cursor: pointer;
-  background: linear-gradient(90deg, #0263ad, #fd4f8b);
+  background: linear-gradient(90deg, #FFD700, #FF9933);
   border: none;
   border-radius: 5px;
   color: white;

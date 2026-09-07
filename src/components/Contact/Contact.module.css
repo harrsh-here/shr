@@ -35,7 +35,7 @@
   width: 160px;
   height: 4px;
   text-align: center;
-  background-image: linear-gradient(90deg, #09b35c 2.27%, #32b4ed 97.67%);
+  background-image: linear-gradient(90deg, #FFD700 2.27%, #FF9933 97.67%);
 }
 
 .contentBox {
@@ -53,9 +53,9 @@
 
 .personBox {
   background: linear-gradient(180deg,
-      #09b35c 0%,
-      rgba(50, 180, 237, 0.63) 100%);
-  color: #fff;
+      rgba(255, 153, 51, 0.8) 0%,
+      rgba(255, 215, 0, 0.5) 100%);
+  color: #2A0000;
   height: auto;
   padding: 1.2rem 3rem;
   border-radius: 8px;
@@ -127,7 +127,7 @@
 }
 
 .categoryHeading {
-  color: #a88bff;
+  color: #FF9933;
   font-size: 2.8rem;
   text-align: center;
   font-weight: 700;
@@ -190,8 +190,8 @@
 
 .leadCard:hover {
   transform: translateY(-8px);
-  border-color: rgba(253, 79, 139, 0.5);
-  box-shadow: 0 15px 35px rgba(2, 99, 173, 0.2), 0 0 20px rgba(253, 79, 139, 0.3);
+  border-color: rgba(255, 215, 0, 0.5);
+  box-shadow: 0 15px 35px rgba(255, 153, 51, 0.2), 0 0 20px rgba(255, 215, 0, 0.3);
 }
 
 .imgContainer {
@@ -199,9 +199,9 @@
   height: 140px;
   border-radius: 50%;
   padding: 5px;
-  background: linear-gradient(135deg, #0263ad, #fd4f8b);
+  background: linear-gradient(135deg, #FFD700, #FF9933);
   margin-bottom: 2rem;
-  box-shadow: 0 8px 24px rgba(2, 99, 173, 0.3);
+  box-shadow: 0 8px 24px rgba(255, 215, 0, 0.3);
 }
 
 .leadImg {
@@ -223,7 +223,7 @@
 
 .leadDesignation {
   font-size: 1.5rem;
-  color: #a88bff;
+  color: #FFD700;
   margin-bottom: 1.5rem;
   text-align: center;
   text-transform: uppercase;
@@ -233,7 +233,7 @@
 
 .leadPhone {
   font-size: 1.7rem;
-  color: #4d8aff;
+  color: #FF9933;
   text-decoration: none;
   font-weight: 600;
   transition: color 0.3s ease;
@@ -241,7 +241,7 @@
 }
 
 .leadPhone:hover {
-  color: #fd4f8b;
+  color: #FFD700;
 }
 
 @media screen and (max-width: 1024px) {

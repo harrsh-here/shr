@@ -1,62 +1,108 @@
-.svg_frame {
-  position: relative;
-  width: 100%;
+.loadingContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
   height: 100vh;
-  transform-style: preserve-3d;
+  background: #2A0000;
+  background-image: radial-gradient(circle at center, #4A0505 0%, #1A0000 100%);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* background: #ac0176; */
+  z-index: 99999;
 }
 
-.svg_frame svg {
+.diya {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.bowl {
+  width: 80px;
+  height: 40px;
+  background: linear-gradient(135deg, #FFD700, #B8860B);
+  border-radius: 0 0 40px 40px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), inset 0 5px 10px rgba(255, 255, 255, 0.3);
+  position: relative;
+  z-index: 2;
+}
+
+.bowl::before {
+  content: '';
   position: absolute;
-  transition: 0.5s;
-  z-index: calc(1 - (0.2 * var(--j)));
-  transform-origin: center;
-  width: 344px;
-  height: 344px;
-  fill: none;
+  top: -10px;
+  left: 0;
+  width: 80px;
+  height: 20px;
+  background: #8B6508;
+  border-radius: 50%;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
 }
 
-.svg_frame:hover svg {
-  transform: rotate(-80deg) skew(30deg) translateX(calc(45px * var(--i))) translateY(calc(-35px * var(--i)));
+.flame {
+  width: 30px;
+  height: 45px;
+  background: #FF9933;
+  border-radius: 50% 0 50% 50%;
+  transform: rotate(-45deg);
+  position: absolute;
+  bottom: 35px;
+  z-index: 1;
+  box-shadow: 
+    0 0 20px #FF9933,
+    0 0 40px #FFD700,
+    0 0 60px #FFA500,
+    0 0 80px #FF4500;
+  animation: flicker 0.6s ease-in-out infinite alternate;
 }
 
-.svg_frame svg #center {
-  transition: 0.5s;
-  transform-origin: center;
+.flame::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 15px;
+  height: 25px;
+  background: #FFD700;
+  border-radius: 50% 0 50% 50%;
 }
 
-.svg_frame:hover svg #center {
-  transform: rotate(-30deg) translateX(45px) translateY(-3px);
-}
-
-#out2 {
-  animation: rotate16 7s ease-in-out infinite alternate;
-  transform-origin: center;
-}
-
-#out3 {
-  animation: rotate16 3s ease-in-out infinite alternate;
-  transform-origin: center;
-  stroke: #ff0;
-}
-
-#inner3,
-#inner1 {
-  animation: rotate16 4s ease-in-out infinite alternate;
-  transform-origin: center;
-}
-
-#center1 {
-  fill: #ff0;
-  animation: rotate16 2s ease-in-out infinite alternate;
-  transform-origin: center;
-}
-
-@keyframes rotate16 {
-  to {
-    transform: rotate(360deg);
+@keyframes flicker {
+  0% {
+    transform: rotate(-45deg) scale(0.9) skewX(2deg);
+    box-shadow: 
+      0 0 15px #FF9933,
+      0 0 30px #FFD700,
+      0 0 45px #FFA500,
+      0 0 60px #FF4500;
   }
+  100% {
+    transform: rotate(-45deg) scale(1.1) skewX(-2deg);
+    box-shadow: 
+      0 0 25px #FF9933,
+      0 0 50px #FFD700,
+      0 0 75px #FFA500,
+      0 0 100px #FF4500;
+  }
+}
+
+.loadingText {
+  margin-top: 30px;
+  font-family: 'Yatra One', display;
+  font-size: 2rem;
+  color: #FFD700;
+  letter-spacing: 3px;
+  animation: pulseText 1.5s ease-in-out infinite;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+@keyframes pulseText {
+  0%, 100% { opacity: 0.6; transform: scale(0.98); }
+  50% { opacity: 1; transform: scale(1.02); }
 }

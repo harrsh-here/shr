@@ -1,5 +1,6 @@
 import { useState } from "react";
 import classes from "./Faq.module.css";
+import useScrollReveal from "../../hooks/useScrollReveal";
 
 const questions = [
   {
@@ -30,6 +31,7 @@ const questions = [
 
 const Faq = () => {
   const [clicked, setClicked] = useState(null);
+  const revealRef = useScrollReveal({ threshold: 0.1 });
 
   const toggle = (i) => {
     if (clicked === i) {
@@ -40,7 +42,7 @@ const Faq = () => {
   };
 
   return (
-    <section className={classes.faqSection}>
+    <section className={classes.faqSection} ref={revealRef}>
       <div className={classes.heading}>FAQ</div>
       <div className={classes.faq}>
         {questions.map((ques, i) => {
@@ -53,7 +55,7 @@ const Faq = () => {
               >
                 {ques.answer}
               </div>
-              <span className={classes.btn}>+</span>
+              <span className={`${classes.btn} ${clicked === i ? classes.btnOpen : ""}`}>+</span>
             </div>
           );
         })}

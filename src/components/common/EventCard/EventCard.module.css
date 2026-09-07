@@ -65,7 +65,7 @@
 }
 
 .card:hover .event_name {
-  color: #fd4f8b;
+  color: #FFD700;
   text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), 0 0 15px rgba(253, 79, 139, 0.5);
 }
 

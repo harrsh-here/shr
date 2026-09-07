@@ -8,7 +8,7 @@
 .btn {
   all: unset;
   background-color: #000;
-  background-image: linear-gradient(to bottom right, #ff00ee, #ff0932);
+  background-image: linear-gradient(to bottom right, #FFD700, #FF9933);
   /* border: 2px solid #000000; */
   color: #fff;
   cursor: pointer;

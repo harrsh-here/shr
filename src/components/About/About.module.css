@@ -69,9 +69,28 @@
 }
 
 .composition {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.mandala {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120%;
+  height: 120%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  opacity: 0.4;
+  animation: spinMandala 40s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes spinMandala {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
 @media screen and (max-width: 768px) {
@@ -93,7 +112,7 @@
 }
 
 .images {
-  box-shadow: 0 1.5rem 4rem rgba(#000, 0.4);
+  box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.4);
   border-radius: 2px;
   transition: all 0.2s;
   z-index: 20;

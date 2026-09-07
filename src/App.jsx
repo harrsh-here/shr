@@ -8,6 +8,7 @@ import Loading from "./components/common/Loading/Loading";
 import FloatingCartButton from "./components/common/Cart/FloatingCartButton";
 import CartDrawer from "./components/common/Cart/CartDrawer";
 import { useCart } from "./context/CartContext";
+import Cursor from "./components/common/Cursor/Cursor";
 
 /* Google Analytics */
 import ReactGA from "react-ga";
@@ -44,7 +45,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 3900);
+    const timer = setTimeout(() => setLoading(false), 1500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -98,6 +99,7 @@ const App = () => {
               You can check the event schedules and visit their respective sections on the website for more details.
             </div>
           )}
+          <Cursor />
           <Navbar />
           <React.Suspense fallback={<Loading />}>
             <Routes>
