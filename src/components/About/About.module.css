@@ -8,9 +8,11 @@
   width: 100%;
   display: flex;
   margin: 0 auto;
-  background-color: rgba(0, 0, 0, 0.432);
+  background-color: rgba(60, 5, 5, 0.7); /* Deep maroon */
   padding: 4rem 5rem;
-  border-radius: 15px;
+  border-radius: 20px;
+  border: 2px solid #FFD700;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
 @media screen and (max-width: 768px) {
@@ -26,21 +28,19 @@
 
 .heading {
   font-size: 5rem;
-  font-weight: 500;
+  font-weight: 600;
   margin-bottom: 0;
-  color: #fff;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  color: #FF9933;
+  text-shadow: 0 0 10px rgba(255, 153, 51, 0.3);
 }
 
 .heading1 {
-  font-size: 12rem;
-  text-transform: uppercase;
-  color: transparent;
-  font-weight: 800;
+  font-family: 'Yatra One', display;
+  font-size: 10rem;
+  color: #FFD700;
+  font-weight: 400;
   white-space: nowrap;
-  -webkit-text-stroke-width: 2px;
-  -webkit-text-stroke-color: #fff;
-  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+  filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.4));
 }
 
 @media screen and (max-width: 480px) {
@@ -57,8 +57,10 @@
 }
 
 .para {
-  font-size: 1.8rem;
-  line-height: 3rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 2rem;
+  line-height: 3.5rem;
+  color: #F8F1E4;
   opacity: 95%;
 }
 

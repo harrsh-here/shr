@@ -11,7 +11,7 @@ import gdgImg from "../../assets/club logos/gdg.png";
 
 const clubs = [
     { name: "Arya Cipher Coding Club", img: cipherImg },
-    { name: "GDG - Google Developer Group ACEIT", img: gdgImg, bg: "white" },
+    { name: "Google Developer Group ACEIT", img: gdgImg, bg: "white" },
     { name: "Arya Music Club", img: musicImg },
     { name: "Arya Dance Club", img: danceImg },
     { name: "Arya Hackathon Club", img: hackathonImg },

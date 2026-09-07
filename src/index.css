@@ -28,15 +28,20 @@ html {
 }
 
 body {
-  font-family: "Poppins", sans-serif;
-  background: #081b3f;
+  font-family: "Inter", sans-serif;
+  background-color: #2A0000;
+  background-image: radial-gradient(circle at center, #5A0A0A 0%, #2A0000 100%);
   background-size: cover;
   background-attachment: fixed;
   scroll-behavior: smooth;
   transition: 0.5s ease;
   overflow-x: hidden;
-  background-image: url("./assets//backGround.svg");
-  /* background: url(./assets/backGround.svg); */
+  color: #F8F1E4; /* Warm off-white */
+}
+
+/* Global Heading Font Class */
+.yatra-font {
+  font-family: 'Yatra One', display;
 }
 
 a {
