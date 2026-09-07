@@ -82,23 +82,7 @@ const App = () => {
         <Loading />
       ) : (
         <>
-          {location.pathname !== '/register' && (
-            <div style={{
-              backgroundColor: '#ff4d4f',
-              color: 'white',
-              textAlign: 'center',
-              padding: '12px 20px',
-              fontSize: '15px',
-              fontWeight: '500',
-              zIndex: 9999,
-              position: 'relative',
-              lineHeight: '1.5'
-            }}>
-              ⚠️ <strong>Important Update:</strong> Due to uncertain conditions, Arya Shraddhanjali 2026 registrations have been temporarily put on hold. <br />
-              However, <strong>Hack Arya Verse 2.0</strong>, <strong>Capital Arena Season 2</strong>, <strong>Projectathon 2.0</strong>, <strong>Reel Rumble</strong>, and <strong>Moment Grid</strong> will take place as scheduled from 13–15 March 2026.<br />
-              You can check the event schedules and visit their respective sections on the website for more details.
-            </div>
-          )}
+
           <Cursor />
           <Navbar />
           <React.Suspense fallback={<Loading />}>
