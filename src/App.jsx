@@ -9,6 +9,8 @@ import FloatingCartButton from "./components/common/Cart/FloatingCartButton";
 import CartDrawer from "./components/common/Cart/CartDrawer";
 import { useCart } from "./context/CartContext";
 import Cursor from "./components/common/Cursor/Cursor";
+import SiteBackdrop from "./components/common/SiteBackdrop/SiteBackdrop";
+import classes from "./App.module.css";
 
 /* Google Analytics */
 import ReactGA from "react-ga";
@@ -77,7 +79,9 @@ const App = () => {
   }, [location]);
 
   return (
-    <>
+    <div className={classes.siteShell}>
+      <SiteBackdrop />
+      <div className={classes.siteContent}>
       {loading ? (
         <Loading />
       ) : (
@@ -107,7 +111,8 @@ const App = () => {
           {/* </div> */}
         </>
       )}
-    </>
+      </div>
+    </div>
   );
 };
 

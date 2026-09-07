@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import classes from "./Hero.module.css";
 import { Link as ScrollLink } from "react-scroll";
-import Button from "../common/Button/Button";
 import collegeLogo from "../../assets/collegeLogo.png";
 
 const Hero = () => {
@@ -9,17 +8,14 @@ const Hero = () => {
   const [countHours, setHours] = useState(0);
   const [countMinutes, setMinutes] = useState(0);
   const [countSeconds, setSeconds] = useState(0);
+  const [showHindi, setShowHindi] = useState(false);
 
-  const heroRef = useRef(null);
-  const parallaxBgRef = useRef(null);
-
-  const startTimer = () => {
+  // Countdown timer — targeting 19 September 2026
+  useEffect(() => {
     const countdownDate = new Date("September 19 2026 00:00:00").getTime();
-
     const interval = setInterval(() => {
       const now = new Date().getTime();
       const distance = countdownDate - now;
-
       if (distance < 0) {
         clearInterval(interval);
       } else {
@@ -29,89 +25,100 @@ const Hero = () => {
         setSeconds(Math.floor((distance % (1000 * 60)) / 1000));
       }
     }, 1000);
-
-    return interval;
-  };
-
-  useEffect(() => {
-    const interval = startTimer();
     return () => clearInterval(interval);
   }, []);
 
-  const handleMouseMove = (e) => {
-    if (!heroRef.current || !parallaxBgRef.current) return;
-    
-    // Check if on touch device to skip parallax for performance
-    if (window.matchMedia('(pointer: coarse)').matches) return;
+  // Title crossfade — toggle every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setShowHindi(prev => !prev);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
-    const { clientX, clientY } = e;
-    const { innerWidth, innerHeight } = window;
-    
-    const x = (clientX / innerWidth - 0.5) * 40; // max 20px movement
-    const y = (clientY / innerHeight - 0.5) * 40;
-
-    parallaxBgRef.current.style.transform = `translate(${x}px, ${y}px) scale(1.05)`;
-  };
-
-  // Generate 20 random particles
-  const particles = Array.from({ length: 20 }).map((_, i) => {
-    const left = Math.random() * 100;
-    const top = Math.random() * 100;
-    const duration = Math.random() * 10 + 10; // 10s to 20s
-    const delay = Math.random() * 5;
-    const size = Math.random() * 6 + 2; // 2px to 8px
-    return (
-      <span 
-        key={i} 
-        className={classes.particle} 
-        style={{
-          left: `${left}%`,
-          top: `${top}%`,
-          width: `${size}px`,
-          height: `${size}px`,
-          animationDuration: `${duration}s`,
-          animationDelay: `${delay}s`
-        }}
-      ></span>
-    );
-  });
+  // Ambient mandala SVG (slow 60s rotation)
+  const mandalaMotif = (
+    <svg className={classes.heroMandala} viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="heroMandalaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#FFD700" />
+          <stop offset="100%" stopColor="#FF9933" />
+        </linearGradient>
+      </defs>
+      <g fill="none" stroke="url(#heroMandalaGrad)" strokeWidth="0.5">
+        <circle cx="100" cy="100" r="95" strokeDasharray="6,4" />
+        <circle cx="100" cy="100" r="80" strokeDasharray="3,6" />
+        <circle cx="100" cy="100" r="65" />
+        <circle cx="100" cy="100" r="50" strokeDasharray="8,3" />
+        {/* Petal shapes — 8 petals */}
+        {[0, 45, 90, 135, 180, 225, 270, 315].map(angle => (
+          <path
+            key={angle}
+            d={`M100 100 Q ${100 + 40 * Math.cos((angle - 20) * Math.PI / 180)} ${100 + 40 * Math.sin((angle - 20) * Math.PI / 180)} ${100 + 70 * Math.cos(angle * Math.PI / 180)} ${100 + 70 * Math.sin(angle * Math.PI / 180)} Q ${100 + 40 * Math.cos((angle + 20) * Math.PI / 180)} ${100 + 40 * Math.sin((angle + 20) * Math.PI / 180)} 100 100 Z`}
+          />
+        ))}
+        <circle cx="100" cy="100" r="20" fill="url(#heroMandalaGrad)" opacity="0.1" />
+      </g>
+    </svg>
+  );
 
   return (
-    <section 
-      id="home" 
-      className={classes.hero} 
-      ref={heroRef}
-      onMouseMove={handleMouseMove}
+    <section
+      id="home"
+      className={classes.hero}
     >
-      <div className={classes.parallaxBg} ref={parallaxBgRef}></div>
-      <div className={classes.particlesContainer}>
-        {particles}
-      </div>
+      {mandalaMotif}
 
       <div className={classes.herobox}>
         <div className={classes.headerbox}>
-          <div className={classes.logoWrapper}>
+          {/* Logo — stagger delay 0s */}
+          <div className={classes.logoWrapper} style={{ animationDelay: '0s' }}>
             <img src={collegeLogo} alt="Arya College Logo" className={classes.collegeLogoImg} />
-            <h3 className={classes.collegeName}>Arya College of Engineering & I.T, Jaipur</h3>
           </div>
-          <h1 className={classes.heading}>Shraddhanjali 2026</h1>
-          <h4 className={classes.caption}>Intercollege Cultural Fest</h4>
-          <p className={classes.date}>19 September 2026</p>
-          
+
+          {/* College Name — stagger delay 0.2s */}
+          <h3 className={classes.collegeName} style={{ animationDelay: '0.2s' }}>
+            Arya College of Engineering & I.T, Jaipur
+          </h3>
+
+          {/* Title crossfade — stagger delay 0.4s */}
+          <div className={classes.titleContainer} style={{ animationDelay: '0.4s' }}>
+            <h1 className={`${classes.heading} ${classes.headingEnglish} ${showHindi ? classes.titleHidden : classes.titleVisible}`}>
+              Shraddhanjali 2026
+            </h1>
+            <h1 className={`${classes.heading} ${classes.headingAlt} ${showHindi ? classes.titleVisible : classes.titleHidden}`}>
+              श्रद्धांजलि 2026
+            </h1>
+          </div>
+
+          <p className={classes.titleTagline} style={{ animationDelay: '0.5s' }}>
+            Tagline to be announced
+          </p>
+
+          {/* Caption — stagger delay 0.6s */}
+          <h4 className={classes.caption} style={{ animationDelay: '0.6s' }}>
+            Intercollege Cultural Fest
+          </h4>
+
+          {/* Date — stagger delay 0.8s */}
+          <p className={classes.date} style={{ animationDelay: '0.8s' }}>
+            19 September 2026
+          </p>
+
+          {/* CTA — stagger delay 1.0s — inline button, no old Button component */}
           <ScrollLink
             to="events"
             smooth={true}
             duration={800}
             offset={-100}
             className={classes.anchorBtn}
+            style={{ animationDelay: '1.0s' }}
           >
-            <Button
-              label="Explore Our Events"
-              className={classes.ctaBtn}
-            ></Button>
+            <button className={classes.ctaBtn}>Explore Our Events</button>
           </ScrollLink>
         </div>
 
+        {/* Countdown — confirmed good, untouched */}
         <div className={classes.countdownbox}>
           <div className={classes.countdown}>
             <p className={classes.countNum}>{countDays.toString().padStart(2, '0')}</p>

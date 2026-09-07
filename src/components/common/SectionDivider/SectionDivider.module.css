@@ -1,0 +1,40 @@
+.divider {
+  position: relative;
+  z-index: 3;
+  height: 3.8rem;
+  margin: -1.9rem 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(232, 163, 61, 0.8) 16%, rgba(255, 215, 0, 0.95) 50%, rgba(232, 163, 61, 0.8) 84%, transparent);
+  box-shadow: 0 0 12px rgba(232, 163, 61, 0.35);
+}
+
+.divider::after {
+  content: '✦';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  padding: 0 1.15rem;
+  color: #e8a33d;
+  background: #2a0000;
+  font-size: 1.45rem;
+  line-height: 1;
+  transform: translate(-50%, -50%);
+  text-shadow: 0 0 12px rgba(232, 163, 61, 0.55);
+}
+
+@media screen and (max-width: 480px) {
+  .divider {
+    height: 3rem;
+    margin: -1.5rem 0;
+  }
+}

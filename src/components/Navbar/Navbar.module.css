@@ -1,13 +1,38 @@
 .header {
   position: fixed;
   width: 100%;
-  padding: 1.5rem 5%;
+  padding: 2.1rem 5%;
   color: #F8F1E4;
   z-index: 100;
   transition: all 0.4s ease-in-out;
   background-color: transparent;
+  border-bottom: 1px solid transparent;
   top: 0;
   left: 0;
+}
+
+.announcement {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  min-height: 2.8rem;
+  margin: -1.5rem -5% 1.2rem;
+  padding: 0.55rem 1.5rem;
+  color: #ffe5a8;
+  background: rgba(78, 5, 10, 0.82);
+  border-bottom: 1px solid rgba(232, 163, 61, 0.35);
+  font-family: 'Inter', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.announcementMotif {
+  color: #e8a33d;
+  font-size: 1.2rem;
 }
 
 .scrolledHeader {
@@ -18,7 +43,7 @@
   background: rgba(42, 0, 0, 0.88);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  padding: 1rem 5%;
+  padding: 1.5rem 5%;
   color: #F8F1E4;
   z-index: 100;
   border-bottom: 1px solid rgba(255, 215, 0, 0.2);
@@ -26,9 +51,16 @@
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.scrolledHeader .announcement {
+  margin-top: -1rem;
+  margin-bottom: 0.8rem;
+}
+
 .elements {
   display: flex;
   align-items: center;
+  width: min(100%, 1720px);
+  margin: 0 auto;
 }
 
 .logobox {
@@ -37,19 +69,54 @@
   margin-right: auto;
 }
 
-.logo {
-  height: 65px;
-  width: auto;
+.brand {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.5rem;
   cursor: pointer;
-  margin-left: -2rem;
-  transition: transform 0.3s ease;
-  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.2));
-  object-fit: contain;
+  color: #f2bd58;
+  font-family: 'Cinzel Decorative', 'Times New Roman', serif;
+  font-size: clamp(2.25rem, 2.7vw, 3.25rem);
+  font-weight: 700;
+  letter-spacing: 0.025em;
+  line-height: 1;
+  text-shadow: 0 0 16px rgba(232, 163, 61, 0.28);
+  transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
 }
 
-.logo:hover {
-  transform: scale(1.05);
-  filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.4));
+.brandTitle {
+  display: block;
+  white-space: nowrap;
+  line-height: 0.95;
+}
+
+.brandYear {
+  display: inline-block;
+  margin-left: 0.25em;
+  color: #e8a33d;
+  font-family: 'Cinzel Decorative', 'Times New Roman', serif;
+  font-size: 0.52em;
+  letter-spacing: 0.03em;
+  vertical-align: 0.38em;
+  text-shadow: 0 0 12px rgba(232, 163, 61, 0.34);
+}
+
+.brandTagline {
+  display: block;
+  min-height: 0.9rem;
+  color: rgba(255, 229, 168, 0.55);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.3em;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.brand:hover {
+  color: #ffe29a;
+  text-shadow: 0 0 20px rgba(232, 163, 61, 0.48);
+  transform: translateY(-1px);
 }
 
 .hamburger {
@@ -67,18 +134,18 @@
 }
 
 .cartLinkBtn {
-  color: #2A0000;
-  font-weight: 800;
+  color: #ffe9bd;
+  font-weight: 700;
   text-decoration: none;
   cursor: pointer;
   transition: all 0.4s ease;
   padding: 0.9rem 2.2rem;
   border-radius: 30px;
-  background: linear-gradient(135deg, #FF9933, #FFD700);
-  border: 2px solid rgba(255, 215, 0, 0.3);
+  background: linear-gradient(135deg, rgba(109, 10, 16, 0.92), rgba(59, 3, 7, 0.92));
+  border: 1px solid rgba(232, 163, 61, 0.72);
   font-size: 1.25rem;
   font-family: 'Inter', sans-serif;
-  box-shadow: 0 4px 20px rgba(255, 153, 51, 0.4), 0 0 10px rgba(255, 215, 0, 0.2);
+  box-shadow: inset 0 0 0 1px rgba(255, 235, 178, 0.08), 0 4px 18px rgba(0, 0, 0, 0.2);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -87,9 +154,11 @@
 }
 
 .cartLinkBtn:hover {
-  transform: translateY(-4px) scale(1.05);
-  box-shadow: 0 8px 30px rgba(255, 153, 51, 0.6), 0 0 20px rgba(255, 215, 0, 0.4);
-  border-color: rgba(255, 215, 0, 0.6);
+  color: #3b0508;
+  background: linear-gradient(135deg, #f6c86b, #e8a33d);
+  transform: translateY(-3px);
+  box-shadow: 0 9px 26px rgba(0, 0, 0, 0.32), 0 0 20px rgba(232, 163, 61, 0.22);
+  border-color: #f7d98a;
 }
 
 .cartLinkBtnMobile {
@@ -250,9 +319,25 @@
 }
 
 @media screen and (max-width: 768px) {
-  .logo {
-    height: 45px;
-    width: auto;
+  .header,
+  .scrolledHeader {
+    padding: 1.2rem 4%;
+  }
+
+  .announcement {
+    min-height: 2.5rem;
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+  }
+
+  .brand {
+    font-size: 1.85rem;
+    gap: 0.22rem;
+  }
+
+  .brandTagline {
+    font-size: 0.38em;
+    letter-spacing: 0.1em;
   }
 
   .nav {
@@ -337,5 +422,32 @@
     font-size: 2.2rem;
     font-family: 'Inter', sans-serif;
     text-transform: uppercase;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .announcementMotif {
+    display: none;
+  }
+
+  .announcement {
+    padding-inline: 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .brand {
+    font-size: 1.55rem;
+  }
+
+  .brandTagline {
+    font-size: 0.36em;
+  }
+
+  .mobileBox .btn1 {
+    margin-bottom: 2.5rem;
+  }
+
+  .mobileNav {
+    gap: 2.2rem;
   }
 }

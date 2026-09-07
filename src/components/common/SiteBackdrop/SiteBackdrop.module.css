@@ -1,0 +1,51 @@
+.canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: #1a0000;
+}
+
+.atmosphere {
+  position: absolute;
+  inset: -5%;
+  background:
+    radial-gradient(circle at 30% 40%, rgba(140, 15, 25, 0.5) 0%, transparent 50%),
+    radial-gradient(circle at 70% 60%, rgba(90, 10, 10, 0.6) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(60, 5, 5, 0.4) 0%, rgba(26, 0, 0, 1) 100%);
+  transform: scale(1.06);
+  transition: transform 0.18s ease-out;
+  will-change: transform;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.42) 100%);
+}
+
+.particles {
+  position: absolute;
+  inset: 0;
+}
+
+.particle {
+  position: absolute;
+  bottom: -10px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.95), rgba(255, 153, 51, 0.32));
+  box-shadow: 0 0 7px rgba(255, 215, 0, 0.7);
+  animation: rise linear infinite;
+}
+
+@keyframes rise {
+  from { transform: translate(0, 0); opacity: 0; }
+  8%, 92% { opacity: 0.82; }
+  to { transform: translate(var(--drift), -110vh); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atmosphere { transition: none; }
+  .particle { animation: none; opacity: 0.5; }
+}

@@ -5,50 +5,95 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: 5px solid rgba(255, 215, 0, 0.3);
+  border-bottom: 2px solid rgba(255, 215, 0, 0.15);
   overflow: hidden;
-  background-color: #2A0000;
+  background: transparent;
 }
 
-.parallaxBg {
+/* Vignette overlay for depth */
+.hero::after {
+  display: none;
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at center, rgba(120, 10, 20, 0.6), rgba(42, 0, 0, 0.9));
-  background-size: cover;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.55) 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.parallaxBg {
+  display: none;
+  top: -4%;
+  left: -4%;
+  width: 108%;
+  height: 108%;
+  background:
+    radial-gradient(circle at 30% 40%, rgba(140, 15, 25, 0.5) 0%, transparent 50%),
+    radial-gradient(circle at 70% 60%, rgba(90, 10, 10, 0.6) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(60, 5, 5, 0.4) 0%, rgba(26, 0, 0, 1) 100%);
   z-index: 1;
-  transition: transform 0.1s ease-out;
-  transform: scale(1.05);
+  transition: transform 0.15s ease-out;
+  transform: scale(1.08);
   will-change: transform;
 }
 
+/* Particles */
 .particlesContainer {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 2;
+  z-index: 3;
   pointer-events: none;
 }
 
 .particle {
   position: absolute;
-  background: rgba(255, 215, 0, 0.6);
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.9), rgba(255, 153, 51, 0.4));
   border-radius: 50%;
-  box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
-  animation: floatUp linear infinite;
+  box-shadow: 0 0 6px rgba(255, 215, 0, 0.7);
+  animation: floatUpDrift linear infinite;
 }
 
-@keyframes floatUp {
-  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+@keyframes floatUpDrift {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  5% {
+    opacity: 0.8;
+  }
+  95% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-110vh) translateX(var(--drift, 0px));
+    opacity: 0;
+  }
 }
 
+/* Ambient mandala */
+.heroMandala {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 700px;
+  height: 700px;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  opacity: 0.12;
+  animation: spinHeroMandala 60s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes spinHeroMandala {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Main content container */
 .herobox {
   position: relative;
   display: flex;
@@ -59,7 +104,7 @@
   max-width: 1200px;
   padding: 4rem 2rem;
   margin-top: 5rem;
-  z-index: 3;
+  z-index: 5;
 }
 
 .headerbox {
@@ -68,38 +113,44 @@
   align-items: center;
 }
 
-.heading {
-  font-family: 'Yatra One', display;
-  font-size: 11rem;
-  font-weight: 400;
-  display: inline-block;
-  background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF8C00 100%);
-  background-size: 200% auto;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
-  margin-bottom: 0.5rem;
-  letter-spacing: 2px;
-  line-height: 1.1;
-  text-align: center;
+/* Staggered entry — all children use this */
+.logoWrapper,
+.collegeName,
+.titleContainer,
+.titleTagline,
+.caption,
+.date,
+.anchorBtn {
+  animation: staggerIn 0.8s ease-out both;
 }
 
+@keyframes staggerIn {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Logo */
 .logoWrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1.2rem;
 }
 
 .collegeLogoImg {
-  height: 90px;
+  height: 140px;
   width: auto;
   margin-bottom: 1rem;
-  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.4));
-  animation: fadeIn 1s ease-out;
+  filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.35));
 }
 
+/* College name */
 .collegeName {
   font-family: 'Inter', sans-serif;
   color: #F8F1E4;
@@ -108,79 +159,199 @@
   letter-spacing: 3px;
   margin-bottom: 1rem;
   text-transform: uppercase;
-  text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.7);
-  animation: fadeIn 1s ease-out;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
   text-align: center;
 }
 
+/* Title crossfade container */
+.titleContainer {
+  position: relative;
+  min-height: 15rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.heading {
+  font-family: 'Cinzel Decorative', 'Times New Roman', serif;
+  font-size: clamp(6rem, 9.8vw, 11.5rem);
+  font-weight: 700;
+  display: inline-block;
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 40%, #FF8C00 100%);
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.45));
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+  text-align: center;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  white-space: nowrap;
+}
+
+.headingEnglish {
+  font-family: 'Cinzel Decorative', 'Times New Roman', serif;
+  position: relative;
+  padding: 0.1em 0.32em 0.16em;
+  text-shadow: 0 0 28px rgba(232, 163, 61, 0.2);
+  letter-spacing: 0.01em;
+  font-weight: 700;
+}
+
+.headingEnglish::before,
+.headingEnglish::after {
+  content: '❖';
+  position: absolute;
+  top: 50%;
+  color: #e8a33d;
+  font-family: 'Yatra One', cursive;
+  font-size: 0.3em;
+  opacity: 0.75;
+  text-shadow: 0 0 12px rgba(232, 163, 61, 0.45);
+}
+
+.headingEnglish::before {
+  left: -0.15em;
+  transform: translate(-100%, -50%);
+}
+
+.headingEnglish::after {
+  right: -0.15em;
+  transform: translate(100%, -50%);
+}
+
+.headingAlt {
+  font-family: 'Yatra One', cursive;
+  line-height: 1.45;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: max-content;
+}
+
+.titleVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.titleHidden {
+  opacity: 0;
+  transform: translateY(-12px);
+}
+
+/* For the absolute-positioned alt heading, combine transforms */
+.headingAlt.titleVisible {
+  transform: translate(-50%, -50%) translateY(0);
+}
+
+.headingAlt.titleHidden {
+  transform: translate(-50%, -50%) translateY(12px);
+}
+
+.titleTagline {
+  margin-top: 1.4rem;
+  color: rgba(255, 225, 164, 0.78);
+  font-family: 'Inter', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  line-height: 1.4;
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow: 0 0 12px rgba(232, 163, 61, 0.15);
+}
+
+.titleTagline::after {
+  content: '✦';
+  display: block;
+  margin-top: 0.5rem;
+  color: rgba(232, 163, 61, 0.55);
+  font-size: 1rem;
+}
+
+/* Caption */
 .caption {
   font-family: 'Inter', sans-serif;
   color: rgba(248, 241, 228, 0.85);
   font-size: 2.5rem;
   font-weight: 500;
   letter-spacing: 2px;
-  margin-top: 0.8rem;
+  margin-top: 1.2rem;
   text-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-  animation: fadeIn 1.5s ease-out;
   text-align: center;
 }
 
+/* Date — bigger and bolder */
 .date {
-  font-family: 'Inter', sans-serif;
-  color: #FF9933;
-  font-size: 2.5rem;
-  font-weight: 600;
+  font-family: 'Cinzel Decorative', serif;
+  color: #FFD700;
+  font-size: clamp(3.8rem, 4.35vw, 5rem);
+  font-weight: 700;
   margin-top: 2.5rem;
-  margin-bottom: 5rem;
+  margin-bottom: 2.5rem;
   text-transform: uppercase;
-  letter-spacing: 4px;
+  letter-spacing: 5px;
   position: relative;
   display: inline-block;
-  text-shadow: 0 0 15px rgba(255, 153, 51, 0.4);
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+}
+
+.date::before,
+.date::after {
+  content: '✦';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.6rem;
+  color: rgba(255, 215, 0, 0.5);
+}
+
+.date::before {
+  left: -3rem;
 }
 
 .date::after {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 3px;
-  bottom: -10px;
-  left: 0;
-  background: linear-gradient(90deg, transparent, #FFD700, transparent);
-  border-radius: 4px;
+  right: -3rem;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(15px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
+/* CTA Button — gold/maroon themed, no old Button component */
 .ctaBtn {
   display: inline-block;
   background: linear-gradient(135deg, #FFD700, #FF9933);
-  padding: 1.5rem 4rem;
-  border: 1px solid rgba(255, 215, 0, 0.5);
+  padding: 1.6rem 4.5rem;
+  border: 2px solid rgba(255, 215, 0, 0.4);
   border-radius: 50px;
-  font-size: 2.2rem;
+  font-size: 2rem;
   font-weight: 700;
+  font-family: 'Inter', sans-serif;
   color: #2A0000;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  box-shadow: 0 4px 20px rgba(255, 153, 51, 0.4);
+  box-shadow: 0 4px 25px rgba(255, 153, 51, 0.35);
   animation: pulseCta 2.5s infinite ease-in-out;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
 }
 
 .ctaBtn:hover {
-  transform: scale(1.05) translateY(-3px);
-  box-shadow: 0 10px 30px rgba(255, 215, 0, 0.6);
+  transform: scale(1.06) translateY(-3px);
+  box-shadow: 0 10px 35px rgba(255, 215, 0, 0.55);
   border-color: #FFD700;
+  background: linear-gradient(135deg, #FFE44D, #FFB347);
+}
+
+.ctaBtn:active {
+  transform: scale(0.98);
 }
 
 @keyframes pulseCta {
-  0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4); }
-  70% { box-shadow: 0 0 0 15px rgba(255, 215, 0, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+  0% { box-shadow: 0 4px 25px rgba(255, 153, 51, 0.35), 0 0 0 0 rgba(255, 215, 0, 0.3); }
+  70% { box-shadow: 0 4px 25px rgba(255, 153, 51, 0.35), 0 0 0 18px rgba(255, 215, 0, 0); }
+  100% { box-shadow: 0 4px 25px rgba(255, 153, 51, 0.35), 0 0 0 0 rgba(255, 215, 0, 0); }
 }
 
 .anchorBtn {
@@ -188,13 +359,13 @@
   z-index: 10;
 }
 
-/* Countdown Styles */
+/* Countdown — UNTOUCHED, confirmed good */
 .countdownbox {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 2rem;
-  margin-top: 6rem;
+  margin-top: 2.5rem;
   background: rgba(42, 0, 0, 0.6);
   border: 1px solid rgba(255, 215, 0, 0.2);
   border-radius: 16px;
@@ -213,7 +384,7 @@
 }
 
 .countNum {
-  font-family: 'Yatra One', display;
+  font-family: 'Yatra One', cursive;
   font-size: 4rem;
   color: #FFD700;
   text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
@@ -237,21 +408,150 @@
   margin-top: -2rem;
 }
 
+/* ========== RESPONSIVE ========== */
 @media screen and (max-width: 768px) {
+  .hero {
+    min-height: 100svh;
+  }
+
+  .herobox {
+    padding: 11rem 1.6rem 3.5rem;
+    margin-top: 0;
+  }
+
+  .heroMandala {
+    width: 400px;
+    height: 400px;
+  }
+
+  .collegeLogoImg {
+    height: 92px;
+  }
+
+  .collegeName {
+    font-size: 1.6rem;
+    letter-spacing: 2px;
+  }
+
+  .titleContainer {
+    min-height: 11rem;
+  }
+
   .heading {
-    font-size: 7.5rem;
+    font-size: clamp(4.8rem, 12vw, 7rem);
     line-height: 1.2;
   }
-  .collegeName { font-size: 1.8rem; }
-  .caption { font-size: 2.2rem; }
-  
+
+  .caption {
+    font-size: 2rem;
+    line-height: 1.4;
+  }
+
+  .titleTagline {
+    margin-top: 0.9rem;
+    font-size: 1.05rem;
+    letter-spacing: 0.16em;
+  }
+
+  .date {
+    font-size: 3.1rem;
+    margin-top: 2rem;
+    margin-bottom: 2.2rem;
+    text-align: center;
+    letter-spacing: 3px;
+  }
+
+  .date::before,
+  .date::after {
+    display: none;
+  }
+
+  .ctaBtn {
+    font-size: 1.8rem;
+    padding: 1.4rem 3rem;
+  }
+
   .countdownbox {
     gap: 1rem;
     padding: 2rem;
     width: 90%;
+    margin-top: 2.3rem;
   }
-  
+
   .countNum { font-size: 3rem; }
   .countLabel { font-size: 1.2rem; }
   .column { font-size: 3rem; }
+}
+
+@media screen and (max-width: 480px) {
+  .herobox {
+    padding: 10rem 1.2rem 2.5rem;
+  }
+
+  .collegeName {
+    font-size: 1.35rem;
+    letter-spacing: 1.3px;
+  }
+
+  .heading {
+    font-size: clamp(4.1rem, 14vw, 5.2rem);
+    white-space: normal;
+  }
+
+  .titleContainer {
+    min-height: 9rem;
+  }
+
+  .headingAlt {
+    white-space: normal;
+    width: 100%;
+    padding: 0 1rem;
+  }
+
+  .headingEnglish::before,
+  .headingEnglish::after {
+    display: none;
+  }
+
+  .caption {
+    font-size: 1.75rem;
+  }
+
+  .titleTagline {
+    margin-top: 0.8rem;
+    font-size: 0.95rem;
+    letter-spacing: 0.12em;
+  }
+
+  .date {
+    font-size: 2.75rem;
+    letter-spacing: 1.5px;
+  }
+
+  .ctaBtn {
+    width: min(100%, 30rem);
+    padding: 1.35rem 2rem;
+    font-size: 1.55rem;
+  }
+
+  .countdownbox {
+    gap: 0.45rem;
+    padding: 1.5rem 0.8rem;
+    width: 100%;
+  }
+
+  .countdown {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .countNum,
+  .column {
+    font-size: 2.45rem;
+  }
+
+  .countLabel {
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+  }
 }

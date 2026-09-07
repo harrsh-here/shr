@@ -1,13 +1,16 @@
 .contact {
+  position: relative;
   height: 100%;
-  padding: 3rem 1.5rem;
+  padding: 7rem 4%;
+  background: transparent;
 }
 
 .contactBox {
+  max-width: 1400px;
   width: 100%;
   display: flex;
   margin: 0 auto;
-  background-color: rgba(0, 0, 0, 0.432);
+  background-color: rgba(41, 1, 5, 0.78);
   padding: 5rem 5rem;
   border-radius: 15px;
   display: block;
@@ -21,10 +24,11 @@
 }
 
 .heading {
+  font-family: 'Yatra One', cursive;
   color: #fff;
   font-size: 4rem;
   text-transform: uppercase;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 2px;
 }
 
@@ -102,6 +106,10 @@
 }
 
 @media screen and (max-width: 768px) {
+  .contact {
+    padding: 5rem 1.6rem;
+  }
+
   .heading::after {
     width: 100px;
   }
@@ -127,10 +135,11 @@
 }
 
 .categoryHeading {
+  font-family: 'Yatra One', cursive;
   color: #FF9933;
   font-size: 2.8rem;
   text-align: center;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 1.5px;
   margin-bottom: 2.5rem;
   text-transform: uppercase;

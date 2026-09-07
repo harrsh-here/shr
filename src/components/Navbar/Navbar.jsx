@@ -11,9 +11,9 @@ import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 
 import { HashLink as Link } from "react-router-hash-link";
 // import Dropdown from "./Dropdown";
-import Logo from "../../assets/Logo.svg";
 import GrabBitBtn from "../common/GrabBitBtn/GrabBitBtn";
 import { useCart } from "../../context/CartContext";
+import { siteStatus } from "../../config/siteStatus";
 
 const Scroll = require("react-scroll");
 
@@ -93,6 +93,13 @@ const Navbar = () => {
     <header
       className={`${!scrolled ? classes.header : classes.scrolledHeader}`}
     >
+      {siteStatus.registrationsPaused && (
+        <div className={classes.announcement} role="status">
+          <span className={classes.announcementMotif}>✦</span>
+          {siteStatus.pausedMessage}
+          <span className={classes.announcementMotif}>✦</span>
+        </div>
+      )}
       <div className={classes.elements}>
         <div className={classes.logobox}>
           <Drop
@@ -104,7 +111,12 @@ const Navbar = () => {
             duration={600}
           >
             <Link to="/">
-              <img src={Logo} alt="/" className={classes.logo} />
+              <span className={classes.brand} aria-label="Shraddhanjali 2026">
+                <span className={classes.brandTitle}>
+                  Shraddhanjali <span className={classes.brandYear}>'26</span>
+                </span>
+                <span className={classes.brandTagline}>Tagline to be announced</span>
+              </span>
             </Link>
           </Drop>
         </div>
@@ -146,6 +158,8 @@ const Navbar = () => {
             target="_blank"
             rel="noopener noreferrer"
             href="http://aryacollege.in/"
+            aria-label="Visit the ACEIT college website"
+            title="Visit the ACEIT college website"
           >
             {/* <button className={classes.btn}>GrabBit</button> */}
             <div className={classes.btn}>
@@ -174,6 +188,8 @@ const Navbar = () => {
             target="_blank"
             rel="noopener noreferrer"
             href="http://aryacollege.in/"
+            aria-label="Visit the ACEIT college website"
+            title="Visit the ACEIT college website"
           >
             {/* <button className={classes.btn1}>GrabBit</button> */}
             <div className={classes.btn1}>

@@ -1,6 +1,28 @@
 .events_section {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   padding: 100px 50px;
   width: 100%;
+}
+
+.eventsRangoli {
+  position: absolute;
+  z-index: -1;
+  top: 7rem;
+  right: -12rem;
+  width: 38rem;
+  opacity: 0.18;
+}
+
+.eventArtwork {
+  position: absolute;
+  z-index: -1;
+  left: -4rem;
+  bottom: 4rem;
+  width: 22rem;
+  opacity: 0.2;
+  pointer-events: none;
 }
 
 .heading {
@@ -15,11 +37,12 @@
 
 .subheading {
   text-align: center;
+  font-family: 'Yatra One', cursive;
   font-size: 1.8rem;
   color: rgba(248, 241, 228, 0.7);
   margin-top: 10px;
   font-weight: 500;
-  font-family: 'Inter', sans-serif;
+  font-weight: 400;
   letter-spacing: 1px;
   max-width: 800px;
   margin-left: auto;
@@ -104,6 +127,17 @@
 @media screen and (max-width: 768px) {
   .events_section {
     padding: 60px 20px;
+  }
+
+  .eventsRangoli {
+    top: 4rem;
+    right: -13rem;
+  }
+
+  .eventArtwork {
+    width: 15rem;
+    left: -5rem;
+    bottom: 1rem;
   }
 
   .heading {

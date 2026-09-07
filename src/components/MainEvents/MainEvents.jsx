@@ -4,6 +4,8 @@ import { eventsData } from "../../assets/eventsData";
 import ReactGA from "react-ga";
 import { NavLink } from "react-router-dom";
 import useScrollReveal from "../../hooks/useScrollReveal";
+import eventArtwork from "../About/about.svg";
+import Rangoli from "../common/Rangoli/Rangoli";
 
 const EventCard3D = ({ event }) => {
   const cardRef = useRef(null);
@@ -70,6 +72,8 @@ const MainEvents = () => {
   return (
     <>
       <div className={classes.events_section} ref={revealRef}>
+        <Rangoli className={classes.eventsRangoli} />
+        <img className={classes.eventArtwork} src={eventArtwork} alt="" aria-hidden="true" />
         <h1 className={classes.heading}>Our Events</h1>
         <p className={classes.subheading}>
           Are you interested? Come be a part of Shraddhanjali 2026!
