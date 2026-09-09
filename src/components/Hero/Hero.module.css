@@ -6,7 +6,7 @@
   align-items: flex-start;
   justify-content: center;
   border-bottom: 2px solid rgba(255, 215, 0, 0.15);
-  overflow: hidden;
+  overflow: visible; /* allow content to grow past viewport — scroll is fine */
   background: transparent;
   padding-bottom: 4rem;
 }
@@ -500,17 +500,27 @@
 
 @media screen and (max-width: 480px) {
   .herobox {
-    padding: 10rem 1.2rem 2.5rem;
+    padding: 8rem 1.2rem 2rem;
+  }
+
+  .logoWrapper {
+    margin-bottom: 0.5rem;
+  }
+
+  .collegeLogoImg {
+    height: 72px;
+    margin-bottom: 0.5rem;
   }
 
   .collegeName {
-    font-size: 1.35rem;
-    letter-spacing: 1.3px;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
   }
 
   /* Allow wrapping and shrink font so full title fits in one screen */
   .heading {
-    font-size: clamp(3rem, 10vw, 4.2rem);
+    font-size: clamp(2.8rem, 9.5vw, 3.8rem);
     white-space: normal;
     word-break: break-word;
     line-height: 1.15;
@@ -518,7 +528,7 @@
   }
 
   .titleContainer {
-    min-height: 8rem;
+    min-height: 7rem;
   }
 
   .headingAlt {
@@ -533,32 +543,45 @@
   }
 
   .caption {
-    font-size: 1.75rem;
+    font-size: 1.6rem;
+    margin-top: 0.6rem;
   }
 
   .titleTagline {
-    margin-top: 0.8rem;
-    font-size: 0.95rem;
-    letter-spacing: 0.12em;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+  }
+
+  .titleTagline::after {
+    margin-top: 0.2rem;
   }
 
   .date {
-    font-size: 2.75rem;
+    font-size: 2.4rem;
     letter-spacing: 1.5px;
+    margin-top: 1.2rem;
+    margin-bottom: 1.2rem;
   }
 
-  .eventTime { margin-top: -1.35rem; font-size: 1.2rem; letter-spacing: 0.12em; }
+  .eventTime {
+    margin: -0.8rem 0 1.4rem;
+    font-size: 1.1rem;
+    letter-spacing: 0.1em;
+  }
 
   .ctaBtn {
     width: min(100%, 30rem);
-    padding: 1.35rem 2rem;
-    font-size: 1.55rem;
+    padding: 1.2rem 2rem;
+    font-size: 1.45rem;
   }
 
   .countdownbox {
-    gap: 0.45rem;
-    padding: 1.5rem 0.8rem;
+    gap: 0.4rem;
+    padding: 1.2rem 0.6rem;
     width: 100%;
+    margin-top: 1.6rem;
+    border-radius: 12px;
   }
 
   .countdown {
@@ -568,11 +591,11 @@
 
   .countNum,
   .column {
-    font-size: 2.45rem;
+    font-size: 2.2rem;
   }
 
   .countLabel {
-    font-size: 0.95rem;
-    letter-spacing: 1px;
+    font-size: 0.85rem;
+    letter-spacing: 0.8px;
   }
 }
