@@ -203,6 +203,19 @@
   /* space for absolute close button */
 }
 
+.eventCategory {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #FFD700, #FF9933);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.6rem;
+}
+
 .rowcol {
   display: flex;
   gap: 20px;

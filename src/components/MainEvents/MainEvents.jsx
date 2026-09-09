@@ -59,7 +59,7 @@ const EventCard3D = ({ event }) => {
         </div>
         <div className={classes.eventDetails}>
           <p className={classes.eventCategory}>
-            {event.id === 9 ? "Dance Competition" : "The Ramp Competition"}
+            {event.category || (event.id === 9 ? "Dance Competition" : "Fashion Show")}
           </p>
           <h3 className={classes.poster_event_name}>{event.name}</h3>
           <p className={classes.eventSummary}>

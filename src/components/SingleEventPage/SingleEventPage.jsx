@@ -32,6 +32,7 @@ const SingleEventPage = () => {
 
   const {
     name,
+    category,
     image,
     description,
     rules,
@@ -48,6 +49,7 @@ const SingleEventPage = () => {
     onSpot,
     disqualification,
     isSpecial,
+    rulebookLink,
   } = requiredEvent;
 
   return (
@@ -64,13 +66,26 @@ const SingleEventPage = () => {
             <img className={classes.eventPoster} src={image} alt={name} loading="lazy" decoding="async" />
           </div>
           <div className={classes.rulebookBtnContainer}>
-            <button type="button" className={`${classes.downloadBtn} ${classes.disabledDownload}`} disabled>
-              Download Brochure · Coming Soon
-            </button>
+            {rulebookLink ? (
+              <a
+                href={rulebookLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                download="Shraddhanjali-2026-Brochure.pdf"
+                className={classes.downloadBtn}
+              >
+                ↓ Download Brochure
+              </a>
+            ) : (
+              <button type="button" className={`${classes.downloadBtn} ${classes.disabledDownload}`} disabled>
+                Brochure · Coming Soon
+              </button>
+            )}
           </div>
         </div>
 
         <div className={classes.col2}>
+          {category && <p className={classes.eventCategory}>{category}</p>}
           <h1 className={classes.eventHeading}>{name}</h1>
 
           <div className={classes.sectionWrap}>
