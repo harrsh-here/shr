@@ -24,6 +24,10 @@ const questions = [
     answer: "Registration and prize details are confirmed on the relevant event page. Please check the final event guidelines before completing your registration."
   },
   {
+    question: "Is the registration fee refundable?",
+    answer: "No. All registration fees for Shraddhanjali 2026 are strictly non-refundable, including in cases where a registration is not verified or approved. Please review all team and payment details carefully before submitting."
+  },
+  {
     question: "Can I participate in multiple events?",
     answer: "Yes. You may participate in multiple events, provided you meet the team and schedule requirements for each event."
   }

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import classes from "./SingleEventPage.module.css";
 import { useParams, useNavigate } from "react-router-dom";
 import { eventsData } from "../../assets/eventsData";

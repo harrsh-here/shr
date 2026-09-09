@@ -9,7 +9,7 @@ const emailJsConfig = {
 
 const isConfigured = () => Object.values(emailJsConfig).every(Boolean);
 
-const sendTemplate = (templateId, { eventName, registrantName, email }) => fetch(EMAILJS_ENDPOINT, {
+const sendTemplate = (templateId, { eventName, registrantName, email, teamSize }) => fetch(EMAILJS_ENDPOINT, {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
@@ -20,7 +20,8 @@ const sendTemplate = (templateId, { eventName, registrantName, email }) => fetch
       to_email: email,
       event_name: eventName,
       registrant_name: registrantName,
-      // [PLACEHOLDER: email copy pending]
+      team_size: teamSize || "",
+      // [PLACEHOLDER: finalize email copy]
     },
   }),
 });

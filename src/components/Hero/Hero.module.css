@@ -1,13 +1,14 @@
 .hero {
   position: relative;
   width: 100%;
-  min-height: 100vh;
+  min-height: 100svh;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   border-bottom: 2px solid rgba(255, 215, 0, 0.15);
   overflow: hidden;
   background: transparent;
+  padding-bottom: 4rem;
 }
 
 /* Vignette overlay for depth */
@@ -102,8 +103,7 @@
   align-items: center;
   width: 100%;
   max-width: 1200px;
-  padding: 4rem 2rem;
-  margin-top: 5rem;
+  padding: 9rem 2rem 2rem;
   z-index: 5;
 }
 
@@ -175,7 +175,7 @@
 
 .heading {
   font-family: 'Cinzel Decorative', 'Times New Roman', serif;
-  font-size: clamp(6rem, 9.8vw, 11.5rem);
+  font-size: clamp(5.5rem, 8.5vw, 10rem);
   font-weight: 700;
   display: inline-block;
   background: linear-gradient(135deg, #FFD700 0%, #FFA500 40%, #FF8C00 100%);
@@ -449,8 +449,10 @@
   }
 
   .heading {
-    font-size: clamp(4.8rem, 12vw, 7rem);
+    font-size: clamp(3.8rem, 9vw, 5.5rem);
     line-height: 1.2;
+    white-space: normal;
+    word-break: break-word;
   }
 
   .caption {
@@ -506,13 +508,17 @@
     letter-spacing: 1.3px;
   }
 
+  /* Allow wrapping and shrink font so full title fits in one screen */
   .heading {
-    font-size: clamp(4.1rem, 14vw, 5.2rem);
+    font-size: clamp(3rem, 10vw, 4.2rem);
     white-space: normal;
+    word-break: break-word;
+    line-height: 1.15;
+    letter-spacing: 0;
   }
 
   .titleContainer {
-    min-height: 9rem;
+    min-height: 8rem;
   }
 
   .headingAlt {

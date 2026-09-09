@@ -67,11 +67,21 @@
 }
 
 .footer_sambhav_description {
-  margin: 10px 0;
+  margin: 10px 0 4px;
   width: 80%;
   color: rgba(248, 241, 228, 0.6);
   font-size: 16px;
   font-family: 'Inter', sans-serif;
+}
+
+.footer_tribute {
+  margin: 0 0 10px;
+  width: 80%;
+  color: rgba(232, 163, 61, 0.75);
+  font-size: 13px;
+  font-family: 'Inter', sans-serif;
+  font-style: italic;
+  letter-spacing: 0.03em;
 }
 
 .footerBrand {

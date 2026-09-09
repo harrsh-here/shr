@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import classes from "./MainEvents.module.css";
 import { eventsData } from "../../assets/eventsData";
 import ReactGA from "react-ga";
@@ -38,7 +38,7 @@ const EventCard3D = ({ event }) => {
 
   return (
     <NavLink
-      to={`/register/${event.id}`}
+      to={`/events/${event.id}`}
       className={classes.poster_link}
       style={{ textDecoration: "none" }}
     >
@@ -71,7 +71,7 @@ const EventCard3D = ({ event }) => {
             <span>⌘ Team size: Min {event.minMembers} · Max Participants {event.maxMembers}</span>
             <span>⌖ Arya Old Campus Ground</span>
           </div>
-          <span className={classes.detailsLink}>Register your team <span>→</span></span>
+          <span className={classes.detailsLink}>View details &amp; register <span>→</span></span>
         </div>
       </div>
     </NavLink>
