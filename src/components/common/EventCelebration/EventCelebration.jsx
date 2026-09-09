@@ -2,19 +2,35 @@ import React, { useEffect, useMemo, useState } from "react";
 import { getEventLifecycle } from "../../../config/eventLifecycle";
 import classes from "./EventCelebration.module.css";
 
+const COLORS = ["#FFD700","#FF9933","#FF6B6B","#4FC3F7","#81C784","#CE93D8","#F48FB1","#FFCC02","#ffffff"];
+const EMOJIS = ["🎉","✨","🌸","🎊","🪔","🌺","💛","🎶","🥁","🌼","🎈","🎆"];
+const TOTAL = 90; // total particles
+
+const makePieces = () =>
+  Array.from({ length: TOTAL }, (_, i) => {
+    const isEmoji = i % 3 === 0;
+    return {
+      id: i,
+      left: (i * 1.12) % 100,
+      delay: -((i * 0.31) % 7),
+      duration: 4.5 + ((i * 2.7) % 5),
+      rotation: (i * 53) % 360,
+      isEmoji,
+      emoji: EMOJIS[i % EMOJIS.length],
+      color: COLORS[i % COLORS.length],
+      size: 0.7 + ((i * 0.07) % 0.9),   // rem for rectangles
+      drift: ((i % 2 === 0 ? 1 : -1) * ((i * 23) % 80)), // px lateral drift
+    };
+  });
+
 const EventCelebration = () => {
   const [state, setState] = useState(getEventLifecycle);
-  const confetti = useMemo(() => Array.from({ length: 44 }, (_, index) => ({
-    id: index,
-    left: (index * 29) % 100,
-    delay: -((index * 0.37) % 6),
-    duration: 5 + ((index * 3) % 4),
-    rotation: (index * 47) % 180,
-  })), []);
+  const pieces = useMemo(makePieces, []);
 
   useEffect(() => {
     const refresh = () => setState(getEventLifecycle());
-    const timer = window.setInterval(refresh, 60_000);
+    // check every 30s so phase transition is prompt
+    const timer = window.setInterval(refresh, 30_000);
     window.addEventListener("popstate", refresh);
     return () => {
       window.clearInterval(timer);
@@ -28,24 +44,56 @@ const EventCelebration = () => {
     <>
       {state === "live" && (
         <div className={classes.confetti} aria-hidden="true">
-          {confetti.map((piece) => (
-            <span
-              key={piece.id}
-              className={classes.piece}
-              style={{
-                left: `${piece.left}%`,
-                animationDelay: `${piece.delay}s`,
-                animationDuration: `${piece.duration}s`,
-                "--rotation": `${piece.rotation}deg`,
-              }}
-            />
-          ))}
+          {pieces.map((p) =>
+            p.isEmoji ? (
+              <span
+                key={p.id}
+                className={classes.emojiPiece}
+                style={{
+                  left: `${p.left}%`,
+                  animationDelay: `${p.delay}s`,
+                  animationDuration: `${p.duration}s`,
+                  fontSize: `${1.2 + ((p.id * 0.09) % 1.2)}rem`,
+                  "--drift": `${p.drift}px`,
+                  "--rot-end": `${p.rotation + 360}deg`,
+                }}
+              >
+                {p.emoji}
+              </span>
+            ) : (
+              <span
+                key={p.id}
+                className={classes.piece}
+                style={{
+                  left: `${p.left}%`,
+                  animationDelay: `${p.delay}s`,
+                  animationDuration: `${p.duration}s`,
+                  width: `${p.size * 0.55}rem`,
+                  height: `${p.size}rem`,
+                  background: p.color,
+                  borderRadius: p.id % 5 === 0 ? "50%" : "2px",
+                  "--rotation": `${p.rotation}deg`,
+                  "--drift": `${p.drift}px`,
+                }}
+              />
+            )
+          )}
+
+          {/* Glowing pulse rings at corners */}
+          <span className={`${classes.ring} ${classes.ringTL}`} />
+          <span className={`${classes.ring} ${classes.ringTR}`} />
+          <span className={`${classes.ring} ${classes.ringBL}`} />
+          <span className={`${classes.ring} ${classes.ringBR}`} />
         </div>
       )}
-      <div className={`${classes.status} ${state === "live" ? classes.live : classes.complete}`} role="status">
+
+      <div
+        className={`${classes.status} ${state === "live" ? classes.live : classes.complete}`}
+        role="status"
+      >
         {state === "live"
-          ? "✦ Shraddhanjali 2026 is live — celebrate with us! ✦"
-          : "✦ Shraddhanjali 2026 concluded successfully. Thank you for celebrating with us. ✦"}
+          ? "🎉 Shraddhanjali 2026 is happening NOW — celebrate with us! 🎉"
+          : "🙏 Shraddhanjali 2026 concluded successfully. Thank you for being part of it. 🙏"}
       </div>
     </>
   );

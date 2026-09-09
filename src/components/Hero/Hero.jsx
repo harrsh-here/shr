@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import classes from "./Hero.module.css";
 import { Link as ScrollLink } from "react-scroll";
 import collegeLogo from "../../assets/collegeLogo.png";
+import { getEventLifecycle } from "../../config/eventLifecycle";
+
+// Event starts: 19 Sep 2026 6:30 PM IST
+const EVENT_START = new Date("2026-09-19T18:30:00+05:30").getTime();
 
 const Hero = () => {
   const [countDays, setDays] = useState(0);
@@ -9,16 +13,17 @@ const Hero = () => {
   const [countMinutes, setMinutes] = useState(0);
   const [countSeconds, setSeconds] = useState(0);
   const [showHindi, setShowHindi] = useState(false);
+  const [phase, setPhase] = useState(getEventLifecycle);
 
   // Countdown timer — synced to the event cards: 19 September 2026, 6:30 PM IST.
   useEffect(() => {
-    const countdownDate = new Date("2026-09-19T18:30:00+05:30").getTime();
     const interval = setInterval(() => {
-      const now = new Date().getTime();
-      const distance = countdownDate - now;
-      if (distance < 0) {
-        clearInterval(interval);
-      } else {
+      const now = Date.now();
+      const distance = EVENT_START - now;
+      const currentPhase = getEventLifecycle();
+      setPhase(currentPhase);
+
+      if (currentPhase === "upcoming" && distance > 0) {
         setDays(Math.floor(distance / (1000 * 60 * 60 * 24)));
         setHours(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
         setMinutes(Math.floor((distance / 1000 / 60) % 60));
@@ -119,28 +124,56 @@ const Hero = () => {
           </ScrollLink>
         </div>
 
-        {/* Countdown — confirmed good, untouched */}
-        <div className={classes.countdownbox}>
-          <div className={classes.countdown}>
-            <p className={classes.countNum}>{countDays.toString().padStart(2, '0')}</p>
-            <p className={classes.countLabel}>days</p>
+        {/* Countdown / Live / Over — phase-aware */}
+        {phase === "upcoming" && (
+          <div className={classes.countdownbox}>
+            <div className={classes.countdown}>
+              <p className={classes.countNum}>{countDays.toString().padStart(2, '0')}</p>
+              <p className={classes.countLabel}>days</p>
+            </div>
+            <span className={classes.column}>:</span>
+            <div className={classes.countdown}>
+              <p className={classes.countNum}>{countHours.toString().padStart(2, '0')}</p>
+              <p className={classes.countLabel}>hours</p>
+            </div>
+            <span className={classes.column}>:</span>
+            <div className={classes.countdown}>
+              <p className={classes.countNum}>{countMinutes.toString().padStart(2, '0')}</p>
+              <p className={classes.countLabel}>min</p>
+            </div>
+            <span className={classes.column}>:</span>
+            <div className={classes.countdown}>
+              <p className={classes.countNum}>{countSeconds.toString().padStart(2, '0')}</p>
+              <p className={classes.countLabel}>sec</p>
+            </div>
           </div>
-          <span className={classes.column}>:</span>
-          <div className={classes.countdown}>
-            <p className={classes.countNum}>{countHours.toString().padStart(2, '0')}</p>
-            <p className={classes.countLabel}>hours</p>
+        )}
+
+        {phase === "live" && (
+          <div className={classes.liveBanner}>
+            <p className={classes.liveText}>🎉 Shraddhanjali 2026 is happening NOW!</p>
+            <p className={classes.liveSubtext}>Event has begun — join the celebration!</p>
+            <div className={classes.countdownbox} style={{ marginTop: 0 }}>
+              {["00","00","00","00"].map((n, i) => (
+                <span key={i} style={{ display: "contents" }}>
+                  {i > 0 && <span className={classes.column}>:</span>}
+                  <div className={classes.countdown}>
+                    <p className={classes.countNum}>{n}</p>
+                    <p className={classes.countLabel}>{["days","hours","min","sec"][i]}</p>
+                  </div>
+                </span>
+              ))}
+            </div>
           </div>
-          <span className={classes.column}>:</span>
-          <div className={classes.countdown}>
-            <p className={classes.countNum}>{countMinutes.toString().padStart(2, '0')}</p>
-            <p className={classes.countLabel}>min</p>
+        )}
+
+        {phase === "complete" && (
+          <div className={classes.overBanner}>
+            <p className={classes.overEmoji}>🙏</p>
+            <p className={classes.overText}>Event Was a Success!</p>
+            <p className={classes.overSubtext}>Thank you for being part of Shraddhanjali 2026</p>
           </div>
-          <span className={classes.column}>:</span>
-          <div className={classes.countdown}>
-            <p className={classes.countNum}>{countSeconds.toString().padStart(2, '0')}</p>
-            <p className={classes.countLabel}>sec</p>
-          </div>
-        </div>
+        )}
       </div>
     </section>
   );

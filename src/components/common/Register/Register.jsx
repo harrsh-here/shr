@@ -75,11 +75,11 @@ const MemberCard = ({ member, index, isLeader, canRemove, onChange, onRemove, er
     </div>
     <div className={classes.memberGrid}>
       <Field label="Full Name" name="name" value={member.name} onChange={e => onChange(index, 'name', e.target.value)} error={errors[`${index}_name`]} placeholder="Full name" required />
+      <Field label="Phone" name="phone" type="tel" value={member.phone} onChange={e => onChange(index, 'phone', e.target.value.replace(/\D/g, '').slice(0, 10))} error={errors[`${index}_phone`]} placeholder="10-digit mobile number" required />
+      <Field label="Email" name="email" type="email" value={member.email} onChange={e => onChange(index, 'email', e.target.value)} error={errors[`${index}_email`]} placeholder="email@example.com" required />
       <Field label="College Name" name="college" value={member.college} onChange={e => onChange(index, 'college', e.target.value)} error={errors[`${index}_college`]} placeholder="College name" required />
       <SelectField label="Year" name="year" value={member.year} onChange={e => onChange(index, 'year', e.target.value)} error={errors[`${index}_year`]} required />
       <Field label="Branch" name="branch" value={member.branch} onChange={e => onChange(index, 'branch', e.target.value)} error={errors[`${index}_branch`]} placeholder="e.g. Computer Science" required />
-      <Field label="Email" name="email" type="email" value={member.email} onChange={e => onChange(index, 'email', e.target.value)} error={errors[`${index}_email`]} placeholder="email@example.com" required />
-      <Field label="Phone" name="phone" type="tel" value={member.phone} onChange={e => onChange(index, 'phone', e.target.value.replace(/\D/g, '').slice(0, 10))} error={errors[`${index}_phone`]} placeholder="10-digit mobile number" required />
       <Field label="University Roll No." name="rollNo" value={member.rollNo} onChange={e => onChange(index, 'rollNo', e.target.value)} error={errors[`${index}_rollNo`]} placeholder="e.g. 22BTECH1234" required />
     </div>
   </div>

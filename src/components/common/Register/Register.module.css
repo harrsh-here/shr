@@ -1,4 +1,4 @@
-/* ─── Register Form — Maroon/Gold Theme ──────────────────────────────────── */
+/* ─── Register Form — Charcoal & Warm Burgundy + Gold Theme ────────────── */
 
 .page {
   min-height: 100vh;
@@ -11,13 +11,13 @@
 .formCard {
   width: 100%;
   max-width: 1100px;
-  background: rgba(42, 0, 0, 0.72);
-  border: 1px solid rgba(232, 163, 61, 0.35);
+  background: rgba(18, 14, 12, 0.85);
+  border: 1px solid rgba(180, 130, 80, 0.28);
   border-radius: 4px 22px 4px 22px;
   padding: 4rem 5rem 5rem;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55), inset 0 0 0 1px rgba(255, 215, 0, 0.06);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(200, 150, 80, 0.04);
 }
 
 /* ── Header ── */
@@ -51,22 +51,22 @@
 .formMeta {
   font-family: 'Inter', sans-serif;
   font-size: 1.4rem;
-  color: rgba(248, 241, 228, 0.55);
+  color: rgba(248, 241, 228, 0.5);
   letter-spacing: 0.05em;
 }
 
-/* ── Warning Banner ── */
+/* ── Warning Banner — muted burgundy, not screaming red ── */
 .warningBanner {
   display: flex;
   gap: 1.4rem;
   align-items: flex-start;
-  background: rgba(120, 10, 10, 0.55);
-  border: 1px solid rgba(255, 100, 80, 0.45);
-  border-left: 4px solid #FF6B4A;
+  background: rgba(90, 25, 20, 0.5);
+  border: 1px solid rgba(180, 80, 60, 0.38);
+  border-left: 4px solid #C0604A;
   border-radius: 4px 14px 4px 14px;
   padding: 1.6rem 2rem;
   margin-bottom: 3rem;
-  color: #ffe0d0;
+  color: #f0d0c0;
   font-family: 'Inter', sans-serif;
   font-size: 1.35rem;
   line-height: 1.6;
@@ -76,13 +76,13 @@
   font-size: 2rem;
   flex-shrink: 0;
   margin-top: 0.1rem;
-  color: #FF9966;
+  color: #D4836A;
 }
 
 .warningBanner strong {
   display: block;
   font-size: 1.45rem;
-  color: #FFB89A;
+  color: #E8A888;
   margin-bottom: 0.5rem;
 }
 
@@ -93,14 +93,14 @@
 .contactList {
   margin: 0.8rem 0 0 1.6rem;
   list-style: disc;
-  color: #ffd0b8;
+  color: #ddb8a0;
   font-size: 1.25rem;
 }
 
 /* ── Section Block ── */
 .sectionBlock {
-  background: rgba(60, 0, 0, 0.4);
-  border: 1px solid rgba(232, 163, 61, 0.2);
+  background: rgba(28, 20, 16, 0.6);
+  border: 1px solid rgba(180, 130, 80, 0.18);
   border-radius: 4px 18px 4px 18px;
   padding: 2.8rem 3rem;
   margin-bottom: 2.8rem;
@@ -135,21 +135,22 @@
 .memberCounter {
   font-family: 'Inter', sans-serif;
   font-size: 1.25rem;
-  color: rgba(248, 241, 228, 0.55);
-  background: rgba(255, 215, 0, 0.08);
-  border: 1px solid rgba(255, 215, 0, 0.2);
+  color: rgba(232, 200, 140, 0.55);
+  background: rgba(200, 150, 60, 0.08);
+  border: 1px solid rgba(200, 150, 60, 0.2);
   border-radius: 20px;
   padding: 0.35rem 1.1rem;
   white-space: nowrap;
 }
 
-/* ── Member Card ── */
+/* ── Member Card — darker charcoal for depth ── */
 .memberCard {
-  background: rgba(42, 0, 0, 0.5);
-  border: 1px solid rgba(232, 163, 61, 0.18);
+  background: rgba(10, 8, 6, 0.78);
+  border: 1px solid rgba(160, 110, 60, 0.2);
   border-radius: 4px 14px 4px 14px;
   padding: 2rem 2.4rem 2.4rem;
   margin-bottom: 2rem;
+  box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.45);
 }
 
 .memberCardHeader {
@@ -169,9 +170,9 @@
 }
 
 .removeBtn {
-  background: rgba(180, 30, 30, 0.4);
-  border: 1px solid rgba(255, 100, 80, 0.4);
-  color: #FF9977;
+  background: rgba(90, 25, 20, 0.45);
+  border: 1px solid rgba(180, 80, 60, 0.35);
+  color: #D4836A;
   font-family: 'Inter', sans-serif;
   font-size: 1.2rem;
   font-weight: 600;
@@ -182,8 +183,8 @@
 }
 
 .removeBtn:hover {
-  background: rgba(200, 40, 40, 0.6);
-  color: #ffcbb8;
+  background: rgba(110, 35, 28, 0.65);
+  color: #F0B090;
 }
 
 .memberGrid {
@@ -209,7 +210,7 @@
   font-family: 'Inter', sans-serif;
   font-size: 1.25rem;
   font-weight: 600;
-  color: rgba(248, 241, 228, 0.75);
+  color: rgba(240, 220, 180, 0.72);
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
@@ -220,8 +221,8 @@
 }
 
 .input {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(232, 163, 61, 0.3);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(180, 130, 80, 0.28);
   border-radius: 8px;
   padding: 1.1rem 1.4rem;
   font-family: 'Inter', sans-serif;
@@ -233,13 +234,13 @@
 }
 
 .input::placeholder {
-  color: rgba(248, 241, 228, 0.3);
+  color: rgba(240, 220, 180, 0.22);
 }
 
 .input:focus {
-  border-color: rgba(255, 215, 0, 0.6);
-  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
-  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(232, 163, 61, 0.6);
+  box-shadow: 0 0 0 3px rgba(232, 163, 61, 0.1);
+  background: rgba(255, 255, 255, 0.07);
 }
 
 .select {
@@ -253,22 +254,22 @@
 }
 
 .select option {
-  background: #2A0000;
+  background: #120e0c;
   color: #F8F1E4;
 }
 
 .inputError {
-  border-color: rgba(255, 100, 80, 0.6);
+  border-color: rgba(192, 96, 74, 0.6);
 }
 
 .inputError:focus {
-  box-shadow: 0 0 0 3px rgba(255, 100, 80, 0.12);
+  box-shadow: 0 0 0 3px rgba(192, 96, 74, 0.1);
 }
 
 .errorMsg {
   font-family: 'Inter', sans-serif;
   font-size: 1.15rem;
-  color: #FF9977;
+  color: #D4836A;
   margin-top: 0.2rem;
 }
 
@@ -277,8 +278,8 @@
   width: 100%;
   padding: 1.2rem;
   margin-top: 0.4rem;
-  background: rgba(232, 163, 61, 0.1);
-  border: 1px dashed rgba(232, 163, 61, 0.45);
+  background: rgba(200, 150, 60, 0.07);
+  border: 1px dashed rgba(200, 150, 60, 0.38);
   border-radius: 8px;
   font-family: 'Inter', sans-serif;
   font-size: 1.4rem;
@@ -289,8 +290,8 @@
 }
 
 .addBtn:hover:not(:disabled) {
-  background: rgba(232, 163, 61, 0.18);
-  border-color: rgba(232, 163, 61, 0.7);
+  background: rgba(200, 150, 60, 0.14);
+  border-color: rgba(200, 150, 60, 0.6);
 }
 
 .addBtnDisabled {
@@ -303,8 +304,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(255, 215, 0, 0.06);
-  border: 1px solid rgba(255, 215, 0, 0.2);
+  background: rgba(255, 215, 0, 0.05);
+  border: 1px solid rgba(255, 215, 0, 0.18);
   border-radius: 10px;
   padding: 1.4rem 2rem;
   margin-bottom: 0.6rem;
@@ -314,7 +315,7 @@
   font-family: 'Inter', sans-serif;
   font-size: 1.5rem;
   font-weight: 600;
-  color: rgba(248, 241, 228, 0.8);
+  color: rgba(240, 220, 180, 0.8);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -330,7 +331,7 @@
 .totalNote {
   font-family: 'Inter', sans-serif;
   font-size: 1.2rem;
-  color: rgba(248, 241, 228, 0.4);
+  color: rgba(240, 220, 180, 0.38);
   margin-bottom: 2.4rem;
   text-align: right;
 }
@@ -339,8 +340,8 @@
   display: flex;
   gap: 2.4rem;
   align-items: center;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(232, 163, 61, 0.2);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(180, 130, 80, 0.18);
   border-radius: 12px;
   padding: 2rem;
   margin-bottom: 2.4rem;
@@ -351,7 +352,7 @@
   width: 140px;
   height: 140px;
   border-radius: 8px;
-  border: 2px solid rgba(255, 215, 0, 0.3);
+  border: 2px solid rgba(232, 163, 61, 0.3);
   object-fit: contain;
   background: #fff;
   flex-shrink: 0;
@@ -361,14 +362,14 @@
   width: 140px;
   height: 140px;
   border-radius: 8px;
-  border: 2px dashed rgba(232, 163, 61, 0.4);
+  border: 2px dashed rgba(180, 130, 80, 0.35);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 0.6rem;
   flex-shrink: 0;
-  color: rgba(232, 163, 61, 0.6);
+  color: rgba(180, 130, 80, 0.6);
   font-family: 'Inter', sans-serif;
   font-size: 1.2rem;
   text-align: center;
@@ -383,7 +384,7 @@
 
 .qrPlaceholder small {
   font-size: 1rem;
-  color: rgba(232, 163, 61, 0.5);
+  color: rgba(180, 130, 80, 0.5);
   line-height: 1.4;
 }
 
@@ -398,7 +399,7 @@
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(248, 241, 228, 0.45);
+  color: rgba(240, 220, 180, 0.42);
   margin-bottom: 0.4rem;
 }
 
@@ -414,7 +415,7 @@
 .upiNote {
   font-family: 'Inter', sans-serif;
   font-size: 1.25rem;
-  color: rgba(248, 241, 228, 0.55);
+  color: rgba(240, 220, 180, 0.52);
   line-height: 1.6;
 }
 
@@ -427,7 +428,7 @@
   margin-top: 2rem;
   font-family: 'Inter', sans-serif;
   font-size: 1.35rem;
-  color: rgba(248, 241, 228, 0.8);
+  color: rgba(240, 220, 180, 0.78);
   line-height: 1.6;
 }
 
@@ -440,7 +441,7 @@
   cursor: pointer;
 }
 
-/* ── Submit ── */
+/* ── Submit — gold to amber, unchanged ── */
 .submitBtn {
   width: 100%;
   padding: 1.7rem;
@@ -451,17 +452,17 @@
   font-family: 'Inter', sans-serif;
   font-size: 1.8rem;
   font-weight: 700;
-  color: #2A0000;
+  color: #120e0c;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   cursor: pointer;
   transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.2s ease;
-  box-shadow: 0 6px 28px rgba(255, 153, 51, 0.4);
+  box-shadow: 0 6px 28px rgba(255, 153, 51, 0.38);
 }
 
 .submitBtn:hover:not(:disabled) {
   transform: translateY(-3px);
-  box-shadow: 0 12px 36px rgba(255, 215, 0, 0.5);
+  box-shadow: 0 12px 36px rgba(255, 215, 0, 0.48);
 }
 
 .submitBtn:active:not(:disabled) {
@@ -476,9 +477,9 @@
 .submitError {
   font-family: 'Inter', sans-serif;
   font-size: 1.35rem;
-  color: #FF9977;
-  background: rgba(180, 30, 30, 0.35);
-  border: 1px solid rgba(255, 100, 80, 0.35);
+  color: #D4836A;
+  background: rgba(90, 25, 20, 0.4);
+  border: 1px solid rgba(192, 96, 74, 0.35);
   border-radius: 8px;
   padding: 1.2rem 1.6rem;
   margin-top: 1.6rem;
@@ -496,8 +497,8 @@
 
 .successBadge {
   display: inline-block;
-  background: rgba(255, 215, 0, 0.1);
-  border: 1px solid rgba(255, 215, 0, 0.4);
+  background: rgba(255, 215, 0, 0.08);
+  border: 1px solid rgba(255, 215, 0, 0.38);
   border-radius: 20px;
   padding: 0.5rem 1.8rem;
   font-family: 'Inter', sans-serif;
@@ -515,13 +516,13 @@
   font-weight: 700;
   color: #F8F1E4;
   margin-bottom: 2rem;
-  text-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.18);
 }
 
 .successBody {
   font-family: 'Inter', sans-serif;
   font-size: 1.55rem;
-  color: rgba(248, 241, 228, 0.8);
+  color: rgba(240, 220, 180, 0.8);
   line-height: 1.8;
   margin-bottom: 3rem;
 }
@@ -530,8 +531,8 @@
   display: inline-block;
   margin-top: 2.8rem;
   padding: 1.2rem 3.5rem;
-  background: rgba(232, 163, 61, 0.12);
-  border: 1px solid rgba(232, 163, 61, 0.4);
+  background: rgba(232, 163, 61, 0.1);
+  border: 1px solid rgba(232, 163, 61, 0.38);
   border-radius: 50px;
   font-family: 'Inter', sans-serif;
   font-size: 1.5rem;
@@ -542,72 +543,27 @@
 }
 
 .backHome:hover {
-  background: rgba(232, 163, 61, 0.22);
+  background: rgba(232, 163, 61, 0.2);
   color: #FFD700;
 }
 
 /* ── Responsive ── */
 @media (max-width: 768px) {
-  .page {
-    padding: 8rem 1rem 5rem;
-  }
-
-  .formCard {
-    padding: 2.8rem 1.8rem 3.5rem;
-  }
-
-  .memberGrid {
-    grid-template-columns: 1fr;
-    gap: 1.2rem;
-  }
-
-  .sectionBlock {
-    padding: 2rem 1.4rem;
-  }
-
-  .qrBlock {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .upiInfo {
-    text-align: center;
-  }
-
-  .memberCard {
-    padding: 1.6rem 1.4rem 1.8rem;
-  }
+  .page { padding: 8rem 1rem 5rem; }
+  .formCard { padding: 2.8rem 1.8rem 3.5rem; }
+  .memberGrid { grid-template-columns: 1fr; gap: 1.2rem; }
+  .sectionBlock { padding: 2rem 1.4rem; }
+  .qrBlock { flex-direction: column; align-items: center; }
+  .upiInfo { text-align: center; }
+  .memberCard { padding: 1.6rem 1.4rem 1.8rem; }
 }
 
 @media (max-width: 480px) {
-  .page {
-    padding: 7rem 0.6rem 4rem;
-  }
-
-  .formCard {
-    padding: 2.2rem 1.2rem 3rem;
-    border-radius: 4px 12px 4px 12px;
-  }
-
-  .totalAmount {
-    font-size: 2rem;
-  }
-
-  .sectionTitle {
-    font-size: 1.6rem;
-  }
-
-  .formTitle {
-    font-size: clamp(2.2rem, 6vw, 3rem);
-  }
-
-  .memberCounter {
-    font-size: 1.1rem;
-    padding: 0.3rem 0.8rem;
-  }
-
-  .sectionHeader {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+  .page { padding: 7rem 0.6rem 4rem; }
+  .formCard { padding: 2.2rem 1.2rem 3rem; border-radius: 4px 12px 4px 12px; }
+  .totalAmount { font-size: 2rem; }
+  .sectionTitle { font-size: 1.6rem; }
+  .formTitle { font-size: clamp(2.2rem, 6vw, 3rem); }
+  .memberCounter { font-size: 1.1rem; padding: 0.3rem 0.8rem; }
+  .sectionHeader { flex-direction: column; align-items: flex-start; }
 }
