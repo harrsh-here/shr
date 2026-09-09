@@ -111,7 +111,7 @@ const Navbar = () => {
                 <span className={classes.brandTitle}>
                   Shraddhanjali <span className={classes.brandYear}>'26</span>
                 </span>
-                <span className={classes.brandTagline}>Tagline to be announced</span>
+                <span className={classes.brandTagline}>...a tribute to Late Er. Shri T.K. Agarwal Ji</span>
               </span>
             </Link>
           </Drop>

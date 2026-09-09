@@ -27,7 +27,7 @@ const Footer = () => {
             </div>
           </div>
           <p className={classes.footer_sambhav_description}>
-            Inter-college Cultural Fest
+            Inter-college Cultural Fest · A tribute to Late Er. Shri T.K. Agarwal Ji
           </p>
         </div>
         <div className={classes.footer_first}>
