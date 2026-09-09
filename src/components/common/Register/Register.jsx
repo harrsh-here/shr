@@ -52,7 +52,7 @@ const Register = () => {
       }
     });
     setTeamMembers(initialMembers);
-  }, [eventId]);
+  }, [eventId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Return to events when the route does not contain a valid event.
   useEffect(() => {
