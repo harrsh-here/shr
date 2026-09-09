@@ -9,23 +9,30 @@ export const eventsData = [
     id: 9,
     image: gyrationPlaceholder,
     name: "Gyration",
-    // [PLACEHOLDER: Gyration event details — to be provided by user]
-    description: "[PLACEHOLDER: Gyration event description — to be provided by user]",
+    description: "Unleash your passion and set the stage on fire. From hip-hop and classical to freestyle, Gyration is a platform for teams to showcase their talent.",
     rules: [
-      "[PLACEHOLDER: Gyration rules — to be provided by user]"
+      "Performances must follow the designated theme.",
+      "Music must be submitted in high-quality MP3 format at least two days before the event; carry a USB backup.",
+      "Performance duration must not exceed 4 minutes.",
+      "Simple props are permitted when arranged by participants; hazardous materials are prohibited.",
+      "Songs and moves must be decent and appropriate. Failure to follow rules may lead to disqualification."
     ],
     prizes: [
       "[PLACEHOLDER: Gyration prizes — to be provided by user]"
     ],
     type: "team_fixed",
-    minMembers: 1,
+    minMembers: 6,
     maxMembers: 20,
-    price: 0,
+    price: 50,
+    feePerPerson: 50,
     contactInfo: [
-      "[PLACEHOLDER: Gyration coordinator name & contact — to be provided by user]"
+      "Naina Khare — 9258689744",
+      "Shashank Shrivastava — 9334024106",
+      "Coordinator 3 — details to be announced"
     ],
-    location: "[PLACEHOLDER: Gyration venue — to be provided by user]",
-    date: "[PLACEHOLDER: Gyration date & time — to be provided by user]",
+    location: "Arya College of Engineering & I.T., Kukas, Jaipur",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=Arya+College+of+Engineering+%26+I.T.+Kukas+Jaipur",
+    date: "19 September 2026 · 6:30 PM onwards",
     note: [""],
     link: "#",
     rulebookLink: "",
@@ -34,10 +41,13 @@ export const eventsData = [
     id: 10,
     image: donDeModePhaceholder,
     name: "Don-De-Mode",
-    // [PLACEHOLDER: Don-De-Mode event details — to be provided by user]
-    description: "[PLACEHOLDER: Don-De-Mode event description — to be provided by user]",
+    description: "Step into a world of creativity and style at Don-De-Mode. Present a confident, theme-led ramp performance and make your team's concept shine.",
     rules: [
-      "[PLACEHOLDER: Don-De-Mode rules — to be provided by user]"
+      "Ramp-walk performances must follow the designated theme.",
+      "Music must be submitted in high-quality MP3 format at least two days before the event; carry a USB backup.",
+      "Performance duration must not exceed 7 minutes.",
+      "Simple props are permitted when arranged by participants; hazardous materials are prohibited.",
+      "Songs, costumes and performances must be decent and appropriate. Failure to follow rules may lead to disqualification."
     ],
     prizes: [
       "[PLACEHOLDER: Don-De-Mode prizes — to be provided by user]"
@@ -45,12 +55,16 @@ export const eventsData = [
     type: "team_fixed",
     minMembers: 10,
     maxMembers: 20,
-    price: 0,
+    price: 50,
+    feePerPerson: 50,
     contactInfo: [
-      "[PLACEHOLDER: Don-De-Mode coordinator name & contact — to be provided by user]"
+      "Naina Khare — 9258689744",
+      "Shashank Shrivastava — 9334024106",
+      "Coordinator 3 — details to be announced"
     ],
-    location: "[PLACEHOLDER: Don-De-Mode venue — to be provided by user]",
-    date: "[PLACEHOLDER: Don-De-Mode date & time — to be provided by user]",
+    location: "Arya College of Engineering & I.T., Kukas, Jaipur",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=Arya+College+of+Engineering+%26+I.T.+Kukas+Jaipur",
+    date: "19 September 2026 · 6:30 PM onwards",
     note: [""],
     link: "#",
     rulebookLink: "",

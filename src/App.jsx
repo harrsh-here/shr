@@ -5,11 +5,9 @@ import Navbar from "../src/components/Navbar/Navbar";
 import Footer from "../src/components/Footer/Footer";
 import Homepage from "./pages/Homepage";
 import Loading from "./components/common/Loading/Loading";
-import FloatingCartButton from "./components/common/Cart/FloatingCartButton";
-import CartDrawer from "./components/common/Cart/CartDrawer";
-import { useCart } from "./context/CartContext";
 import Cursor from "./components/common/Cursor/Cursor";
 import SiteBackdrop from "./components/common/SiteBackdrop/SiteBackdrop";
+import EventCelebration from "./components/common/EventCelebration/EventCelebration";
 import classes from "./App.module.css";
 
 /* Google Analytics */
@@ -39,12 +37,6 @@ const App = () => {
   const location = useLocation();
   const prevPathRef = useRef(location.pathname);
   const [loading, setLoading] = useState(true);
-
-  const { isCartOpen, setIsCartOpen } = useCart();
-
-  const toggleCartDrawer = () => {
-    setIsCartOpen(prev => !prev);
-  };
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1500);
@@ -82,6 +74,7 @@ const App = () => {
     <div className={classes.siteShell}>
       <SiteBackdrop />
       <div className={classes.siteContent}>
+      <EventCelebration />
       {loading ? (
         <Loading />
       ) : (
@@ -95,7 +88,7 @@ const App = () => {
               <Route path="/events" element={<MainEvents />} />
               <Route path="/events/:eventId" element={<Homepage />} />
               <Route path="/about" element={<AboutPage />} />
-              <Route path="/register" element={<Register />} />
+              <Route path="/register/:eventId" element={<Register />} />
               <Route path="/contact" element={<ContactUs />} />
               <Route path="/hidden" element={<Hidden />} />
               {/*   <Route path="/leaderboard/:eventId" element={<Leaderboard />} />
@@ -105,8 +98,6 @@ const App = () => {
             </Routes>
           </React.Suspense>
           <Footer />
-          <FloatingCartButton toggleDrawer={toggleCartDrawer} />
-          <CartDrawer isOpen={isCartOpen} toggleDrawer={toggleCartDrawer} />
           {/* <Button /> */}
           {/* </div> */}
         </>

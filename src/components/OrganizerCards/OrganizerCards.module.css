@@ -1,6 +1,14 @@
 .section {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
     padding: 7rem 5%;
     text-align: center;
+}
+
+.section > :not(:first-child):not(:nth-child(2)) {
+    position: relative;
+    z-index: 1;
 }
 
 .header {
@@ -37,13 +45,70 @@
     box-shadow: 0 0 12px rgba(255, 215, 0, 0.5);
 }
 
-.grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 3rem;
-    max-width: 1100px;
+.collegeBadge {
+    width: 18rem;
+    height: 18rem;
+    margin: 0 auto 1.2rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: #8f1020;
+    border: 2px solid rgba(255, 215, 0, 0.55);
+    box-shadow: 0 0 2.2rem rgba(232, 163, 61, 0.25);
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.collegeBadge:hover {
+    box-shadow: 0 0 3rem rgba(232, 163, 61, 0.45);
+    border-color: rgba(255, 215, 0, 0.8);
+}
+
+.collegeBadge img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transform: translateX(5.3px) translateY(-1px) scale(1.45) ;
+    transform-origin: center;
+}
+
+/* GDG badge — white background to show the colourful GDG logo clearly */
+/* .gdgBadge kept for potential future use in the carousel only */
+
+.collegeName {
+    max-width: 16rem;
+    margin: 0 auto 1.8rem;
+    color: #fff0ca;
+    font-family: 'Cinzel', 'Times New Roman', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 1.4;
+}
+
+.organizerAnd {
+    font-family: 'Cinzel', serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #E8A33D;
+    margin: 0 auto 1.6rem;
+    user-select: none;
+}
+
+.carousel {
+    width: min(100%, 118rem);
     margin: 0 auto;
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+
+.track {
+    display: flex;
+    gap: 2rem;
+    width: max-content;
+    padding: 1.4rem 0;
 }
 
 .card {
@@ -53,7 +118,8 @@
     -webkit-backdrop-filter: blur(12px);
     border-radius: 20px;
     padding: 3rem 2.5rem 2.5rem;
-    width: 220px;
+    width: 22rem;
+    flex: 0 0 22rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -137,13 +203,9 @@
         font-size: 3rem;
     }
 
-    .grid {
-        gap: 1.2rem;
-        justify-content: space-between;
-    }
-
     .card {
-        width: calc(50% - 0.6rem);
+        width: 17rem;
+        flex-basis: 17rem;
         padding: 1.5rem 1rem;
         gap: 1rem;
     }
@@ -155,5 +217,15 @@
 
     .name {
         font-size: 1.1rem;
+    }
+
+    .collegeBadge {
+        width: 8.5rem;
+        height: 8.5rem;
+    }
+
+    .collegeName {
+        font-size: 0.95rem;
+        max-width: 12rem;
     }
 }

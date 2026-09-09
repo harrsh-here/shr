@@ -71,7 +71,7 @@
 }
 
 .heading1 {
-  font-family: 'Yatra One', display;
+  font-family: 'Cinzel Decorative', 'Times New Roman', serif;
   font-size: 10rem;
   color: #FFD700;
   font-weight: 400;
@@ -112,6 +112,57 @@
   min-height: 28rem;
 }
 
+.tributePortrait {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(22rem, 74%);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  text-align: center;
+  transform: translate(-50%, -50%);
+}
+
+.portraitRing {
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 0.35rem solid #e8a33d;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0.6rem rgba(50, 2, 7, 0.86), 0 0 3rem rgba(232, 163, 61, 0.42);
+}
+
+.tributePortrait img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 26%;
+  transform: scale(1.42);
+  filter: sepia(0.18) saturate(0.9) contrast(1.05);
+}
+
+.tributePortrait figcaption {
+  position: absolute;
+  top: calc(100% + 1.6rem);
+  left: 50%;
+  width: max-content;
+  max-width: 145%;
+  transform: translateX(-50%);
+  padding: 0;
+  color: #fff0ca;
+  font-family: 'Cinzel', serif;
+  font-size: 1.9rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.65);
+}
+
+.tributePortrait span { color: #e8a33d; font-size: 1.4rem; letter-spacing: 0.08em; }
+
 .tributeRangoli {
   width: min(31rem, 100%);
   height: auto;
@@ -129,6 +180,7 @@
 
   .composition {
     order: 1;
+    min-height: 34rem;
   }
 
   .heading1 {

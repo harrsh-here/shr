@@ -23,6 +23,29 @@
   width: 22rem;
   opacity: 0.2;
   pointer-events: none;
+  animation: eventArtworkFloat 8s ease-in-out infinite;
+}
+
+.eventsLotus {
+  position: absolute;
+  z-index: -1;
+  right: 4%;
+  bottom: 5rem;
+  width: 20rem;
+}
+
+.eventsPaisley {
+  position: absolute;
+  z-index: -1;
+  top: 4rem;
+  left: -3rem;
+  width: 17rem;
+  transform: rotate(-18deg);
+}
+
+@keyframes eventArtworkFloat {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-1.5rem) rotate(2deg); }
 }
 
 .heading {
@@ -52,7 +75,7 @@
 .two_events_container {
   display: flex;
   justify-content: center;
-  gap: 40px;
+  gap: 4rem;
   margin-top: 50px;
   flex-wrap: wrap;
 }
@@ -60,15 +83,18 @@
 .poster_link {
   display: block;
   text-decoration: none;
+  width: min(100%, 46rem);
 }
 
 /* 3D tilt card — perspective set on the card, transform applied inline via JS */
 .poster_card {
-  background: rgba(90, 10, 10, 0.5);
-  border: 1px solid rgba(255, 215, 0, 0.2);
-  border-radius: 16px;
-  padding: 15px;
-  text-align: center;
+  width: 100%;
+  overflow: hidden;
+  background: linear-gradient(145deg, rgba(90, 10, 10, 0.76), rgba(38, 1, 5, 0.88));
+  border: 1px solid rgba(232, 163, 61, 0.38);
+  border-radius: 1.5rem;
+  padding: 1.2rem;
+  text-align: left;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   cursor: pointer;
   transition: box-shadow 0.35s ease, border-color 0.35s ease;
@@ -82,8 +108,8 @@
 }
 
 .poster_img_wrapper {
-  width: 300px;
-  height: 450px;
+  width: 100%;
+  height: 47rem;
   overflow: hidden;
   border-radius: 10px;
   position: relative;
@@ -116,13 +142,27 @@
 }
 
 .poster_event_name {
-  font-family: 'Inter', sans-serif;
-  color: #F8F1E4;
-  font-size: 1.6rem;
-  margin-top: 15px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
+  font-family: 'Cinzel Decorative', 'Times New Roman', serif;
+  color: #fff0ca;
+  font-size: 2.7rem;
+  margin: 0.35rem 0 1rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
 }
+
+.eventDetails { padding: 2.2rem 1.4rem 1.4rem; }
+
+.eventCategory { color: #e8a33d; font-family: 'Inter', sans-serif; font-size: 1.2rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+
+.eventSummary { min-height: 2.4rem; color: rgba(248, 241, 228, 0.76); font-family: 'Inter', sans-serif; font-size: 1.45rem; line-height: 1.5; }
+
+.eventMeta { display: flex; flex-wrap: wrap; gap: 0.8rem 1.6rem; margin-top: 1.6rem; padding-top: 1.35rem; border-top: 1px solid rgba(232, 163, 61, 0.24); color: rgba(248, 241, 228, 0.62); font-family: 'Inter', sans-serif; font-size: 1.2rem; }
+
+.detailsLink { display: inline-block; margin-top: 2rem; color: #f2bd58; font-family: 'Inter', sans-serif; font-size: 1.25rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+
+.detailsLink span { display: inline-block; margin-left: 0.4rem; font-size: 1.5em; transition: transform 0.25s ease; }
+
+.poster_card:hover .detailsLink span { transform: translateX(0.45rem); }
 
 @media screen and (max-width: 768px) {
   .events_section {
@@ -140,6 +180,18 @@
     bottom: 1rem;
   }
 
+  .eventsLotus {
+    right: -3rem;
+    bottom: 2rem;
+    width: 15rem;
+  }
+
+  .eventsPaisley {
+    top: 2rem;
+    left: -6rem;
+    width: 14rem;
+  }
+
   .heading {
     font-size: 10vw;
   }
@@ -149,8 +201,7 @@
   }
 
   .poster_img_wrapper {
-    width: 240px;
-    height: 360px;
+    height: 41rem;
   }
 }
 
@@ -162,7 +213,10 @@
   }
 
   .poster_img_wrapper {
-    width: 280px;
-    height: 420px;
+    height: 40rem;
   }
+
+  .poster_link { width: min(100%, 36rem); }
+  .eventDetails { padding: 1.8rem 1rem 1rem; }
+  .poster_event_name { font-size: 2.25rem; }
 }

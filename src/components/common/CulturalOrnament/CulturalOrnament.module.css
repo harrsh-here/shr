@@ -1,0 +1,15 @@
+.ornament {
+  color: #e8a33d;
+  opacity: 0.3;
+  pointer-events: none;
+  filter: drop-shadow(0 0 12px rgba(232, 163, 61, 0.16));
+  animation: ornamentBreathe 6s ease-in-out infinite;
+}
+
+@keyframes ornamentBreathe {
+  50% { opacity: 0.48; transform: translateY(-0.8rem); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ornament { animation: none; }
+}

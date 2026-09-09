@@ -6,6 +6,7 @@ import { NavLink } from "react-router-dom";
 import useScrollReveal from "../../hooks/useScrollReveal";
 import eventArtwork from "../About/about.svg";
 import Rangoli from "../common/Rangoli/Rangoli";
+import CulturalOrnament from "../common/CulturalOrnament/CulturalOrnament";
 
 const EventCard3D = ({ event }) => {
   const cardRef = useRef(null);
@@ -37,7 +38,7 @@ const EventCard3D = ({ event }) => {
 
   return (
     <NavLink
-      to={`/events/${event.id}`}
+      to={`/register/${event.id}`}
       className={classes.poster_link}
       style={{ textDecoration: "none" }}
     >
@@ -56,7 +57,22 @@ const EventCard3D = ({ event }) => {
             decoding="async"
           />
         </div>
-        <h3 className={classes.poster_event_name}>{event.name}</h3>
+        <div className={classes.eventDetails}>
+          <p className={classes.eventCategory}>
+            {event.id === 9 ? "Dance Competition" : "The Ramp Competition"}
+          </p>
+          <h3 className={classes.poster_event_name}>{event.name}</h3>
+          <p className={classes.eventSummary}>
+            {event.id === 9
+              ? "Six to fifteen of you. Six minutes. One floor."
+              : "Creativity · Confidence · Conceptual Storytelling"}
+          </p>
+          <div className={classes.eventMeta}>
+            <span>⌘ Team size: Min {event.minMembers} · Max Participants {event.maxMembers}</span>
+            <span>⌖ Arya Old Campus Ground</span>
+          </div>
+          <span className={classes.detailsLink}>Register your team <span>→</span></span>
+        </div>
       </div>
     </NavLink>
   );
@@ -74,6 +90,8 @@ const MainEvents = () => {
       <div className={classes.events_section} ref={revealRef}>
         <Rangoli className={classes.eventsRangoli} />
         <img className={classes.eventArtwork} src={eventArtwork} alt="" aria-hidden="true" />
+        <CulturalOrnament type="lotus" className={classes.eventsLotus} />
+        <CulturalOrnament type="paisley" className={classes.eventsPaisley} />
         <h1 className={classes.heading}>Our Events</h1>
         <p className={classes.subheading}>
           Are you interested? Come be a part of Shraddhanjali 2026!

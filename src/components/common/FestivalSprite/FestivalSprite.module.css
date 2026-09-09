@@ -1,0 +1,28 @@
+.sprite {
+  position: absolute;
+  z-index: 0;
+  bottom: 7%;
+  width: 22rem;
+  opacity: 0.22;
+  pointer-events: none;
+  filter: drop-shadow(0 0 18px rgba(232, 163, 61, 0.12));
+  animation: spriteFloat 7s ease-in-out infinite;
+}
+
+.left { left: -5rem; }
+.right { right: -5rem; transform: scaleX(-1); animation-delay: -3.5s; }
+
+@keyframes spriteFloat {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -1.4rem; }
+}
+
+@media screen and (max-width: 768px) {
+  .sprite { width: 14rem; opacity: 0.15; }
+  .left { left: -5rem; }
+  .right { right: -5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sprite { animation: none; }
+}

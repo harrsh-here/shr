@@ -10,9 +10,9 @@ const Hero = () => {
   const [countSeconds, setSeconds] = useState(0);
   const [showHindi, setShowHindi] = useState(false);
 
-  // Countdown timer — targeting 19 September 2026
+  // Countdown timer — synced to the event cards: 19 September 2026, 6:30 PM IST.
   useEffect(() => {
-    const countdownDate = new Date("September 19 2026 00:00:00").getTime();
+    const countdownDate = new Date("2026-09-19T18:30:00+05:30").getTime();
     const interval = setInterval(() => {
       const now = new Date().getTime();
       const distance = countdownDate - now;
@@ -92,7 +92,7 @@ const Hero = () => {
           </div>
 
           <p className={classes.titleTagline} style={{ animationDelay: '0.5s' }}>
-            Tagline to be announced
+            ...a tribute to Late Er. Shri T.K. Agarwal Ji
           </p>
 
           {/* Caption — stagger delay 0.6s */}
@@ -104,6 +104,7 @@ const Hero = () => {
           <p className={classes.date} style={{ animationDelay: '0.8s' }}>
             19 September 2026
           </p>
+          <p className={classes.eventTime} style={{ animationDelay: '0.9s' }}>6:30 PM onwards</p>
 
           {/* CTA — stagger delay 1.0s — inline button, no old Button component */}
           <ScrollLink

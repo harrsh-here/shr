@@ -7,6 +7,7 @@ import MainEvents from "../components/MainEvents/MainEvents";
 import SingleEventPage from "../components/SingleEventPage/SingleEventPage";
 import OrganizerCards from "../components/OrganizerCards/OrganizerCards";
 import SectionDivider from "../components/common/SectionDivider/SectionDivider";
+import EventStats from "../components/EventStats/EventStats";
 import ReactGA from "react-ga";
 
 const Homepage = () => {
@@ -19,6 +20,7 @@ const Homepage = () => {
   return (
     <>
       <Hero />
+      <EventStats />
       <SectionDivider />
       <About />
       <SectionDivider />

@@ -317,6 +317,17 @@
   right: -3rem;
 }
 
+.eventTime {
+  margin: -1.8rem 0 2.5rem;
+  color: #fff0ca;
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.55rem, 2vw, 2.15rem);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-shadow: 0 0 1.4rem rgba(232, 163, 61, 0.28);
+}
+
 /* CTA Button — gold/maroon themed, no old Button component */
 .ctaBtn {
   display: inline-block;
@@ -461,6 +472,8 @@
     letter-spacing: 3px;
   }
 
+  .eventTime { margin: -1.5rem 0 2.1rem; font-size: 1.45rem; }
+
   .date::before,
   .date::after {
     display: none;
@@ -527,6 +540,8 @@
     font-size: 2.75rem;
     letter-spacing: 1.5px;
   }
+
+  .eventTime { margin-top: -1.35rem; font-size: 1.2rem; letter-spacing: 0.12em; }
 
   .ctaBtn {
     width: min(100%, 30rem);

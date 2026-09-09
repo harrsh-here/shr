@@ -1,0 +1,64 @@
+.confetti {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.piece {
+  position: absolute;
+  top: -2rem;
+  width: 0.8rem;
+  height: 1.4rem;
+  background: #ffd700;
+  border-radius: 1px;
+  opacity: 0;
+  animation: confettiFall linear infinite;
+}
+
+.piece:nth-child(3n) { background: #e8a33d; }
+.piece:nth-child(3n + 1) { background: #f8f1e4; }
+
+@keyframes confettiFall {
+  0% { transform: translateY(-2rem) rotate(var(--rotation)); opacity: 0; }
+  8% { opacity: 0.85; }
+  100% { transform: translateY(108vh) rotate(calc(var(--rotation) + 540deg)); opacity: 0; }
+}
+
+.status {
+  position: fixed;
+  top: 1.2rem;
+  left: 50%;
+  z-index: 1201;
+  width: min(92vw, 68rem);
+  padding: 1rem 2rem;
+  border-radius: 999px;
+  color: #fff0ca;
+  font-family: 'Yatra One', cursive;
+  font-size: clamp(1.25rem, 1.8vw, 1.65rem);
+  letter-spacing: 0.04em;
+  line-height: 1.35;
+  text-align: center;
+  transform: translateX(-50%);
+  box-shadow: 0 0.8rem 2.6rem rgba(0, 0, 0, 0.36);
+}
+
+.live {
+  background: linear-gradient(135deg, rgba(176, 18, 34, 0.96), rgba(93, 5, 12, 0.96));
+  border: 1px solid #e8a33d;
+  animation: liveGlow 2.5s ease-in-out infinite;
+}
+
+.complete {
+  background: rgba(47, 2, 7, 0.95);
+  border: 1px solid rgba(232, 163, 61, 0.65);
+}
+
+@keyframes liveGlow {
+  50% { box-shadow: 0 0.8rem 3rem rgba(232, 163, 61, 0.38); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .piece, .live { animation: none; }
+}

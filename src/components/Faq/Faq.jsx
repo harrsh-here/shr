@@ -5,27 +5,27 @@ import useScrollReveal from "../../hooks/useScrollReveal";
 const questions = [
   {
     question: "What is Shraddhanjali 2026?",
-    answer: "Shraddhanjali 2026 is one of the biggest Cultural events."
+    answer: "Shraddhanjali is the annual cultural celebration of Arya College of Engineering & I.T., Jaipur, held in tribute to founder chairman Late Shri T. K. Agarwal Ji."
   },
   {
     question: "When and where is Shraddhanjali 2026 happening?",
-    answer: "[PLACEHOLDER: Updated answer for Shraddhanjali — to be provided by user]"
+    answer: "Shraddhanjali 2026 takes place on 19 September 2026 at Arya College of Engineering & I.T., Jaipur. Final reporting times will be shared with registered participants."
   },
   {
     question: "Who can participate in the events?",
-    answer: "[PLACEHOLDER: Updated answer for Shraddhanjali — to be provided by user]"
+    answer: "Students with a valid college ID are welcome to participate. Team requirements for each event are listed in its event details."
   },
   {
-    question: "How do I register for events like Cipher Premier League or Gyration?",
-    answer: "[PLACEHOLDER: Updated answer for Shraddhanjali — to be provided by user]"
+    question: "How do I register for Gyration or Don-De-Mode?",
+    answer: "Open the Events section, choose Gyration or Don-De-Mode, and complete that event’s team registration form."
   },
   {
     question: "Are there entry fees and prizes?",
-    answer: "[PLACEHOLDER: Updated answer for Shraddhanjali — to be provided by user]"
+    answer: "Registration and prize details are confirmed on the relevant event page. Please check the final event guidelines before completing your registration."
   },
   {
     question: "Can I participate in multiple events?",
-    answer: "[PLACEHOLDER: Updated answer for Shraddhanjali — to be provided by user]"
+    answer: "Yes. You may participate in multiple events, provided you meet the team and schedule requirements for each event."
   }
 ];
 

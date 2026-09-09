@@ -3,14 +3,11 @@ import classes from "./SingleEventPage.module.css";
 import { useParams, useNavigate } from "react-router-dom";
 import { eventsData } from "../../assets/eventsData";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark, faCartPlus } from "@fortawesome/free-solid-svg-icons";
-import { useCart } from "../../context/CartContext";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const SingleEventPage = () => {
   const { eventId } = useParams();
   const navigate = useNavigate();
-  const { addToCart, isItemInCart } = useCart();
-  const [gyrationCategory, setGyrationCategory] = React.useState("10"); // Default to 1-10 members
 
   useEffect(() => {
     // Lock background scrolling when modal opens
@@ -37,18 +34,19 @@ const SingleEventPage = () => {
     name,
     image,
     description,
+    rules,
     prizes,
-    type,
     minMembers,
     maxMembers,
     price,
+    feePerPerson,
     contactInfo,
     location,
+    mapUrl,
     date,
     link,
     onSpot,
     disqualification,
-    rulebookLink, // Destructuring rulebookLink
     isSpecial,
   } = requiredEvent;
 
@@ -65,20 +63,11 @@ const SingleEventPage = () => {
           <div className={classes.posterWrapper}>
             <img className={classes.eventPoster} src={image} alt={name} loading="lazy" decoding="async" />
           </div>
-          {/* Rulebook Download Button */}
-          {rulebookLink && (
-            <div className={classes.rulebookBtnContainer}>
-              <a
-                href={rulebookLink}
-                download
-                target="_blank"
-                rel="noreferrer noopener"
-                className={classes.downloadBtn}
-              >
-                Download Rule Book
-              </a>
-            </div>
-          )}
+          <div className={classes.rulebookBtnContainer}>
+            <button type="button" className={`${classes.downloadBtn} ${classes.disabledDownload}`} disabled>
+              Download Brochure · Coming Soon
+            </button>
+          </div>
         </div>
 
         <div className={classes.col2}>
@@ -91,37 +80,30 @@ const SingleEventPage = () => {
 
           <div className={classes.rowcol}>
             <div className={classes.sectionWrap}>
-              <h2 className={classes.heading}>Team/Individual</h2>
-              <p className={classes.content}>
-                {type === 'team_fixed' || type === 'team' ? `Team (${minMembers}-${maxMembers} members)` : 'Individual'}
-              </p>
+              <h2 className={classes.heading}>Team Size</h2>
+              <p className={classes.content}>Min {minMembers} · Max Participants {maxMembers}</p>
             </div>
 
             <div className={classes.sectionWrap}>
               <h2 className={classes.heading}>Fees</h2>
 
-              {/* Gyration custom pricing dropdown selector */}
-              {requiredEvent.id === 9 ? (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  <select
-                    value={gyrationCategory}
-                    onChange={(e) => setGyrationCategory(e.target.value)}
-                    className={classes.gyrationSelect}
-                  >
-                    <option value="10">Up to 10 Members - ₹1000</option>
-                    <option value="20">11-20 Members - ₹1500</option>
-                  </select>
-                </div>
-              ) : (
-                <p className={classes.content}>{price === 0 ? 'Free' : `₹${price}`}</p>
-              )}
+              <p className={classes.content}>{feePerPerson ? `₹${feePerPerson} per person` : price === 0 ? 'Free' : `₹${price}`}</p>
             </div>
           </div>
+
+          {rules?.length > 0 && (
+            <div className={classes.sectionWrap}>
+              <h2 className={classes.heading}>Rules & Guidelines</h2>
+              <ul className={classes.list}>
+                {rules.map((rule, i) => <li key={i} className={classes.content}>{rule}</li>)}
+              </ul>
+            </div>
+          )}
 
           <div className={classes.rowcol}>
             <div className={classes.sectionWrap}>
               <h2 className={classes.heading}>Location</h2>
-              <p className={classes.content}>{location}</p>
+              {mapUrl ? <a href={mapUrl} target="_blank" rel="noreferrer noopener" className={classes.locationLink}>{location}<span>Open in Google Maps ↗</span></a> : <p className={classes.content}>{location}</p>}
             </div>
             <div className={classes.sectionWrap}>
               <h2 className={classes.heading}>Date & Time</h2>
@@ -163,11 +145,7 @@ const SingleEventPage = () => {
 
 
           <div className={classes.actionFooter}>
-            {![6, 15, 22, 23, 24].includes(requiredEvent.id) ? (
-              <p className={classes.soon} style={{ color: '#ff4d4f', fontWeight: 'bold', fontSize: '15px' }}>
-                Registrations for this event are currently paused due to the latest announcement. Please check the official notice above.
-              </p>
-            ) : (isSpecial && link !== "#") ? (
+            {(isSpecial && link !== "#") ? (
               link !== "" ? (
                 <a
                   href={link}
@@ -181,31 +159,8 @@ const SingleEventPage = () => {
                 <p className={classes.soon}>Registration will be open soon.</p>
               )
             ) : link !== "" ? (
-              <button
-                className={`${classes.addToCartBtn} ${isItemInCart(+eventId) ? classes.inCartBtn : ''}`}
-                onClick={() => {
-                  if (isItemInCart(+eventId)) return;
-
-                  // Handle Gyration's specific custom price pass-through
-                  let eventToAdd = { ...requiredEvent };
-                  if (requiredEvent.id === 9) {
-                    if (gyrationCategory === "10") {
-                      eventToAdd.price = 1000;
-                      eventToAdd.name = "Gyration (1-10 Members)";
-                      eventToAdd.maxMembers = 10;
-                    } else if (gyrationCategory === "20") {
-                      eventToAdd.price = 1500;
-                      eventToAdd.name = "Gyration (11-20 Members)";
-                      eventToAdd.maxMembers = 20;
-                    }
-                  }
-
-                  addToCart(eventToAdd);
-                }}
-                disabled={isItemInCart(+eventId)}
-              >
-                <FontAwesomeIcon icon={faCartPlus} className={classes.cartIcon} />
-                {isItemInCart(+eventId) ? "Added to Cart" : "Add to Cart"}
+              <button className={classes.registerBtn} onClick={() => navigate(`/register/${eventId}`)}>
+                Register for {name}
               </button>
             ) : onSpot !== "" ? (
               <p className={classes.soon}>Registration will be taken on spot!</p>

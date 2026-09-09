@@ -7,12 +7,10 @@ import { FiMenu } from "react-icons/fi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 
 import { HashLink as Link } from "react-router-hash-link";
 // import Dropdown from "./Dropdown";
 import GrabBitBtn from "../common/GrabBitBtn/GrabBitBtn";
-import { useCart } from "../../context/CartContext";
 import { siteStatus } from "../../config/siteStatus";
 
 const Scroll = require("react-scroll");
@@ -21,7 +19,6 @@ const Navbar = () => {
   const Drop = Scroll.Link;
   const [scrolled, isScrolled] = useState(false);
   const [mobile, setMobile] = useState(false);
-  const { cart, setIsCartOpen } = useCart();
 
   window.onscroll = () => {
     isScrolled(window.pageYOffset === 0 ? false : true);
@@ -143,15 +140,6 @@ const Navbar = () => {
             <li className={classes.navLink}>
               <NavItem to="contact">Contact</NavItem>
             </li>
-            <li className={classes.navLink}>
-              <button
-                onClick={() => setIsCartOpen(true)}
-                className={classes.cartLinkBtn}
-              >
-                <FontAwesomeIcon icon={faShoppingCart} style={{ marginRight: '8px' }} />
-                View Cart ({cart.length})
-              </button>
-            </li>
           </ul>
 
           <a
@@ -219,15 +207,6 @@ const Navbar = () => {
             </li>
             <li>
               <MobileNavItem to="contact">Contact</MobileNavItem>
-            </li>
-            <li>
-              <button
-                onClick={() => { setMobile(false); setIsCartOpen(true); }}
-                className={classes.cartLinkBtnMobile}
-              >
-                <FontAwesomeIcon icon={faShoppingCart} style={{ marginRight: '10px' }} />
-                View Cart ({cart.length})
-              </button>
             </li>
           </ul>
         </div>

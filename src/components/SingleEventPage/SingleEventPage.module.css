@@ -322,10 +322,6 @@
   box-shadow: 0 8px 25px rgba(255, 153, 51, 0.5);
 }
 
-.cartIcon {
-  font-size: 1.8rem;
-}
-
 .soon {
   color: #FFD700;
   font-size: 1.2rem;
@@ -402,3 +398,31 @@
     margin-bottom: 20px;
   }
 }
+
+.disabledDownload {
+  border: 0;
+  opacity: 0.58;
+  cursor: not-allowed;
+}
+
+.locationLink {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 1.6rem;
+  font-weight: 500;
+  line-height: 1.6;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+}
+
+.locationLink span {
+  color: #ffd700;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.locationLink:hover span { color: #ff9933; }

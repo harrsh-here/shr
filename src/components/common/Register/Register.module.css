@@ -1192,3 +1192,95 @@
     max-height: 350px;
   }
 }
+
+/* Shraddhanjali registration: a ceremonial maroon-and-gold form surface. */
+.pageContainer {
+  align-items: flex-start;
+  padding-top: 12rem;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(232, 163, 61, 0.17), transparent 30%),
+    radial-gradient(circle at 82% 86%, rgba(117, 13, 23, 0.35), transparent 36%),
+    linear-gradient(145deg, #1a0000 0%, #350307 54%, #160002 100%);
+  isolation: isolate;
+}
+
+.glassCard {
+  max-width: 76rem;
+  padding: 4.8rem;
+  background: linear-gradient(145deg, rgba(70, 5, 12, 0.94), rgba(35, 1, 5, 0.96));
+  border: 1px solid rgba(232, 163, 61, 0.62);
+  border-radius: 1.2rem;
+  box-shadow: 0 2rem 6rem rgba(0, 0, 0, 0.5), 0 0 5rem rgba(232, 163, 61, 0.09), inset 0 0 0 0.8rem rgba(255, 224, 150, 0.025);
+}
+
+.glassCard::before {
+  content: '';
+  position: absolute;
+  inset: 0.9rem;
+  border: 1px solid rgba(240, 194, 99, 0.18);
+  border-radius: 0.7rem;
+  pointer-events: none;
+}
+
+.title {
+  margin-bottom: 0.8rem;
+  font-family: 'Cinzel Decorative', 'Times New Roman', serif;
+  font-size: clamp(3rem, 4vw, 4.5rem);
+  font-weight: 700;
+  background: linear-gradient(135deg, #fff0c9, #f1c66d 52%, #7de8d7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow: none;
+}
+
+.formIntro {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 3.6rem;
+  color: rgba(255, 240, 202, 0.76);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.closeBtn { background: rgba(232, 163, 61, 0.08); border-color: rgba(232, 163, 61, 0.42); color: #fff0c9; }
+.closeBtn:hover { background: #e8a33d; border-color: #f5cf7b; color: #2a0000; box-shadow: 0 0.5rem 1.5rem rgba(232, 163, 61, 0.35); }
+.label, .teamLabel, .paymentLabel, .totalLabel, .uploadTitle { color: #fff0c9; }
+.asterisk, .mandatory { color: #f2c26d; }
+.input, .select, .teamInput { background: rgba(20, 0, 3, 0.44); border-color: rgba(232, 163, 61, 0.3); }
+.input:focus, .select:focus, .teamInput:focus { border-color: #e8a33d; background: rgba(232, 163, 61, 0.07); box-shadow: 0 0 0 0.4rem rgba(232, 163, 61, 0.12); }
+.select option { background: #3b0508; }
+.divider { background: linear-gradient(90deg, transparent, rgba(240, 194, 99, 0.58), transparent); }
+.sectionTitle { color: #fff0c9; font-family: 'Cinzel', serif; font-size: 2.25rem; }
+.titleUnderline { background: linear-gradient(90deg, transparent, #f0c263, #ffd700, transparent); }
+.eventCard, .paymentWrapper { background: rgba(48, 2, 7, 0.58); border-color: rgba(232, 163, 61, 0.26); }
+.eventCard:hover { background: rgba(86, 7, 14, 0.72); }
+.eventPrice, .upiId span, .paymentAmount { color: #f4cb76; }
+.addMemberBtn { background: rgba(232, 163, 61, 0.08); border-color: #e8a33d; color: #ffe0a0; }
+.addMemberBtn:hover, .upiButton:hover { background: rgba(232, 163, 61, 0.18); }
+.totalContainer, .qrContainer { background: rgba(20, 0, 3, 0.32); border-color: rgba(240, 194, 99, 0.2); }
+.totalValue, .paymentAmount { background: linear-gradient(135deg, #fff0c9, #f4cb76); -webkit-background-clip: text; background-clip: text; }
+.upiButton { background: rgba(232, 163, 61, 0.08); border-color: rgba(232, 163, 61, 0.5); color: #ffe0a0; }
+.submitButton { background: linear-gradient(135deg, #f1c56b, #d9943d); color: #2a0000; box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.25); }
+.submitButton:hover:not(.disabledBtn) { box-shadow: 0 1.5rem 2.5rem rgba(0, 0, 0, 0.34), 0 0 2rem rgba(241, 197, 107, 0.2); }
+.disabledBtn { background: rgba(232, 163, 61, 0.13); color: rgba(255, 240, 202, 0.4); }
+
+.formMotion { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.formMotion span { position: absolute; width: 0.7rem; height: 0.7rem; border-radius: 50%; background: #f2c26d; box-shadow: 0 0 1.4rem #f2c26d; opacity: 0; animation: goldDrift 9s linear infinite; }
+.formMotion span:nth-child(1) { left: 8%; animation-delay: 0s; }
+.formMotion span:nth-child(2) { left: 26%; animation-delay: -2s; transform: scale(0.6); }
+.formMotion span:nth-child(3) { left: 52%; animation-delay: -5s; transform: scale(1.3); }
+.formMotion span:nth-child(4) { left: 74%; animation-delay: -3s; transform: scale(0.75); }
+.formMotion span:nth-child(5) { left: 91%; animation-delay: -7s; transform: scale(0.5); }
+.formRangoli { position: fixed; z-index: 0; right: 6vw; top: 18vh; color: rgba(232, 163, 61, 0.18); font-size: clamp(15rem, 25vw, 32rem); line-height: 1; animation: rangoliTurn 38s linear infinite; pointer-events: none; }
+@keyframes goldDrift { 0% { transform: translateY(105vh) scale(var(--size, 1)); opacity: 0; } 12%, 82% { opacity: 0.6; } 100% { transform: translateY(-12vh) translateX(3rem) scale(var(--size, 1)); opacity: 0; } }
+@keyframes rangoliTurn { to { transform: rotate(360deg); } }
+
+@media screen and (max-width: 600px) {
+  .pageContainer { padding: 9rem 1.2rem 3rem; }
+  .glassCard { padding: 3.6rem 2rem; }
+  .formIntro { font-size: 1rem; line-height: 1.6; }
+  .sectionTitle { font-size: 1.8rem; }
+}

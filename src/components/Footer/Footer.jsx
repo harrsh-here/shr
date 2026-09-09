@@ -1,7 +1,6 @@
 import React from "react";
-import sambhavLogo from "../../assets/Logo.svg";
-
 import classes from "./Footer.module.css";
+import CulturalOrnament from "../common/CulturalOrnament/CulturalOrnament";
 
 // const sambhavitwitter=''
 
@@ -14,15 +13,14 @@ const grabbiturl = "#";
 const Footer = () => {
   return (
     <div className={classes.footer_outer}>
+      <CulturalOrnament type="paisley" className={classes.footerPaisley} />
       <div className={classes.footer}>
         <div className={classes.footer_first}>
           <div className={classes.footer_sambhav_image_div}>
             <div>
-              <img
-                className={classes.footer_sambhav_image}
-                src={sambhavLogo}
-                alt="sambhavLogo"
-              ></img>
+              <p className={classes.footerBrand}>
+                Shraddhanjali <span>'26</span>
+              </p>
             </div>
             <div>
               {/* <h1 className={classes.footer_sambhav}>SAMBHAV'23</h1> */}
@@ -48,7 +46,7 @@ const Footer = () => {
 
             </div>
           </div>
-          <p className={classes.footer_sambhav_description}>
+          <p className={`${classes.footer_sambhav_description} ${classes.footerFestivalName}`}>
             Shraddhanjali '26
           </p>
           <div className={classes.footer_social_item}>

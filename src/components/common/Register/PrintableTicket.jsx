@@ -25,7 +25,7 @@ const PrintableTicket = forwardRef(({ registrationData, eventsList }, ref) => {
                         <div className={classes.eventDetails}>
                             {event.location && <p><strong>Venue:</strong> {event.location}</p>}
                             {event.date && <p><strong>Date & Time:</strong> {event.date}</p>}
-                            <p><strong>Type:</strong> {event.type === 'team_fixed' ? 'Team Event' : 'Individual Event'}</p>
+                            <p><strong>Type:</strong> Team Event</p>
                         </div>
 
                         <div className={classes.divider}></div>

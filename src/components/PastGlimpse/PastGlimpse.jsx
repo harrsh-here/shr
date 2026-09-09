@@ -3,6 +3,7 @@ import classes from './PastGlimpse.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
+// TODO: Replace these old-event images with the new Past Glimpses photos when supplied by the user.
 // Dynamically import all images from the pastglimpse folder using Webpack's require.context
 const req = require.context('../../assets/pastglimpse', false, /.*\.jpe?g$/);
 const originalImages = req.keys().map(req);

@@ -1,0 +1,38 @@
+.accent {
+  position: absolute;
+  top: 50%;
+  width: 21rem;
+  color: #e8a33d;
+  opacity: 0.32;
+  pointer-events: none;
+  transform: translateY(-50%);
+  animation: accentFloat 9s ease-in-out infinite;
+}
+
+.accent svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.left { left: -10rem; }
+.right { right: -10rem; transform: translateY(-50%) scaleX(-1); animation-delay: -4.5s; }
+
+@keyframes accentFloat {
+  0%, 100% { margin-top: 0; }
+  50% { margin-top: -1.2rem; }
+}
+
+@media screen and (max-width: 768px) {
+  .accent {
+    width: 14rem;
+    opacity: 0.2;
+  }
+
+  .left { left: -8rem; }
+  .right { right: -8rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .accent { animation: none; }
+}
