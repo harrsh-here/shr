@@ -7,6 +7,8 @@ import { getEventLifecycle } from "../../config/eventLifecycle";
 // Event starts: 19 Sep 2026 6:30 PM IST
 const EVENT_START = new Date("2026-09-19T18:30:00+05:30").getTime();
 
+
+
 const Hero = () => {
   const [countDays, setDays] = useState(0);
   const [countHours, setHours] = useState(0);
@@ -14,7 +16,13 @@ const Hero = () => {
   const [countSeconds, setSeconds] = useState(0);
   const [showHindi, setShowHindi] = useState(false);
   const [phase, setPhase] = useState(getEventLifecycle);
+const [showScrollCue, setShowScrollCue] = useState(true);
 
+useEffect(() => {
+  const onScroll = () => setShowScrollCue(window.scrollY < 40);
+  window.addEventListener("scroll", onScroll, { passive: true });
+  return () => window.removeEventListener("scroll", onScroll);
+}, []);
   // Countdown timer — synced to the event cards: 19 September 2026, 6:30 PM IST.
   useEffect(() => {
     const interval = setInterval(() => {
@@ -175,6 +183,13 @@ const Hero = () => {
           </div>
         )}
       </div>
+
+        {showScrollCue && (
+        <div className={classes.scrollCue} aria-hidden="true">
+          <span className={classes.scrollCueText}>Scroll</span>
+          <span className={classes.scrollCueIcon}></span>
+        </div>
+      )}
     </section>
   );
 };

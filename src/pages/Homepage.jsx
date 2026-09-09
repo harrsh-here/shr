@@ -22,11 +22,11 @@ const Homepage = () => {
       <Hero />
       <EventStats />
       <SectionDivider />
-      <About />
-      <SectionDivider />
       <div id="events">
         <MainEvents />
       </div>
+      <SectionDivider />
+      <About />
       <SectionDivider />
       <Contact />
       <SectionDivider />

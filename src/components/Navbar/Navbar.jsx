@@ -98,32 +98,20 @@ const Navbar = () => {
       )}
       <div className={classes.elements}>
         <div className={classes.logobox}>
-          <Drop
-            activeClass={classes.active}
-            to="home"
-            spy={true}
-            smooth={true}
-            offset={-100}
-            duration={600}
-          >
-            <Link to="/">
-              <span className={classes.brand} aria-label="Shraddhanjali 2026">
-                <span className={classes.brandTitle}>
-                  Shraddhanjali <span className={classes.brandYear}>'26</span>
-                </span>
-                <span className={classes.brandTagline}>...a tribute to Late Er. Shri T.K. Agarwal Ji</span>
+          <Link to="/" aria-label="Go to homepage">
+            <span className={classes.brand} aria-label="Shraddhanjali 2026">
+              <span className={classes.brandTitle}>
+                Shraddhanjali <span className={classes.brandYear}>'26</span>
               </span>
-            </Link>
-          </Drop>
+              <span className={classes.brandTagline}>...a tribute to Late Er. Shri T.K. Agarwal Ji</span>
+            </span>
+          </Link>
         </div>
 
         <div className={classes.navbox}>
           <ul className={classes.nav}>
             <li className={classes.navLink}>
               <NavItem to="home">Home</NavItem>
-            </li>
-            <li className={classes.navLink}>
-              <NavItem to="about">About</NavItem>
             </li>
             <li className={classes.navLink}>
               <NavItem to="events">
@@ -135,6 +123,9 @@ const Navbar = () => {
                   fade
                 />
               </NavItem>
+            </li>
+            <li className={classes.navLink}>
+              <NavItem to="about">About</NavItem>
             </li>
             <li className={classes.navLink}>
               <NavItem to="contact">Contact</NavItem>
@@ -191,9 +182,6 @@ const Navbar = () => {
               <MobileNavItem to="home">Home</MobileNavItem>
             </li>
             <li>
-              <MobileNavItem to="about">About</MobileNavItem>
-            </li>
-            <li>
               <MobileNavItem to="events">
                 Events
                 <FontAwesomeIcon
@@ -203,6 +191,9 @@ const Navbar = () => {
                   fade
                 />
               </MobileNavItem>
+            </li>
+            <li>
+              <MobileNavItem to="about">About</MobileNavItem>
             </li>
             <li>
               <MobileNavItem to="contact">Contact</MobileNavItem>

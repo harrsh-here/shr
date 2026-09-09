@@ -51,7 +51,7 @@ const Faq = () => {
       <div className={classes.faq}>
         {questions.map((ques, i) => {
           return (
-            <div className={classes.single} onClick={() => toggle(i)}>
+            <div className={classes.single} key={i} onClick={() => toggle(i)}>
               <div className={classes.question}>{ques.question}</div>
               <div
                 className={`${clicked === i ? classes.answer : classes.noAnswer
