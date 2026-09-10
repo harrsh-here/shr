@@ -11,14 +11,15 @@
  *     - Execute as: Me
  *     - Who has access: Anyone
  *  6. Copy the resulting /exec URL
- *  7. Paste it into: src/config/registrationConfig.js → GOOGLE_SCRIPT_URL
+ *  7. Put it in the frontend env as REACT_APP_GOOGLE_SCRIPT_URL
+ *     (.env.local for dev, Vercel project settings for production)
  *
  * COLUMNS per tab (added automatically by doPost):
  *   Timestamp | Event | Leader Name | Leader Email | Leader Phone |
  *   Leader College | Leader Year | Leader Branch | Leader Roll No |
  *   Member2 Name | Member2 Email | Member2 Phone | Member2 College |
  *   Member2 Year | Member2 Branch | Member2 Roll No |
- *   ... (same 7 fields repeated for Members 3–15) ...
+ *   ... (same 7 fields repeated for Members 3–20) ...
  *   Total Members | Total Amount | UTR/Transaction ID |
  *   Status | Rejection Reason
  *
@@ -26,6 +27,10 @@
  * NOTE: For Rejected rows, fill the "Rejection Reason" column BEFORE changing Status to "Rejected"
  *       so the onEdit trigger can include it in the email.
  */
+
+// Largest team size across all events (Don-De-Mode allows 20).
+// Bump this if any event's maxMembers ever exceeds it.
+var MAX_MEMBERS = 20;
 
 // ─── doPost: receives form data and appends to the correct sheet tab ──────────
 function doPost(e) {
@@ -48,7 +53,7 @@ function doPost(e) {
         "Leader Name", "Leader Email", "Leader Phone",
         "Leader College", "Leader Year", "Leader Branch", "Leader Roll No"
       ];
-      for (var m = 2; m <= 15; m++) {
+      for (var m = 2; m <= MAX_MEMBERS; m++) {
         headers.push(
           "Member" + m + " Name", "Member" + m + " Email", "Member" + m + " Phone",
           "Member" + m + " College", "Member" + m + " Year",
@@ -73,8 +78,8 @@ function doPost(e) {
       leader.college, leader.year, leader.branch, leader.rollNo
     ];
 
-    // Fill member columns (up to 14 additional members = 15 total)
-    for (var i = 0; i < 14; i++) {
+    // Fill member columns (leader + MAX_MEMBERS-1 additional members)
+    for (var i = 0; i < MAX_MEMBERS - 1; i++) {
       var member = members[i] || {};
       row.push(
         member.name    || "",
@@ -194,4 +199,13 @@ function onEdit(e) {
   if (leaderEmail) {
     GmailApp.sendEmail(leaderEmail, subject, body);
   }
+}
+
+// ─── doGet: health check ─────────────────────────────────────────────────────
+// Open the /exec URL in a browser after deploying. Seeing this JSON means the
+// deployment is live and publicly reachable.
+function doGet() {
+  return ContentService
+    .createTextOutput(JSON.stringify({ status: "ok", service: "Shraddhanjali 2026 registrations" }))
+    .setMimeType(ContentService.MimeType.JSON);
 }

@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { eventsData } from '../../../assets/eventsData';
 import { sendRegistrationEmails } from '../../../services/emailNotifications';
-import { GOOGLE_SCRIPT_URL, UPI_ID, QR_CODE_PLACEHOLDER } from '../../../config/registrationConfig';
+import { GOOGLE_SCRIPT_URL, IS_BACKEND_CONFIGURED, UPI_ID, QR_CODE_PLACEHOLDER } from '../../../config/registrationConfig';
 import classes from './Register.module.css';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -195,18 +195,32 @@ const Register = () => {
         timestamp: new Date().toISOString(),
       };
 
-      // POST to Google Apps Script (placeholder URL until user deploys)
-      if (GOOGLE_SCRIPT_URL !== 'PLACEHOLDER_GOOGLE_SCRIPT_URL') {
+      if (IS_BACKEND_CONFIGURED) {
+        // NOTE: Content-Type MUST stay text/plain. Any other value makes this a
+        // "non-simple" request, so the browser fires a CORS preflight OPTIONS
+        // that Apps Script cannot answer and the submission fails. Apps Script
+        // still reads the raw JSON body via e.postData.contents.
         const res = await fetch(GOOGLE_SCRIPT_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify(payload),
+          redirect: 'follow',
         });
-        const result = await res.json();
+        if (!res.ok) throw new Error(`Server responded with ${res.status}`);
+
+        const raw = await res.text();
+        let result;
+        try {
+          result = JSON.parse(raw);
+        } catch {
+          throw new Error('Unexpected response from the registration server. Please try again.');
+        }
         if (result.status !== 'success') throw new Error(result.message || 'Submission failed');
+      } else if (process.env.NODE_ENV === 'production') {
+        throw new Error('Registrations are not open yet. Please try again shortly or contact the coordinators.');
       } else {
-        // Dev mode: log to console, continue to success screen
-        console.info('[DEV] Apps Script URL is a placeholder. Payload:', payload);
+        // Dev mode without a deployed backend: log the payload and continue.
+        console.info('[DEV] REACT_APP_GOOGLE_SCRIPT_URL is not set. Payload:', payload);
       }
 
       // Fire confirmation email (non-blocking)

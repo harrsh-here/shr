@@ -1,17 +1,22 @@
 // ─── Registration Backend Config ─────────────────────────────────────────────
-// PLACEHOLDER: Replace GOOGLE_SCRIPT_URL with the deployed Apps Script Web App
-// URL after the user:
-//   1. Creates the Google Sheet ("Shraddhanjali 2026 Registrations")
-//   2. Opens Extensions → Apps Script
-//   3. Pastes the code from /project-docs/apps-script-backend.gs
-//   4. Deploys as Web App (Execute as: Me, Who has access: Anyone)
-//   5. Copies the resulting /exec URL here
+// The Apps Script Web App URL is read from the environment so it never has to be
+// committed. Create a `.env.local` (dev) and set the same key in your Vercel
+// project settings (prod):
+//
+//   REACT_APP_GOOGLE_SCRIPT_URL=https://script.google.com/macros/s/AKfy.../exec
+//
+// See /project-docs/apps-script-backend.gs for the deployment steps.
 
-export const GOOGLE_SCRIPT_URL = "PLACEHOLDER_GOOGLE_SCRIPT_URL";
+export const GOOGLE_SCRIPT_URL =
+  process.env.REACT_APP_GOOGLE_SCRIPT_URL || "PLACEHOLDER_GOOGLE_SCRIPT_URL";
 
-// PLACEHOLDER: Replace with your actual UPI ID once confirmed
-export const UPI_ID = "PLACEHOLDER@upi";
+export const IS_BACKEND_CONFIGURED =
+  Boolean(GOOGLE_SCRIPT_URL) && GOOGLE_SCRIPT_URL !== "PLACEHOLDER_GOOGLE_SCRIPT_URL";
 
-// PLACEHOLDER: Replace with the actual UPI QR code image path once supplied
-// Drop the image into src/assets/ and update this import
-export const QR_CODE_PLACEHOLDER = null; // set to imported image when ready
+// UPI collection details shown on the payment step.
+export const UPI_ID = process.env.REACT_APP_UPI_ID || "PLACEHOLDER@upi";
+export const UPI_PAYEE_NAME = process.env.REACT_APP_UPI_PAYEE_NAME || "Shraddhanjali 2026";
+
+// Drop the organiser's UPI QR image into src/assets/ and import it here.
+// e.g. import upiQr from "../assets/upi-qr.png";  ->  export const QR_CODE_PLACEHOLDER = upiQr;
+export const QR_CODE_PLACEHOLDER = null;
