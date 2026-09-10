@@ -32,9 +32,24 @@
 // Bump this if any event's maxMembers ever exceeds it.
 var MAX_MEMBERS = 20;
 
+// Registrations open 12 September 2026, 6:00 PM IST. The site hides the form
+// until then, but that is only a UI state — anyone can POST to this URL
+// directly, so the window is enforced here as well. Keep this in sync with
+// src/config/registrationWindow.js.
+var REGISTRATION_OPENS_AT = new Date("2026-09-12T18:00:00+05:30").getTime();
+
 // ─── doPost: receives form data and appends to the correct sheet tab ──────────
 function doPost(e) {
   try {
+    if (new Date().getTime() < REGISTRATION_OPENS_AT) {
+      return ContentService
+        .createTextOutput(JSON.stringify({
+          status: "error",
+          message: "Registrations are not open yet."
+        }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
     var data = JSON.parse(e.postData.contents);
 
     var ss = SpreadsheetApp.getActiveSpreadsheet();

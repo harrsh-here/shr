@@ -381,6 +381,47 @@
   box-shadow: 0 8px 24px rgba(232, 163, 61, 0.25);
 }
 
+/* Locked state: same silhouette as .registerBtn so the layout does not shift
+   when registrations open, but visibly inert and not interactive. */
+.lockedWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.registerBtnLocked {
+  background: rgba(30, 30, 34, 0.7);
+  color: rgba(220, 220, 225, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  font-size: 1.5rem;
+  font-weight: 700;
+  padding: 13px 30px;
+  border-radius: 50px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: not-allowed;
+  font-family: 'Inter', sans-serif;
+  /* Tabular figures stop the countdown jittering as digits change. */
+  font-variant-numeric: tabular-nums;
+}
+
+.lockIcon {
+  font-size: 1.4rem;
+  color: rgba(232, 163, 61, 0.8);
+}
+
+.lockedNote {
+  font-size: 1.3rem;
+  color: rgba(255, 215, 0, 0.75);
+  text-align: center;
+  letter-spacing: 0.03em;
+}
+
 .soon {
   color: #FFD700;
   font-size: 1.2rem;

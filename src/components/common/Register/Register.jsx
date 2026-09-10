@@ -4,8 +4,10 @@ import { eventsData } from '../../../assets/eventsData';
 import { sendRegistrationEmails } from '../../../services/emailNotifications';
 import { GOOGLE_SCRIPT_URL, IS_BACKEND_CONFIGURED, UPI_ID, QR_CODE_PLACEHOLDER } from '../../../config/registrationConfig';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faIdCard } from '@fortawesome/free-solid-svg-icons';
+import { faIdCard, faLock } from '@fortawesome/free-solid-svg-icons';
 import { parseContact, telHref } from '../../../utils/contactInfo';
+import useRegistrationCountdown from '../../../hooks/useRegistrationCountdown';
+import { OPENS_AT_LABEL } from '../../../config/registrationWindow';
 import classes from './Register.module.css';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -147,6 +149,43 @@ const SuccessScreen = ({ event, leaderEmail, leaderName }) => (
   </div>
 );
 
+const pad = (n) => String(n).padStart(2, '0');
+
+// Shown in place of the form until registrations open. The form is never
+// rendered while locked, so reaching /register/:id directly by URL cannot be
+// used to submit early.
+const LockedScreen = ({ event, countdown, onBack }) => (
+  <div className={classes.successWrap}>
+    <div className={classes.lockedBadge}>
+      <FontAwesomeIcon icon={faLock} /> Registrations Locked
+    </div>
+    <h1 className={classes.successHeading}>Opening Soon</h1>
+    <p className={classes.successBody}>
+      Registration for <strong>{event.name}</strong> hasn't opened yet. It goes live on{' '}
+      <strong>{OPENS_AT_LABEL}</strong> — this page will unlock automatically, so you can
+      keep it open.
+    </p>
+
+    <div className={classes.countdown}>
+      {[
+        { value: countdown.days,    label: 'Days' },
+        { value: countdown.hours,   label: 'Hours' },
+        { value: countdown.minutes, label: 'Minutes' },
+        { value: countdown.seconds, label: 'Seconds' },
+      ].map(({ value, label }) => (
+        <div key={label} className={classes.countdownUnit}>
+          <span className={classes.countdownValue}>{pad(value)}</span>
+          <span className={classes.countdownLabel}>{label}</span>
+        </div>
+      ))}
+    </div>
+
+    <button type="button" className={classes.backHome} onClick={onBack}>
+      ← Back to Event Details
+    </button>
+  </div>
+);
+
 // ─── Main Register Component ──────────────────────────────────────────────────
 const Register = () => {
   const navigate = useNavigate();
@@ -160,6 +199,7 @@ const Register = () => {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const countdown = useRegistrationCountdown();
 
   // Redirect if event not found
   useEffect(() => {
@@ -274,6 +314,16 @@ const Register = () => {
   };
 
   if (!event) return null;
+
+  // Gate the whole form, not just the submit button: a visitor who types the
+  // URL directly gets the countdown, never the form.
+  if (!countdown.open) {
+    return (
+      <div className={classes.page}>
+        <LockedScreen event={event} countdown={countdown} onBack={() => navigate(`/events/${event.id}`)} />
+      </div>
+    );
+  }
 
   if (submitted) {
     return (

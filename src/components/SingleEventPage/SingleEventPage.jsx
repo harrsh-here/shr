@@ -1,14 +1,19 @@
 import { useEffect } from "react";
 import classes from "./SingleEventPage.module.css";
 import { parseContact, telHref } from "../../utils/contactInfo";
+import useRegistrationCountdown from "../../hooks/useRegistrationCountdown";
+import { OPENS_AT_LABEL } from "../../config/registrationWindow";
 import { useParams, useNavigate } from "react-router-dom";
 import { eventsData } from "../../assets/eventsData";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark, faIdCard } from "@fortawesome/free-solid-svg-icons";
+import { faXmark, faIdCard, faLock } from "@fortawesome/free-solid-svg-icons";
+
+const pad = (n) => String(n).padStart(2, "0");
 
 const SingleEventPage = () => {
   const { eventId } = useParams();
   const navigate = useNavigate();
+  const registration = useRegistrationCountdown();
 
   useEffect(() => {
     // Lock background scrolling when modal opens
@@ -195,9 +200,21 @@ const SingleEventPage = () => {
                 <p className={classes.soon}>Registration will be open soon.</p>
               )
             ) : link !== "" ? (
-              <button className={classes.registerBtn} onClick={() => navigate(`/register/${eventId}`)}>
-                Register for {name}
-              </button>
+              registration.open ? (
+                <button className={classes.registerBtn} onClick={() => navigate(`/register/${eventId}`)}>
+                  Register for {name}
+                </button>
+              ) : (
+                <div className={classes.lockedWrap}>
+                  <button className={classes.registerBtnLocked} disabled aria-live="polite">
+                    <FontAwesomeIcon icon={faLock} className={classes.lockIcon} />
+                    Opens in {registration.days}d {pad(registration.hours)}h {pad(registration.minutes)}m {pad(registration.seconds)}s
+                  </button>
+                  <p className={classes.lockedNote}>
+                    Registrations open on {OPENS_AT_LABEL}.
+                  </p>
+                </div>
+              )
             ) : onSpot !== "" ? (
               <p className={classes.soon}>Registration will be taken on spot!</p>
             ) : (

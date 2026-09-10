@@ -671,3 +671,66 @@
   color: #D6F0DE;
   border-color: #D6F0DE;
 }
+
+/* ── Locked state (registrations not yet open) ── */
+.lockedBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 20px;
+  padding: 0.5rem 1.8rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: rgba(226, 226, 230, 0.8);
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+
+.countdown {
+  display: flex;
+  justify-content: center;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  margin: 0 auto 1rem;
+}
+
+.countdownUnit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 8.5rem;
+  padding: 1.6rem 1.2rem;
+  background: rgba(28, 20, 16, 0.6);
+  border: 1px solid rgba(232, 163, 61, 0.28);
+  border-radius: 4px 14px 4px 14px;
+}
+
+.countdownValue {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 3.2rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #E8A33D;
+  /* Tabular figures keep the boxes from twitching as the seconds tick. */
+  font-variant-numeric: tabular-nums;
+}
+
+.countdownLabel {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(240, 220, 180, 0.6);
+}
+
+@media (max-width: 480px) {
+  .countdown { gap: 0.8rem; }
+  .countdownUnit { min-width: 6.8rem; padding: 1.2rem 0.8rem; }
+  .countdownValue { font-size: 2.5rem; }
+}
