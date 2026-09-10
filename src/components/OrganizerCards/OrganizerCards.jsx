@@ -17,7 +17,7 @@ import dramaImg from "../../assets/club logos/Arya_Drama_Club.jpg";
 import dronesImg from "../../assets/club logos/Arya_Drones_Club - Jaideep Chouhan.jpeg";
 import ecoWarriorsImg from "../../assets/club logos/Arya_Eco_Warrior_Club.jpg";
 import esportsImg from "../../assets/club logos/Arya_E-Sports_club.jpeg";
-import goKartImg from "../../assets/club logos/GOKART LOGO (1) - Daud Ibrahim.png";
+import goKartImg from "../../assets/club logos/GOKART LOGO (1) - Daud Ibrahim.jpg";
 import movieImg from "../../assets/club logos/Arya_Movie_Club.jpg";
 import scienceTechnologyImg from "../../assets/club logos/Arya_Science&Technology.png";
 import skillDevelopmentImg from "../../assets/club logos/Arya Skill development club - Vaidik Nama.jpg";
@@ -25,6 +25,8 @@ import socialActivitiesImg from "../../assets/club logos/Arya Social Activity Cl
 import carromImg from "../../assets/club logos/Arya_Carrom_Club.jpg";
 import kabaddiImg from "../../assets/club logos/Arya_Kabaddi_Club.jpg";
 import lincomImg from "../../assets/club logos/Arya_Lincom_Club.jpg";
+import intelverseImg from "../../assets/club logos/Arya_Intelverse_IOT_Club.jpg";
+import artCraftImg from "../../assets/club logos/Arya_Art_and_Craft_Club.jpg";
 import SideAccent from "../common/SideAccent/SideAccent";
 import FestivalSprite from "../common/FestivalSprite/FestivalSprite";
 import collegeLogo from "../../assets/collegeLogo.png";
@@ -41,6 +43,7 @@ const clubs = [
     { name: "Arya Green Energy Club",         img: greenEnergyImg },
     { name: "Arya Table Tennis Club",         img: tableTennisImg },
     // ── Remaining (alphabetical) ─────────────────────────────────────────
+    { name: "Arya Art & Craft Club",           img: artCraftImg },
     { name: "Arya Automation Club",           img: automationImg },
     { name: "Arya Basketball Club",           img: basketballImg },
     { name: "Arya Carrom Club",               img: carromImg },
@@ -50,6 +53,7 @@ const clubs = [
     { name: "Arya Eco Warriors Club",         img: ecoWarriorsImg },
     { name: "Arya E-Sports Club",             img: esportsImg },
     { name: "Arya Go-Kart Club",              img: goKartImg },
+    { name: "Arya Intelverse (IoT) Club",     img: intelverseImg },
     { name: "Arya Kabaddi Club",              img: kabaddiImg },
     { name: "Arya Lincom Club",               img: lincomImg },
     { name: "Arya Movie Club",                img: movieImg },
