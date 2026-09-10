@@ -168,8 +168,8 @@ const Footer = () => {
             <div>
               <p style={{ fontSize: '14px', lineHeight: '1.4' }}>
                 For website related queries contact <br />
-                <a href="tel:8177904081" className={classes.footer_a_link}>
-                  Gopal Sharma : 8177904081
+                <a href="tel:+918177904081" className={classes.footer_a_link}>
+                  Gopal Sharma : +91 8177904081
                 </a>
               </p>
             </div>

@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { eventsData } from '../../../assets/eventsData';
 import { sendRegistrationEmails } from '../../../services/emailNotifications';
 import { GOOGLE_SCRIPT_URL, IS_BACKEND_CONFIGURED, UPI_ID, QR_CODE_PLACEHOLDER } from '../../../config/registrationConfig';
+import { parseContact, telHref } from '../../../utils/contactInfo';
 import classes from './Register.module.css';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -120,7 +121,20 @@ const SuccessScreen = ({ event, leaderEmail, leaderName }) => (
         Questions, or spotted a mistake in your details? The event coordinators are happy to help:
       </p>
       <ul className={classes.noteContactList}>
-        {event.contactInfo?.map((c, i) => <li key={i}>{c}</li>)}
+        {event.contactInfo?.map((c, i) => {
+          const { name, phone } = parseContact(c);
+          return (
+            <li key={i}>
+              {name}
+              {phone && (
+                <>
+                  {' — '}
+                  <a href={telHref(phone)} className={classes.phoneLink}>{phone}</a>
+                </>
+              )}
+            </li>
+          );
+        })}
       </ul>
 
       <p className={classes.noteFootnote}>

@@ -492,3 +492,18 @@
 }
 
 .locationLink:hover span { color: #ff9933; }
+
+/* Tap-to-call number inside Contact Info. */
+.phoneLink {
+  color: #FFD700;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.35);
+  transition: color 0.2s ease, border-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.phoneLink:hover,
+.phoneLink:focus-visible {
+  color: #FF9933;
+  border-color: #FF9933;
+}

@@ -36,7 +36,7 @@ export const eventsData = [
     contactInfo: [
       "Kavyā — +91 8000323035",
       "Anish — +91 8011393456",
-      "Param — +91 8619478634"
+      "Vaidik Nama — +91 9462243420"
     ],
     location: "Arya College of Engineering & I.T., Kukas, Jaipur",
     mapUrl: "https://maps.app.goo.gl/is9ex9H8gF7i2xP8A",

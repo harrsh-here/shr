@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import classes from "./SingleEventPage.module.css";
+import { parseContact, telHref } from "../../utils/contactInfo";
 import { useParams, useNavigate } from "react-router-dom";
 import { eventsData } from "../../assets/eventsData";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -151,9 +152,20 @@ const SingleEventPage = () => {
           {contactInfo && contactInfo.length > 0 && (
             <div className={classes.sectionWrap}>
               <h2 className={classes.heading}>Contact Info</h2>
-              {contactInfo?.map((contact, i) => (
-                <p key={i} className={classes.content}>{contact}</p>
-              ))}
+              {contactInfo?.map((contact, i) => {
+                const { name: contactName, phone } = parseContact(contact);
+                return (
+                  <p key={i} className={classes.content}>
+                    {contactName}
+                    {phone && (
+                      <>
+                        {' — '}
+                        <a href={telHref(phone)} className={classes.phoneLink}>{phone}</a>
+                      </>
+                    )}
+                  </p>
+                );
+              })}
             </div>
           )}
 

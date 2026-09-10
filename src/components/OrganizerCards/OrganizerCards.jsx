@@ -61,20 +61,42 @@ const clubs = [
     { name: "Arya Hackathon Club",            img: hackathonImg },
 ];
 
+// Marquee speed in pixels per second. Time-based rather than per-frame so the
+// carousel travels at the same visible speed on 60Hz and 120Hz displays.
+const SCROLL_SPEED = 27;
+
 const OrganizerCards = () => {
-    const carouselRef = useRef(null);
+    const trackRef = useRef(null);
 
     useEffect(() => {
+        const track = trackRef.current;
+        if (!track) return undefined;
+
+        let offset = 0;
+        let lastTime = 0;
         let frame;
-        const glide = () => {
-            if (carouselRef.current) {
-                carouselRef.current.scrollLeft += 0.45;
-                if (carouselRef.current.scrollLeft >= carouselRef.current.scrollWidth / 2) {
-                    carouselRef.current.scrollLeft = 0;
-                }
-            }
+
+        const glide = (now) => {
+            // Guard the first frame and tab-switches, where the gap since the
+            // previous frame can be arbitrarily large.
+            const delta = lastTime ? Math.min((now - lastTime) / 1000, 0.05) : 0;
+            lastTime = now;
+            offset += SCROLL_SPEED * delta;
+
+            // The club list is rendered twice; looping at the exact x-position
+            // where the second copy starts keeps the seam invisible. Measuring
+            // the element beats scrollWidth/2, which is half a flex gap short.
+            const loopStart = track.children[clubs.length];
+            const loopWidth = loopStart ? loopStart.offsetLeft : 0;
+            if (loopWidth > 0 && offset >= loopWidth) offset -= loopWidth;
+
+            // translate3d, not scrollLeft: scrollLeft is quantised to whole
+            // pixels on many devices, so the old sub-pixel increment rounded
+            // away to zero and the carousel sat still.
+            track.style.transform = `translate3d(${-offset}px, 0, 0)`;
             frame = requestAnimationFrame(glide);
         };
+
         frame = requestAnimationFrame(glide);
         return () => cancelAnimationFrame(frame);
     }, []);
@@ -97,8 +119,8 @@ const OrganizerCards = () => {
                 <h2 className={classes.title}>Arya Student Clubs</h2>
                 <div className={classes.divider}></div>
             </div>
-            <div className={classes.carousel} ref={carouselRef} aria-label="Arya Student Clubs">
-                <div className={classes.track}>
+            <div className={classes.carousel} aria-label="Arya Student Clubs">
+                <div className={classes.track} ref={trackRef}>
                 {[...clubs, ...clubs].map((club, i) => (
                     <div key={`${club.name}-${i}`} className={classes.card}>
                         <div className={classes.imgWrap}>
