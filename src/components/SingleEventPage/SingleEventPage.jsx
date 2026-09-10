@@ -159,6 +159,15 @@ const SingleEventPage = () => {
 
 
 
+          <div className={classes.idNotice}>
+            <span className={classes.idNoticeIcon}>🪪</span>
+            <p>
+              <strong>Carry a photo ID on event day.</strong> Every team member must bring their
+              college ID card or a government ID (Aadhaar, Driving Licence, etc.) for verification
+              at the reporting desk.
+            </p>
+          </div>
+
           <div className={classes.actionFooter}>
             {(isSpecial && link !== "#") ? (
               link !== "" ? (

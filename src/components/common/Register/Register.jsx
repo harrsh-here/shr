@@ -88,7 +88,7 @@ const MemberCard = ({ member, index, isLeader, canRemove, onChange, onRemove, er
 // ─── Success Screen ───────────────────────────────────────────────────────────
 const SuccessScreen = ({ event, leaderEmail, leaderName }) => (
   <div className={classes.successWrap}>
-    <div className={classes.successBadge}>✦ Verification Pending</div>
+    <div className={classes.successBadge}>✓ Verification Pending</div>
     <h1 className={classes.successHeading}>Registration Received</h1>
     <p className={classes.successBody}>
       Your team's registration for <strong>{event.name}</strong> has been received successfully.
@@ -96,19 +96,36 @@ const SuccessScreen = ({ event, leaderEmail, leaderName }) => (
       <strong>{leaderEmail}</strong> with the outcome — either confirming your registration or,
       if there's an issue, explaining the reason for rejection.
     </p>
-    <div className={classes.warningBanner}>
-      <span className={classes.warnIcon}>⚠</span>
-      <div>
-        <strong>Non-Refundable Reminder</strong>
+    <div className={classes.noteBox}>
+      <p className={classes.noteTitle}>What happens next</p>
+
+      <p className={classes.noteText}>
+        Our team will review your registration and payment details, and you'll hear back by email
+        at <strong>{leaderEmail}</strong>. This usually takes a day or two.
+      </p>
+      <p className={classes.noteText}>
+        If anything doesn't match up, we'll email you the reason so it can be sorted out quickly.
+      </p>
+
+      <div className={classes.idReminder}>
+        <span className={classes.idIcon}>🪪</span>
         <p>
-          If your registration is rejected due to incorrect or incomplete details, the reason will be
-          emailed to {leaderEmail} — but the registration fee will <strong>not</strong> be refunded.
-          If you believe there has been an error, contact the event coordinators:
+          <strong>Please carry a photo ID on event day.</strong> Every team member must bring their
+          college ID card or a government ID (Aadhaar, Driving Licence, etc.) for verification at
+          the reporting desk.
         </p>
-        <ul className={classes.contactList}>
-          {event.contactInfo?.map((c, i) => <li key={i}>{c}</li>)}
-        </ul>
       </div>
+
+      <p className={classes.noteText}>
+        Questions, or spotted a mistake in your details? The event coordinators are happy to help:
+      </p>
+      <ul className={classes.noteContactList}>
+        {event.contactInfo?.map((c, i) => <li key={i}>{c}</li>)}
+      </ul>
+
+      <p className={classes.noteFootnote}>
+        As noted during registration, the registration fee is non-refundable.
+      </p>
     </div>
     <a href="/" className={classes.backHome}>← Back to Home</a>
   </div>
@@ -273,6 +290,15 @@ const Register = () => {
               Fees will not be returned under any circumstances, including rejected registrations.
             </p>
           </div>
+        </div>
+
+        <div className={classes.idReminder}>
+          <span className={classes.idIcon}>🪪</span>
+          <p>
+            <strong>Carry a photo ID on event day.</strong> Every team member must bring their
+            college ID card or a government ID (Aadhaar, Driving Licence, etc.) for verification
+            at the reporting desk.
+          </p>
         </div>
 
         <form onSubmit={handleSubmit} noValidate>

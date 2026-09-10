@@ -277,6 +277,41 @@
   margin-bottom: 5px;
 }
 
+/* Photo-ID requirement, shown just above the register button so it is read
+   while deciding rather than after paying. Matches .sectionWrap's idiom but
+   uses a warm amber tint to set it apart from the ordinary detail sections. */
+.idNotice {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  margin-bottom: 25px;
+  padding: 15px 20px;
+  background: rgba(232, 163, 61, 0.09);
+  border: 1px solid rgba(232, 163, 61, 0.28);
+  border-left: 3px solid #E8A33D;
+  border-radius: 10px;
+}
+
+.idNoticeIcon {
+  font-size: 2.2rem;
+  line-height: 1.2;
+  flex-shrink: 0;
+}
+
+.idNotice p {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.65;
+  color: rgba(255, 240, 220, 0.9);
+  letter-spacing: 0.4px;
+}
+
+.idNotice strong {
+  color: #F0C07A;
+  font-weight: 700;
+}
+
 .actionFooter {
   margin-top: 30px;
   padding-top: 20px;

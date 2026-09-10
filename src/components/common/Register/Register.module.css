@@ -497,15 +497,15 @@
 
 .successBadge {
   display: inline-block;
-  background: rgba(255, 215, 0, 0.08);
-  border: 1px solid rgba(255, 215, 0, 0.38);
+  background: rgba(120, 180, 140, 0.1);
+  border: 1px solid rgba(143, 191, 159, 0.42);
   border-radius: 20px;
   padding: 0.5rem 1.8rem;
   font-family: 'Inter', sans-serif;
   font-size: 1.3rem;
   font-weight: 700;
   letter-spacing: 0.1em;
-  color: #FFD700;
+  color: #9FCFAF;
   text-transform: uppercase;
   margin-bottom: 2rem;
 }
@@ -547,6 +547,91 @@
   color: #FFD700;
 }
 
+/* ── Success: reassurance note ──
+   Deliberately separate from .warningBanner. That banner is still used on the
+   form itself to state the non-refundable terms BEFORE payment, where it should
+   stay firm; this box is what people see after paying, so it stays calm. */
+.noteBox {
+  text-align: left;
+  background: rgba(42, 74, 54, 0.55);
+  border: 1px solid rgba(143, 191, 159, 0.32);
+  border-left: 4px solid #6FA582;
+  box-shadow: 0 0 26px rgba(90, 160, 115, 0.1);
+  border-radius: 4px 14px 4px 14px;
+  padding: 2.2rem 2.4rem;
+  margin-bottom: 1.5rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.4rem;
+  line-height: 1.75;
+  color: rgba(226, 238, 228, 0.86);
+}
+
+.noteTitle {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #A8D6B6;
+  margin: 0 0 1.2rem;
+  letter-spacing: 0.02em;
+}
+
+.noteText {
+  margin: 0 0 1.2rem;
+}
+
+.noteText strong {
+  color: #C8E6D2;
+  font-weight: 600;
+}
+
+/* Photo-ID reminder: the one thing on this page that needs to survive until
+   event day, so it gets its own tint without turning into a warning. */
+.idReminder {
+  display: flex;
+  gap: 1.1rem;
+  align-items: flex-start;
+  background: rgba(232, 163, 61, 0.08);
+  border: 1px solid rgba(232, 163, 61, 0.28);
+  border-radius: 4px 12px 4px 12px;
+  padding: 1.3rem 1.5rem;
+  margin: 0 0 1.4rem;
+}
+
+.idIcon {
+  font-size: 1.9rem;
+  line-height: 1.2;
+  flex-shrink: 0;
+}
+
+.idReminder p {
+  margin: 0;
+  color: rgba(245, 226, 196, 0.9);
+}
+
+.idReminder strong {
+  color: #F0C07A;
+  font-weight: 700;
+}
+
+.noteContactList {
+  margin: 0 0 1.4rem 1.6rem;
+  list-style: disc;
+  color: rgba(200, 230, 210, 0.85);
+  font-size: 1.32rem;
+}
+
+.noteContactList li {
+  margin-bottom: 0.35rem;
+}
+
+.noteFootnote {
+  margin: 0;
+  padding-top: 1.2rem;
+  border-top: 1px solid rgba(143, 191, 159, 0.16);
+  font-size: 1.22rem;
+  color: rgba(210, 225, 212, 0.55);
+}
+
 /* ── Responsive ── */
 @media (max-width: 768px) {
   .page { padding: 8rem 1rem 5rem; }
@@ -556,6 +641,8 @@
   .qrBlock { flex-direction: column; align-items: center; }
   .upiInfo { text-align: center; }
   .memberCard { padding: 1.6rem 1.4rem 1.8rem; }
+  .noteBox { padding: 1.8rem 1.5rem; font-size: 1.32rem; }
+  .idReminder { padding: 1.1rem 1.2rem; }
 }
 
 @media (max-width: 480px) {

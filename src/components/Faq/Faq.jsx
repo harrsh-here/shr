@@ -13,7 +13,7 @@ const questions = [
   },
   {
     question: "Who can participate in the events?",
-    answer: "Students with a valid college ID are welcome to participate. Team requirements for each event are listed in its event details."
+    answer: "Students with a valid college ID are welcome to participate. Every member must carry their college ID card or a government ID (such as Aadhaar) for verification on the day of the event. Team requirements for each event are listed in its event details."
   },
   {
     question: "How do I register for Gyration or Don-De-Mode?",
@@ -26,6 +26,10 @@ const questions = [
   {
     question: "Is the registration fee refundable?",
     answer: "No. All registration fees for Shraddhanjali 2026 are strictly non-refundable, including in cases where a registration is not verified or approved. Please review all team and payment details carefully before submitting."
+  },
+  {
+    question: "What do we need to bring on the day of the event?",
+    answer: "Every team member must carry a valid photo ID — your college ID card, or a government ID such as Aadhaar, Driving Licence or Passport. IDs are checked at the reporting desk, and members without one may not be allowed to participate."
   },
   {
     question: "Can I participate in multiple events?",
