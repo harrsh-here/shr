@@ -75,3 +75,15 @@
   justify-content: center;
   margin-top: auto;
 }
+
+.prizePool {
+  margin: -0.4rem 0 1.4rem;
+  color: #ffd700;
+  font-family: 'Cinzel', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.045em;
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.75);
+}

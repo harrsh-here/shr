@@ -83,7 +83,7 @@
 .poster_link {
   display: block;
   text-decoration: none;
-  width: min(100%, 46rem);
+  width: min(100%, 35rem);
 }
 
 /* 3D tilt card — perspective set on the card, transform applied inline via JS */
@@ -100,6 +100,8 @@
   transition: box-shadow 0.35s ease, border-color 0.35s ease;
   transform-style: preserve-3d;
   will-change: transform;
+  display: flex;
+  flex-direction: column;
 }
 
 .poster_card:hover {
@@ -109,7 +111,9 @@
 
 .poster_img_wrapper {
   width: 100%;
-  height: 47rem;
+  aspect-ratio: 2 / 3;
+  height: auto;
+  background: #180104;
   overflow: hidden;
   border-radius: 10px;
   position: relative;
@@ -133,7 +137,7 @@
 .poster_img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   transition: transform 0.5s ease;
 }
 
@@ -150,7 +154,20 @@
   letter-spacing: 0.01em;
 }
 
-.eventDetails { padding: 2.2rem 1.4rem 1.4rem; }
+.prizePool {
+  margin: -0.35rem 0 1rem;
+  color: #ffd700;
+  font-family: 'Cinzel', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.eventDetails {
+  min-height: 23rem;
+  padding: 2.2rem 1.4rem 1.4rem;
+}
 
 .eventCategory { color: #e8a33d; font-family: 'Inter', sans-serif; font-size: 1.2rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
 
@@ -200,9 +217,7 @@
     gap: 20px;
   }
 
-  .poster_img_wrapper {
-    height: 41rem;
-  }
+  .poster_img_wrapper { aspect-ratio: 2 / 3; }
 }
 
 @media screen and (max-width: 480px) {
@@ -210,10 +225,6 @@
     flex-direction: column;
     align-items: center;
     gap: 30px;
-  }
-
-  .poster_img_wrapper {
-    height: 40rem;
   }
 
   .poster_link { width: min(100%, 36rem); }

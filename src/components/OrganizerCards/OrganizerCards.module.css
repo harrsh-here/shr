@@ -162,6 +162,12 @@
     border-radius: 50%;
 }
 
+.gdgLogo {
+    width: 86%;
+    height: 86%;
+    object-fit: contain;
+}
+
 .name {
     font-size: 1.45rem;
     font-family: 'Inter', sans-serif;

@@ -3,11 +3,24 @@ import SideAccent from "../common/SideAccent/SideAccent";
 import FestivalSprite from "../common/FestivalSprite/FestivalSprite";
 import classes from "./Contact.module.css";
 
+const contactPhotoFiles = require.context("../../assets/contacts", false, /\.(png|jpe?g|webp|avif)$/i);
+
+const getContactPhoto = (name) => {
+  const normalizedName = name.toLowerCase().replace(/[^a-z0-9]+/g, "");
+  const matchingFile = contactPhotoFiles.keys().find((file) =>
+    file.slice(2).replace(/\.[^.]+$/, "").toLowerCase().replace(/[^a-z0-9]+/g, "") === normalizedName
+  );
+
+  return matchingFile ? contactPhotoFiles(matchingFile) : null;
+};
+
 const shraddhanjaliLeads = [
-  { name: "Naina Khare", designation: "Event Coordinator", phone: "9258689744" },
-  { name: "Shashank Shrivastava", designation: "Event Coordinator", phone: "9334024106" },
-  { name: "Gopal Sharma", designation: "Website-related queries", phone: "8177904081" },
-  { name: "Coordinator To Be Announced", designation: "Event Coordinator", phone: "Contact details pending", placeholder: true },
+  { name: "Shashank Srivastava", designation: "Coordinator", phone: "+91 9334024106" },
+  { name: "Gopal Sharma", designation: "Website & payment queries coordinator", phone: "+91 8177904081" },
+  { name: "Harsh Patidar", designation: "Website & payment queries coordinator", phone: "+91 9057471432" },
+  { name: "Harshit Pathak", designation: "Coordinator", phone: "+91 6307713384" },
+  { name: "Sankalp Tiwari", designation: "Coordinator", phone: "+91 7652069346" },
+  { name: "Priyanshu Soni", designation: "Coordinator", phone: "+91 8209385914" },
 ];
 
 const Contact = () => {
@@ -28,11 +41,11 @@ const Contact = () => {
             {shraddhanjaliLeads.map((lead, index) => (
               <div key={index} className={classes.leadCard}>
                 <div className={classes.imgContainer}>
-                  {lead.image ? <img src={lead.image} alt={lead.name} className={classes.leadImg} /> : <span className={classes.photoPlaceholder}>Photo<br />coming soon</span>}
+                  {getContactPhoto(lead.name) ? <img src={getContactPhoto(lead.name)} alt={lead.name} className={classes.leadImg} /> : <span className={classes.photoPlaceholder}>Photo<br />coming soon</span>}
                 </div>
                 <h3 className={classes.leadName}>{lead.name}</h3>
                 <p className={classes.leadDesignation}>{lead.designation}</p>
-                {lead.placeholder ? <p className={classes.leadPhone}>{lead.phone}</p> : <a href={`tel:${lead.phone.replace(/\s+/g, '')}`} className={classes.leadPhone}>{lead.phone}</a>}
+                <a href={`tel:${lead.phone.replace(/[^+\d]/g, '')}`} className={classes.leadPhone}>{lead.phone}</a>
               </div>
             ))}
           </div>

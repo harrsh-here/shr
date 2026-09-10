@@ -8,47 +8,56 @@ import hackathonImg from "../../assets/club logos/Arya Hackathon Club.jpg";
 import photoImg from "../../assets/club logos/Arya PhotoSphere Club.jpg";
 import roboticsImg from "../../assets/club logos/Arya Robotics Club.jpg";
 import gdgImg from "../../assets/club logos/gdg.png";
+import greenEnergyImg from "../../assets/club logos/Arya_Green_Energy.jpg";
+import tableTennisImg from "../../assets/club logos/Arya_TableTennis_Club.jpg";
+import automationImg from "../../assets/club logos/Arya_Industrial_Automation_Club.jpg";
+import basketballImg from "../../assets/club logos/Arya_Basketball_club.jpg";
+import cricketImg from "../../assets/club logos/CRICKET_CLUB_LOGO - Vineet Kumar.jpg";
+import dramaImg from "../../assets/club logos/Arya_Drama_Club.jpg";
+import dronesImg from "../../assets/club logos/Arya_Drones_Club - Jaideep Chouhan.jpeg";
+import ecoWarriorsImg from "../../assets/club logos/Arya_Eco_Warrior_Club.jpg";
+import esportsImg from "../../assets/club logos/Arya_E-Sports_club.jpeg";
+import goKartImg from "../../assets/club logos/GOKART LOGO (1) - Daud Ibrahim.png";
+import movieImg from "../../assets/club logos/Arya_Movie_Club.jpg";
+import scienceTechnologyImg from "../../assets/club logos/Arya_Science&Technology.png";
+import skillDevelopmentImg from "../../assets/club logos/Arya Skill development club - Vaidik Nama.jpg";
+import socialActivitiesImg from "../../assets/club logos/Arya Social Activity Club - BaBy Sh.jpg";
+import carromImg from "../../assets/club logos/Arya_Carrom_Club.jpg";
+import kabaddiImg from "../../assets/club logos/Arya_Kabaddi_Club.jpg";
+import lincomImg from "../../assets/club logos/Arya_Lincom_Club.jpg";
 import SideAccent from "../common/SideAccent/SideAccent";
 import FestivalSprite from "../common/FestivalSprite/FestivalSprite";
 import collegeLogo from "../../assets/collegeLogo.png";
 
-// Placeholder SVG data-URI used for clubs whose logo image is not yet available.
-// Replace by adding the real image file and updating the import + clubs entry below.
-const PLACEHOLDER =
-    "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='110' height='110'%3E%3Crect width='110' height='110' rx='55' fill='%23501010'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-size='38' fill='%23E8A33D'%3E%E2%9C%A6%3C%2Ftext%3E%3C%2Fsvg%3E";
-
 // ─── Club list ────────────────────────────────────────────────────────────────
-// Priority clubs first (Cipher, GDG, Dance, Music), then the rest alphabetically.
-// Set img: null for clubs whose logo is not yet available — a placeholder is shown.
+// Every listed club has a supplied logo; unrepresented clubs are intentionally omitted.
 const clubs = [
     // ── Priority ────────────────────────────────────────────────────────────
 
     { name: "Arya Dance Club",                img: danceImg },
     { name: "Arya Music Club",                img: musicImg },
     { name: "Arya Cipher Coding Club",        img: cipherImg },
-    { name: "Google Developer Group ACEIT",   img: gdgImg,    bg: "white" },
-    { name: "Arya Green Energy Club",         img: null },
-    { name: "Arya Table Tennis Club",         img: null },
+    { name: "Google Developer Group ACEIT",   img: gdgImg,    bg: "white", logoClass: classes.gdgLogo },
+    { name: "Arya Green Energy Club",         img: greenEnergyImg },
+    { name: "Arya Table Tennis Club",         img: tableTennisImg },
     // ── Remaining (alphabetical) ─────────────────────────────────────────
-    { name: "Arya Automation Club",           img: null },
-    { name: "Arya Badminton Club",            img: null },
-    { name: "Arya Basketball Club",           img: null },
-    { name: "Arya Chess Club",                img: null },
-    { name: "Arya Cricket Club",              img: null },
-    { name: "Arya Drama Club",                img: null },
-    { name: "Arya Drones Club",               img: null },
-    { name: "Arya Eco Warriors Club",         img: null },
-    { name: "Arya E-Sports Club",             img: null },
-    { name: "Arya Football Club",             img: null },
-    { name: "Arya Go-Kart Club",              img: null },
-    { name: "Arya Intelverse Club",           img: null },
-    { name: "Arya Literature Club",           img: null },
-    { name: "Arya Movie Club",                img: null },
+    { name: "Arya Automation Club",           img: automationImg },
+    { name: "Arya Basketball Club",           img: basketballImg },
+    { name: "Arya Carrom Club",               img: carromImg },
+    { name: "Arya Cricket Club",              img: cricketImg },
+    { name: "Arya Drama Club",                img: dramaImg },
+    { name: "Arya Drones Club",               img: dronesImg },
+    { name: "Arya Eco Warriors Club",         img: ecoWarriorsImg },
+    { name: "Arya E-Sports Club",             img: esportsImg },
+    { name: "Arya Go-Kart Club",              img: goKartImg },
+    { name: "Arya Kabaddi Club",              img: kabaddiImg },
+    { name: "Arya Lincom Club",               img: lincomImg },
+    { name: "Arya Movie Club",                img: movieImg },
     { name: "Arya PhotoSphere Club",          img: photoImg },
     { name: "Arya Robotics Club",             img: roboticsImg },
-    { name: "Arya Science & Technology Club", img: null },
-    { name: "Arya Skill Development Club",    img: null },
-    { name: "Arya Social Activities Club",    img: null },
+    { name: "Arya Science & Technology Club", img: scienceTechnologyImg },
+    { name: "Arya Skill Development Club",    img: skillDevelopmentImg },
+    { name: "Arya Social Activities Club",    img: socialActivitiesImg },
     { name: "Arya Hackathon Club",            img: hackathonImg },
 ];
 
@@ -94,10 +103,10 @@ const OrganizerCards = () => {
                     <div key={`${club.name}-${i}`} className={classes.card}>
                         <div className={classes.imgWrap}>
                             <img
-                                src={club.img ?? PLACEHOLDER}
-                                alt={club.img ? club.name : `${club.name} — logo coming soon`}
-                                className={classes.logo}
-                                style={{ backgroundColor: club.bg || (club.img ? 'transparent' : '#501010') }}
+                                src={club.img}
+                                alt={club.name}
+                                className={`${classes.logo} ${club.logoClass || ''}`}
+                                style={{ backgroundColor: club.bg || 'transparent' }}
                                 loading="lazy"
                                 decoding="async"
                             />

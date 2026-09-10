@@ -4,7 +4,7 @@ import Button from "../Button/Button";
 import { NavLink } from "react-router-dom";
 
 const EventCard = ({ eventData }) => {
-  const { id, image, name, directLink, link } = eventData;
+  const { id, image, name, prizePool, directLink, link } = eventData;
 
   const CardContent = (
     <div className={classes.card} style={{ position: 'relative' }}>
@@ -35,6 +35,7 @@ const EventCard = ({ eventData }) => {
         />
       </div>
       <h3 className={classes.event_name}>{name}</h3>
+      {prizePool && <p className={classes.prizePool}>{prizePool}</p>}
       <div className={classes.view_more_btn}>
         <Button
           hrefLink={directLink ? link : null}

@@ -25,7 +25,13 @@
 - Added frontend-only EmailJS trigger support for placeholder confirmation and verified-registration templates, controlled through REACT_APP_EMAILJS environment variables.
 - Folded Gopal Sharma into the main Contact Us coordinator cards, adjusted the tribute portrait down by four pixels, and refined the registration form with maroon-and-gold surfaces plus subtle floating gold particles and a rotating ornament.
 - Enlarged the Arya College logo in the student-clubs badge and added its full name beneath it.
+- Added the shared “₹1L combined prize pool” to both Gyration and Don-De-Mode cards and event details.
+- Updated the coordinator contacts for Gyration, Don-De-Mode, and the six Shraddhanjali ’26 Contact Us coordinators.
+- Prepared Contact Us cards to match coordinator portraits from `src/assets/contacts` by filename, with a temporary per-card photo placeholder until the replacement images are added.
+- Identified Gopal Sharma and Harsh Patidar as the coordinators for website and payment queries.
+- Added supplied logos for every matching Arya Student Club and removed carousel entries that still have no supplied logo.
+- Updated the two event cards to preserve their full 2:3 portrait posters and use matching card dimensions.
 
 ## Current task
 
-Build and visual QA of the direct-registration flow and this UI refinement round.
+Visual QA of the direct-registration flow and this UI refinement round; awaiting the new Contact Us coordinator portraits.

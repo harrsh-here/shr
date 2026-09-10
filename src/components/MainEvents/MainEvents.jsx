@@ -62,6 +62,7 @@ const EventCard3D = ({ event }) => {
             {event.category || (event.id === 9 ? "Dance Competition" : "Fashion Show")}
           </p>
           <h3 className={classes.poster_event_name}>{event.name}</h3>
+          <p className={classes.prizePool}>{event.prizePool}</p>
           <p className={classes.eventSummary}>
             {event.id === 9
               ? "Six to fifteen of you. Six minutes. One floor."

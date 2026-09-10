@@ -25,17 +25,18 @@ export const eventsData = [
       "⚠️ Registration fees are strictly non-refundable under any circumstances."
     ],
     prizes: [
-      "[PLACEHOLDER: Gyration prizes — to be provided by user]"
+      "Combined prize pool of up to ₹1,00,000 for Gyration and Don-De-Mode."
     ],
+    prizePool: "₹1L combined prize pool",
     type: "team_fixed",
     minMembers: 6,
     maxMembers: 15,
     price: 50,
     feePerPerson: 50,
     contactInfo: [
-      "Naina Khare — 9258689744",
-      "Shashank Shrivastava — 9334024106",
-      "Coordinator 3 — details to be announced"
+      "Kavyā — +91 8000323035",
+      "Anish — +91 8011393456",
+      "Param — +91 8619478634"
     ],
     location: "Arya College of Engineering & I.T., Kukas, Jaipur",
     mapUrl: "https://maps.app.goo.gl/is9ex9H8gF7i2xP8A",
@@ -61,17 +62,18 @@ export const eventsData = [
       "⚠️ Registration fees are strictly non-refundable under any circumstances."
     ],
     prizes: [
-      "[PLACEHOLDER: Don-De-Mode prizes — to be provided by user]"
+      "Combined prize pool of up to ₹1,00,000 for Gyration and Don-De-Mode."
     ],
+    prizePool: "₹1L combined prize pool",
     type: "team_fixed",
     minMembers: 10,
     maxMembers: 20,
     price: 50,
     feePerPerson: 50,
     contactInfo: [
-      "Naina Khare — 9258689744",
-      "Shashank Shrivastava — 9334024106",
-      "Coordinator 3 — details to be announced"
+      "Naman — +91 8448743309",
+      "Daud Ibrahim — +91 8809788959",
+      "Priyanshu — +91 8209385914"
     ],
     location: "Arya College of Engineering & I.T., Kukas, Jaipur",
     mapUrl: "https://maps.app.goo.gl/is9ex9H8gF7i2xP8A",
