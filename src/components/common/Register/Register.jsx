@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { eventsData } from '../../../assets/eventsData';
 import { sendRegistrationEmails } from '../../../services/emailNotifications';
@@ -6,6 +6,7 @@ import { GOOGLE_SCRIPT_URL, IS_BACKEND_CONFIGURED, UPI_ID, QR_CODE_PLACEHOLDER }
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faIdCard, faLock } from '@fortawesome/free-solid-svg-icons';
 import { parseContact, telHref } from '../../../utils/contactInfo';
+import { loadDraft, saveDraft, clearDraft } from '../../../utils/registrationDraft';
 import useRegistrationCountdown from '../../../hooks/useRegistrationCountdown';
 import { OPENS_AT_LABEL } from '../../../config/registrationWindow';
 import classes from './Register.module.css';
@@ -200,18 +201,46 @@ const Register = () => {
   const [submitError, setSubmitError] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const countdown = useRegistrationCountdown();
+  const [draftRestored, setDraftRestored] = useState(false);
+  // Blocks the save effect from writing over a stored draft with the empty
+  // initial state before the restore below has run.
+  const hydrated = useRef(false);
 
   // Redirect if event not found
   useEffect(() => {
     if (!event) navigate('/events');
   }, [event, navigate]);
 
-  // Pre-fill (minMembers) member cards on load
+  // Restore a saved draft if there is one, otherwise start with (minMembers)
+  // blank member cards.
   useEffect(() => {
     if (!event) return;
-    const count = Math.max(1, event.minMembers);
-    setMembers(Array.from({ length: count }, emptyMember));
+    hydrated.current = false;
+
+    const draft = loadDraft(event.id);
+    if (draft) {
+      // Team size limits may have changed since the draft was written.
+      const clamped = draft.members.slice(0, event.maxMembers);
+      while (clamped.length < Math.max(1, event.minMembers)) clamped.push(emptyMember());
+      setMembers(clamped);
+      setUtr(draft.utr);
+      setDraftRestored(true);
+    } else {
+      const count = Math.max(1, event.minMembers);
+      setMembers(Array.from({ length: count }, emptyMember));
+      setUtr('');
+      setDraftRestored(false);
+    }
+
+    hydrated.current = true;
   }, [eventId]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Persist as the form is filled in, so a reload or accidental close does not
+  // lose the team's details.
+  useEffect(() => {
+    if (!event || !hydrated.current || submitted) return;
+    saveDraft(event.id, { members, utr });
+  }, [event, members, utr, submitted]);
 
   const totalAmount = event
     ? (event.feePerPerson ?? event.price ?? 0) * members.length
@@ -304,6 +333,10 @@ const Register = () => {
         teamSize: members.length,
       });
 
+      // Only once the registration is safely recorded: keeping it would leave
+      // personal details in the browser and could seed a duplicate entry.
+      clearDraft(event.id);
+
       setSubmitted(true);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (err) {
@@ -357,6 +390,12 @@ const Register = () => {
             </p>
           </div>
         </div>
+
+        {draftRestored && (
+          <p className={classes.draftNotice}>
+            We've restored the details you'd already entered. Please check them before submitting.
+          </p>
+        )}
 
         <div className={classes.idReminder}>
           <FontAwesomeIcon icon={faIdCard} className={classes.idIcon} />

@@ -734,3 +734,16 @@
   .countdownUnit { min-width: 6.8rem; padding: 1.2rem 0.8rem; }
   .countdownValue { font-size: 2.5rem; }
 }
+
+/* Shown when a half-filled form is recovered from a previous visit. */
+.draftNotice {
+  margin: 0 0 1.6rem;
+  padding: 1rem 1.4rem;
+  background: rgba(120, 180, 140, 0.1);
+  border: 1px solid rgba(143, 191, 159, 0.3);
+  border-radius: 4px 12px 4px 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.3rem;
+  line-height: 1.6;
+  color: rgba(200, 230, 210, 0.9);
+}
