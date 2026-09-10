@@ -598,9 +598,11 @@
 }
 
 .idIcon {
-  font-size: 1.9rem;
+  font-size: 1.8rem;
   line-height: 1.2;
   flex-shrink: 0;
+  color: #E8A33D;
+  margin-top: 0.15rem;
 }
 
 .idReminder p {

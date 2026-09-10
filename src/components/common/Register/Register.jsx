@@ -3,6 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { eventsData } from '../../../assets/eventsData';
 import { sendRegistrationEmails } from '../../../services/emailNotifications';
 import { GOOGLE_SCRIPT_URL, IS_BACKEND_CONFIGURED, UPI_ID, QR_CODE_PLACEHOLDER } from '../../../config/registrationConfig';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faIdCard } from '@fortawesome/free-solid-svg-icons';
 import { parseContact, telHref } from '../../../utils/contactInfo';
 import classes from './Register.module.css';
 
@@ -109,11 +111,11 @@ const SuccessScreen = ({ event, leaderEmail, leaderName }) => (
       </p>
 
       <div className={classes.idReminder}>
-        <span className={classes.idIcon}>🪪</span>
+        <FontAwesomeIcon icon={faIdCard} className={classes.idIcon} />
         <p>
-          <strong>Please carry a photo ID on event day.</strong> Every team member must bring their
-          college ID card or a government ID (Aadhaar, Driving Licence, etc.) for verification at
-          the reporting desk.
+          <strong>Please carry a physical photo ID on event day.</strong> Every team member must
+          bring their original college ID card or a government ID (Aadhaar, Driving Licence, etc.).
+          Digital copies and photographs are not accepted at the reporting desk.
         </p>
       </div>
 
@@ -307,11 +309,11 @@ const Register = () => {
         </div>
 
         <div className={classes.idReminder}>
-          <span className={classes.idIcon}>🪪</span>
+          <FontAwesomeIcon icon={faIdCard} className={classes.idIcon} />
           <p>
-            <strong>Carry a photo ID on event day.</strong> Every team member must bring their
-            college ID card or a government ID (Aadhaar, Driving Licence, etc.) for verification
-            at the reporting desk.
+            <strong>Carry a physical photo ID on event day.</strong> Every team member must bring
+            their original college ID card or a government ID (Aadhaar, Driving Licence, etc.).
+            Digital copies and photographs are not accepted at the reporting desk.
           </p>
         </div>
 

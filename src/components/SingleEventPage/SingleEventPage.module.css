@@ -293,9 +293,11 @@
 }
 
 .idNoticeIcon {
-  font-size: 2.2rem;
+  font-size: 2rem;
   line-height: 1.2;
   flex-shrink: 0;
+  color: #E8A33D;
+  margin-top: 0.2rem;
 }
 
 .idNotice p {

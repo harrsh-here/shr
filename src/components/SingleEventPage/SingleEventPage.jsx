@@ -4,7 +4,7 @@ import { parseContact, telHref } from "../../utils/contactInfo";
 import { useParams, useNavigate } from "react-router-dom";
 import { eventsData } from "../../assets/eventsData";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faXmark, faIdCard } from "@fortawesome/free-solid-svg-icons";
 
 const SingleEventPage = () => {
   const { eventId } = useParams();
@@ -172,11 +172,11 @@ const SingleEventPage = () => {
 
 
           <div className={classes.idNotice}>
-            <span className={classes.idNoticeIcon}>🪪</span>
+            <FontAwesomeIcon icon={faIdCard} className={classes.idNoticeIcon} />
             <p>
-              <strong>Carry a photo ID on event day.</strong> Every team member must bring their
-              college ID card or a government ID (Aadhaar, Driving Licence, etc.) for verification
-              at the reporting desk.
+              <strong>Carry a physical photo ID on event day.</strong> Every team member must bring
+              their original college ID card or a government ID (Aadhaar, Driving Licence, etc.).
+              Digital copies and photographs are not accepted at the reporting desk.
             </p>
           </div>
 
