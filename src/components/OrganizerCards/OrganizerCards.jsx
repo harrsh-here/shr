@@ -27,6 +27,9 @@ import kabaddiImg from "../../assets/club logos/Arya_Kabaddi_Club.jpg";
 import lincomImg from "../../assets/club logos/Arya_Lincom_Club.jpg";
 import intelverseImg from "../../assets/club logos/Arya_Intelverse_IOT_Club.jpg";
 import artCraftImg from "../../assets/club logos/Arya_Art_and_Craft_Club.jpg";
+import litImg from "../../assets/club logos/lit.jpg";
+import spikersImg from "../../assets/club logos/spikers.jpg";
+import eCellImg from "../../assets/club logos/Ecell.png"
 import SideAccent from "../common/SideAccent/SideAccent";
 import FestivalSprite from "../common/FestivalSprite/FestivalSprite";
 import collegeLogo from "../../assets/collegeLogo.png";
@@ -34,21 +37,22 @@ import collegeLogo from "../../assets/collegeLogo.png";
 // ─── Club list ────────────────────────────────────────────────────────────────
 // Every listed club has a supplied logo; unrepresented clubs are intentionally omitted.
 const clubs = [
-    // ── Priority ────────────────────────────────────────────────────────────
+    
 
     { name: "Arya Dance Club",                img: danceImg },
     { name: "Arya Music Club",                img: musicImg },
+    { name: "Arya Art & Craft Club",           img: artCraftImg },
     { name: "Arya Cipher Coding Club",        img: cipherImg },
     { name: "Google Developer Group ACEIT",   img: gdgImg,    bg: "white", logoClass: classes.gdgLogo },
     { name: "Arya Green Energy Club",         img: greenEnergyImg },
     { name: "Arya Table Tennis Club",         img: tableTennisImg },
-    // ── Remaining (alphabetical) ─────────────────────────────────────────
-    { name: "Arya Art & Craft Club",           img: artCraftImg },
+    { name: "Arya Volleyball Club",           img: spikersImg, bg: "white" },
+    { name: "E-Cell ACEIT",                   img: eCellImg},
+    { name: "Arya Drama Club",                img: dramaImg },
     { name: "Arya Automation Club",           img: automationImg },
     { name: "Arya Basketball Club",           img: basketballImg },
     { name: "Arya Carrom Club",               img: carromImg },
     { name: "Arya Cricket Club",              img: cricketImg },
-    { name: "Arya Drama Club",                img: dramaImg },
     { name: "Arya Drones Club",               img: dronesImg },
     { name: "Arya Eco Warriors Club",         img: ecoWarriorsImg },
     { name: "Arya E-Sports Club",             img: esportsImg },
@@ -56,6 +60,7 @@ const clubs = [
     { name: "Arya Intelverse (IoT) Club",     img: intelverseImg },
     { name: "Arya Kabaddi Club",              img: kabaddiImg },
     { name: "Arya Lincom Club",               img: lincomImg },
+    { name: "Arya Literature Club",           img: litImg },
     { name: "Arya Movie Club",                img: movieImg },
     { name: "Arya PhotoSphere Club",          img: photoImg },
     { name: "Arya Robotics Club",             img: roboticsImg },
@@ -63,6 +68,7 @@ const clubs = [
     { name: "Arya Skill Development Club",    img: skillDevelopmentImg },
     { name: "Arya Social Activities Club",    img: socialActivitiesImg },
     { name: "Arya Hackathon Club",            img: hackathonImg },
+    
 ];
 
 // Marquee speed in pixels per second. Time-based rather than per-frame so the

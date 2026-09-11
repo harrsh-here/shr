@@ -17,3 +17,10 @@ export const getEventLifecycle = () => {
   if (now < EVENT_START + LIVE_DURATION) return "live";
   return "complete";
 };
+
+export const getNextLifecycleChangeAt = () => {
+  const now = Date.now();
+  if (now < EVENT_START) return EVENT_START;
+  if (now < EVENT_START + LIVE_DURATION) return EVENT_START + LIVE_DURATION;
+  return now;
+};

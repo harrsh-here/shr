@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import classes from "./Hero.module.css";
 import { Link as ScrollLink } from "react-scroll";
 import collegeLogo from "../../assets/collegeLogo.png";
-import { getEventLifecycle } from "../../config/eventLifecycle";
+import useEventLifecycle from "../../hooks/useEventLifecycle";
 
 // Event starts: 19 Sep 2026 6:30 PM IST
 const EVENT_START = new Date("2026-09-19T18:30:00+05:30").getTime();
@@ -15,7 +15,7 @@ const Hero = () => {
   const [countMinutes, setMinutes] = useState(0);
   const [countSeconds, setSeconds] = useState(0);
   const [showHindi, setShowHindi] = useState(false);
-  const [phase, setPhase] = useState(getEventLifecycle);
+  const phase = useEventLifecycle();
 const [showScrollCue, setShowScrollCue] = useState(true);
 
 useEffect(() => {
@@ -28,10 +28,7 @@ useEffect(() => {
     const interval = setInterval(() => {
       const now = Date.now();
       const distance = EVENT_START - now;
-      const currentPhase = getEventLifecycle();
-      setPhase(currentPhase);
-
-      if (currentPhase === "upcoming" && distance > 0) {
+      if (phase === "upcoming" && distance > 0) {
         setDays(Math.floor(distance / (1000 * 60 * 60 * 24)));
         setHours(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
         setMinutes(Math.floor((distance / 1000 / 60) % 60));
@@ -39,7 +36,7 @@ useEffect(() => {
       }
     }, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [phase]);
 
   // Title crossfade — toggle every 5 seconds
   useEffect(() => {

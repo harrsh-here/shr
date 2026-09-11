@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { getEventLifecycle } from "../../../config/eventLifecycle";
+import React, { useMemo } from "react";
+import useEventLifecycle from "../../../hooks/useEventLifecycle";
 import classes from "./EventCelebration.module.css";
 
 const COLORS = ["#FFD700","#FF9933","#FF6B6B","#4FC3F7","#81C784","#CE93D8","#F48FB1","#FFCC02","#ffffff"];
@@ -24,19 +24,8 @@ const makePieces = () =>
   });
 
 const EventCelebration = () => {
-  const [state, setState] = useState(getEventLifecycle);
+  const state = useEventLifecycle();
   const pieces = useMemo(makePieces, []);
-
-  useEffect(() => {
-    const refresh = () => setState(getEventLifecycle());
-    // check every 30s so phase transition is prompt
-    const timer = window.setInterval(refresh, 30_000);
-    window.addEventListener("popstate", refresh);
-    return () => {
-      window.clearInterval(timer);
-      window.removeEventListener("popstate", refresh);
-    };
-  }, []);
 
   if (state === "upcoming") return null;
 
