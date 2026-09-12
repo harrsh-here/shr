@@ -22,7 +22,7 @@
  *   Member2 Name | Member2 Email | Member2 Phone | Member2 College |
  *   Member2 Year | Member2 Branch | Member2 Roll No |
  *   ... (same 7 fields, repeated only as far as the largest team so far) ...
- *   Total Members | Total Amount | UTR | Status | Rejection Reason
+ *   Total Members | Total Amount | UTR | duplicate_utr | Status | Rejection Reason
  *
  * Every column above is written on every submission. Member columns are
  * created on demand: a tab whose biggest team is 6 has member blocks up to
@@ -35,10 +35,15 @@
  * registration.
  *
  * UTRs are normalised (spaces and hyphens stripped, upper-cased) before they
- * are stored or compared, the column is forced to plain text so a 12-digit
- * reference is not mangled into 1.23457E+11 or stripped of leading zeros, and
- * a reference already used by another row is recorded with Status
- * "On hold - duplicate UTR" rather than being accepted silently.
+ * are stored or compared, and the column is forced to plain text so a 12-digit
+ * reference is not mangled into 1.23457E+11 or stripped of its leading zeros.
+ *
+ * Every row also carries duplicate_utr: "Yes" when that reference already
+ * appears on any tab, "No" otherwise. The first use of a reference reads "No"
+ * and the later one reads "Yes", so filtering that column to Yes shows exactly
+ * the rows worth a second look. The registration is still recorded either way -
+ * the team may well have paid - and Status is left alone for the admin
+ * workflow (Pending -> Verified or Rejected).
  *
  * Rows are written BY COLUMN NAME, not by position, so reordering columns in
  * the sheet cannot corrupt later rows.
@@ -71,10 +76,14 @@ var LEADING_HEADERS = ["Timestamp", "Event", "Team Name"];
 var MEMBER_FIELDS = ["Name", "Email", "Phone", "College", "Year", "Branch", "Roll No"];
 
 // Columns that are not per-member, in the order they appear after them.
-var TRAILING_HEADERS = ["Total Members", "Total Amount", "UTR", "Status", "Rejection Reason"];
+var TRAILING_HEADERS = [
+  "Total Members", "Total Amount", "UTR", "duplicate_utr", "Status", "Rejection Reason"
+];
 
-// Status given to a row whose reference has already been used elsewhere.
-var DUPLICATE_UTR_STATUS = "On hold - duplicate UTR";
+// Values written into duplicate_utr. Plain Yes/No so the column can be filtered
+// and eyeballed without interpretation.
+var DUPLICATE_YES = "Yes";
+var DUPLICATE_NO = "No";
 
 // Registrations opened 12 September 2026, 8:45 AM IST. The site hides the form
 // until then, but that is only a UI state - anyone can POST to this URL
@@ -184,6 +193,7 @@ function rowMapFor_(data) {
   values["Total Members"]    = data.totalMembers;
   values["Total Amount"]     = data.totalAmount;
   values["UTR"]              = normaliseUtr_(data.utr);
+  values["duplicate_utr"]    = DUPLICATE_NO;  // doPost upgrades this to Yes
   values["Status"]           = "Pending";
   values["Rejection Reason"] = "";
   return values;
@@ -274,10 +284,9 @@ function doPost(e) {
     var values = rowMapFor_(data);
 
     // A reference seen before is still recorded - the team may well have paid -
-    // but it is flagged so nobody has to spot it by eye.
-    if (utrAlreadyUsed_(utr)) {
-      values["Status"] = DUPLICATE_UTR_STATUS;
-    }
+    // but it is marked so nobody has to spot it by eye. Status is left for the
+    // admin workflow rather than being overloaded with this.
+    values["duplicate_utr"] = utrAlreadyUsed_(utr) ? DUPLICATE_YES : DUPLICATE_NO;
 
     // Written by column name: a column the sheet has but this script does not
     // know about stays blank rather than shifting everything after it.
