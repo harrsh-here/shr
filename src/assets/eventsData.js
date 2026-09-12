@@ -34,7 +34,7 @@ export const eventsData = [
     price: 50,
     feePerPerson: 50,
     contactInfo: [
-      "Kavyā — +91 8000323035",
+      "Kavya — +91 8000323035",
       "Anish — +91 8011393456",
       "Vaidik Nama — +91 9462243420"
     ],

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { eventsData } from '../../../assets/eventsData';
 import { sendRegistrationEmails } from '../../../services/emailNotifications';
@@ -193,7 +193,9 @@ const Register = () => {
   const { eventId } = useParams();
   const event = eventsData.find(e => e.id === Number(eventId));
 
+  const [teamName, setTeamName] = useState('');
   const [members, setMembers] = useState([]);
+  const [amountAck, setAmountAck] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
   const [errors, setErrors]   = useState({});
   const [submitting, setSubmitting] = useState(false);
@@ -221,10 +223,12 @@ const Register = () => {
       // Team size limits may have changed since the draft was written.
       const clamped = draft.members.slice(0, event.maxMembers);
       while (clamped.length < Math.max(1, event.minMembers)) clamped.push(emptyMember());
+      setTeamName(draft.teamName);
       setMembers(clamped);
       setDraftRestored(true);
     } else {
       const count = Math.max(1, event.minMembers);
+      setTeamName('');
       setMembers(Array.from({ length: count }, emptyMember));
       setDraftRestored(false);
     }
@@ -236,8 +240,20 @@ const Register = () => {
   // lose the team's details.
   useEffect(() => {
     if (!event || !hydrated.current || submitted) return;
-    saveDraft(event.id, { members });
-  }, [event, members, submitted]);
+    saveDraft(event.id, { teamName, members });
+  }, [event, teamName, members, submitted]);
+
+  // The success screen must open at the top. Doing this in a layout effect —
+  // after React has replaced the form, before the browser paints — means the
+  // confirmation is never shown scrolled half-way down, which previously left
+  // people staring at mid-page and having to scroll up to find it.
+  useLayoutEffect(() => {
+    if (!submitted) return;
+    window.scrollTo(0, 0);
+    // Safari and some in-app browsers only honour one of these.
+    if (document.documentElement) document.documentElement.scrollTop = 0;
+    if (document.body) document.body.scrollTop = 0;
+  }, [submitted]);
 
   const totalAmount = event
     ? (event.feePerPerson ?? event.price ?? 0) * members.length
@@ -260,7 +276,9 @@ const Register = () => {
 
   const validate = () => {
     let errs = {};
+    if (!teamName.trim()) errs.teamName = 'Team name is required';
     members.forEach((m, i) => Object.assign(errs, validateMember(m, i)));
+    if (!amountAck)  errs.amountAck = 'Please confirm you have paid the exact amount shown';
     if (!confirmed)  errs.confirmed = 'Please confirm your details and non-refund policy';
     if (!event) return errs;
     if (members.length < event.minMembers)
@@ -287,6 +305,7 @@ const Register = () => {
       // See project-docs/apps-script-backend.gs.
       const payload = {
         event: event.name,
+        teamName: teamName.trim(),
         leader: members[0],
         members: members.slice(1),
         totalMembers: members.length,
@@ -334,7 +353,6 @@ const Register = () => {
       clearDraft(event.id);
 
       setSubmitted(true);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (err) {
       setSubmitError(err.message || 'Submission failed. Please try again.');
     } finally {
@@ -406,6 +424,20 @@ const Register = () => {
 
           {/* Team size errors */}
           {errors.teamSize && <p className={classes.errorMsg} style={{ marginBottom: '1.2rem' }}>{errors.teamSize}</p>}
+
+          {/* ── Section: Team ───────────────────────── */}
+          <div className={classes.sectionBlock}>
+            <h2 className={classes.sectionTitle}>Team</h2>
+            <Field
+              label="Team Name"
+              name="teamName"
+              value={teamName}
+              onChange={e => { setTeamName(e.target.value); setErrors(p => { const n={...p}; delete n.teamName; return n; }); }}
+              error={errors.teamName}
+              placeholder="The name your team will be announced by"
+              required
+            />
+          </div>
 
           {/* ── Section: Members ─────────────────────────────────────── */}
           <div className={classes.sectionBlock}>
@@ -498,18 +530,20 @@ const Register = () => {
               </p>
             </div>
 
-            <div className={classes.amountWarning}>
-              <span className={classes.warnIcon}>⚠</span>
-              <div>
-                <strong>Enter ₹{totalAmount} on the payment page — check it carefully.</strong>
-                <p>
-                  The amount is typed in by you, so a wrong figure is easy to send. If the amount
-                  you pay does not match ₹{totalAmount}, your registration will be put
-                  <strong> on hold</strong> and it may be <strong>rejected</strong>. The fee is
-                  non-refundable, so please confirm the amount before you pay.
-                </p>
-              </div>
-            </div>
+            <label className={classes.checkboxRow}>
+              <input
+                type="checkbox"
+                checked={amountAck}
+                onChange={e => { setAmountAck(e.target.checked); setErrors(p => { const n={...p}; delete n.amountAck; return n; }); }}
+                className={classes.checkbox}
+              />
+              <span>
+                I have paid <strong>₹{totalAmount}</strong> and checked that the amount I entered
+                was exactly this, and I understand that a different amount may put my registration
+                on hold or get it rejected.
+              </span>
+            </label>
+            {errors.amountAck && <p className={classes.errorMsg}>{errors.amountAck}</p>}
 
             <label className={classes.checkboxRow}>
               <input
@@ -519,8 +553,8 @@ const Register = () => {
                 className={classes.checkbox}
               />
               <span>
-                I confirm all details are accurate and understand the registration fee is{' '}
-                <strong>non-refundable</strong>.
+                I confirm that all the details I have entered are accurate, and I understand
+                that the registration fee is <strong>non-refundable</strong>.
               </span>
             </label>
             {errors.confirmed && <p className={classes.errorMsg}>{errors.confirmed}</p>}

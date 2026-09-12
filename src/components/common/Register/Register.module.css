@@ -468,42 +468,6 @@
   margin: 0;
 }
 
-/* Amount disclaimer — the payment page does not pre-fill the amount, so this
-   is the one thing on the form that must not be skimmed past. */
-.amountWarning {
-  display: flex;
-  gap: 1.2rem;
-  align-items: flex-start;
-  background: rgba(232, 163, 61, 0.07);
-  border: 1px solid rgba(232, 163, 61, 0.32);
-  border-left: 4px solid #E8A33D;
-  border-radius: 10px;
-  padding: 1.6rem 1.8rem;
-  margin-bottom: 0.6rem;
-}
-
-.amountWarning strong {
-  display: block;
-  font-family: 'Inter', sans-serif;
-  font-size: 1.35rem;
-  font-weight: 700;
-  color: #FFD700;
-  margin-bottom: 0.5rem;
-}
-
-.amountWarning p {
-  font-family: 'Inter', sans-serif;
-  font-size: 1.25rem;
-  line-height: 1.65;
-  color: rgba(240, 220, 180, 0.72);
-}
-
-.amountWarning p strong {
-  display: inline;
-  font-size: inherit;
-  margin-bottom: 0;
-}
-
 /* ── Checkbox ── */
 .checkboxRow {
   display: flex;

@@ -17,7 +17,7 @@
  * "Don-De-Mode"), so there is nothing to set up by hand.
  *
  * COLUMNS per tab:
- *   Timestamp | Event | Leader Name | Leader Email | Leader Phone |
+ *   Timestamp | Event | Team Name | Leader Name | Leader Email | Leader Phone |
  *   Leader College | Leader Year | Leader Branch | Leader Roll No |
  *   Member2 Name | Member2 Email | Member2 Phone | Member2 College |
  *   Member2 Year | Member2 Branch | Member2 Roll No |
@@ -54,6 +54,9 @@ var MAX_MEMBERS_BY_EVENT = {
 // Fallback for an event that is not listed above.
 var DEFAULT_MAX_MEMBERS = 20;
 
+// Columns that come before the people, in order.
+var LEADING_HEADERS = ["Timestamp", "Event", "Team Name"];
+
 // The seven fields captured per person, in column order.
 var MEMBER_FIELDS = ["Name", "Email", "Phone", "College", "Year", "Branch", "Roll No"];
 
@@ -70,7 +73,7 @@ var REGISTRATION_OPENS_AT = new Date("2026-09-12T08:45:00+05:30").getTime();
 
 // The full set of columns needed to record a team of `memberCount` people.
 function headersFor_(memberCount) {
-  var headers = ["Timestamp", "Event"];
+  var headers = LEADING_HEADERS.slice();
   MEMBER_FIELDS.forEach(function (f) { headers.push("Leader " + f); });
 
   for (var m = 2; m <= memberCount; m++) {
@@ -87,6 +90,7 @@ function rowMapFor_(data) {
   var values = {
     "Timestamp": new Date().toISOString(),
     "Event": data.event,
+    "Team Name": data.teamName || "",
     "Leader Name": leader.name || "",
     "Leader Email": leader.email || "",
     "Leader Phone": leader.phone || "",
@@ -130,32 +134,32 @@ function ensureHeaders_(sheet, memberCount) {
   var missing = needed.filter(function (h) { return headers.indexOf(h) === -1; });
   if (!missing.length) return headers;
 
-  // New member blocks belong before the trailing columns so the sheet stays
-  // readable left to right; values are written by name regardless.
-  var trailingStart = headers.length;
-  TRAILING_HEADERS.forEach(function (h) {
-    var at = headers.indexOf(h);
-    if (at !== -1 && at < trailingStart) trailingStart = at;
+  // Each missing column is inserted at the position it belongs in, rather than
+  // appended and reordered: Sheets shifts the existing rows' values along with
+  // the column, so earlier rows keep their values under the right headings.
+  // Adding at the far right and rewriting the header row would silently move
+  // every old row's Total Members / Status under a neighbouring heading.
+  missing.forEach(function (h) {
+    var canonicalIndex = needed.indexOf(h);
+
+    // Sit directly after the nearest earlier column that this sheet has.
+    var insertAt = 0;
+    for (var k = canonicalIndex - 1; k >= 0; k--) {
+      var at = headers.indexOf(needed[k]);
+      if (at !== -1) { insertAt = at + 1; break; }
+    }
+
+    if (insertAt >= headers.length) {
+      sheet.insertColumnsAfter(headers.length, 1);
+      insertAt = headers.length;
+    } else {
+      sheet.insertColumnsBefore(insertAt + 1, 1);
+    }
+    headers.splice(insertAt, 0, h);
   });
 
-  var newMemberCols = missing.filter(function (h) { return TRAILING_HEADERS.indexOf(h) === -1; });
-  var newTrailing   = missing.filter(function (h) { return TRAILING_HEADERS.indexOf(h) !== -1; });
-
-  // The new columns have to be inserted at the position they will occupy, so
-  // that Sheets shifts the existing rows' values along with the header. Adding
-  // them at the far right and then rewriting the header row in the new order
-  // would leave every earlier row's Total Members / Status under the wrong
-  // heading.
-  if (newMemberCols.length) sheet.insertColumnsBefore(trailingStart + 1, newMemberCols.length);
-  if (newTrailing.length) sheet.insertColumnsAfter(sheet.getLastColumn(), newTrailing.length);
-
-  var updated = headers.slice(0, trailingStart)
-    .concat(newMemberCols)
-    .concat(headers.slice(trailingStart))
-    .concat(newTrailing);
-
-  sheet.getRange(1, 1, 1, updated.length).setValues([updated]);
-  return updated;
+  sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+  return headers;
 }
 
 // --- doPost: receives form data and appends to the correct sheet tab ---------
@@ -204,6 +208,95 @@ function jsonOut_(payload) {
   return ContentService
     .createTextOutput(JSON.stringify(payload))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+// --- Test helpers: put a dummy registration in the sheet ---------------------
+/**
+ * VERIFYING A DEPLOYMENT
+ *
+ * insertDummyRow() writes one fake registration through the exact same code
+ * path a real submission uses, so whatever appears in the sheet is what real
+ * participants will produce - including the Team Name column.
+ *
+ * Run it from the Apps Script editor: choose insertDummyRow in the function
+ * dropdown, click Run, then look at the Gyration tab. The row is labelled
+ * "TEST TEAM (dummy)" in the Team Name column and its Status is "TEST".
+ *
+ * When you are done, run deleteDummyRows() to remove every row it created.
+ */
+var DUMMY_TEAM_NAME = "TEST TEAM (dummy)";
+
+function insertDummyRow() {
+  var members = [];
+  for (var i = 1; i <= 6; i++) {
+    members.push({
+      name: "Test Member " + i,
+      email: "test" + i + "@example.com",
+      phone: "90000000" + i,
+      college: "Arya College of Engineering & I.T.",
+      year: "2nd Year",
+      branch: "Computer Science",
+      rollNo: "22BTECH" + (1000 + i)
+    });
+  }
+
+  var payload = {
+    event: "Gyration",
+    teamName: DUMMY_TEAM_NAME,
+    leader: members[0],
+    members: members.slice(1),
+    totalMembers: members.length,
+    totalAmount: members.length * 50
+  };
+
+  var response = doPost({ postData: { contents: JSON.stringify(payload) } });
+  Logger.log("doPost said: " + response.getContent());
+
+  // Mark it so nobody mistakes it for a real registration.
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(payload.event);
+  var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+  var statusCol = headers.indexOf("Status") + 1;
+  if (statusCol > 0) sheet.getRange(sheet.getLastRow(), statusCol).setValue("TEST");
+
+  Logger.log('Dummy row added to "%s" at row %s. Team Name column is %s.',
+    payload.event, sheet.getLastRow(), columnLetter_(headers.indexOf("Team Name") + 1));
+  Logger.log("Run deleteDummyRows() when you are finished checking.");
+}
+
+function deleteDummyRows() {
+  var removed = 0;
+
+  SpreadsheetApp.getActiveSpreadsheet().getSheets().forEach(function (sheet) {
+    if (sheet.getLastRow() < 2) return;
+
+    var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    var teamCol = headers.indexOf("Team Name") + 1;
+    if (teamCol === 0) return;
+
+    var values = sheet.getRange(2, teamCol, sheet.getLastRow() - 1, 1).getValues();
+
+    // Bottom to top, so deleting a row cannot shift the ones still to check.
+    for (var r = values.length - 1; r >= 0; r--) {
+      if (values[r][0] === DUMMY_TEAM_NAME) {
+        sheet.deleteRow(r + 2);
+        removed++;
+      }
+    }
+  });
+
+  Logger.log("Removed %s dummy row(s).", removed);
+}
+
+// A1-style letter for a column index, purely so the log can point at it.
+function columnLetter_(index) {
+  if (index < 1) return "(missing)";
+  var letter = "";
+  while (index > 0) {
+    var rem = (index - 1) % 26;
+    letter = String.fromCharCode(65 + rem) + letter;
+    index = Math.floor((index - rem) / 26);
+  }
+  return letter;
 }
 
 // --- One-time cleanup for sheets created by an older version -----------------

@@ -215,7 +215,11 @@
   word-break: break-all;
 }
 
-@media (max-width: 500px) {
+/* Phones, including the large ones and any phone held in landscape. The three
+   footer columns need roughly 240px each to stay readable; below ~768px they
+   crush into one-word-per-line slivers, so they stack instead. Tablets and
+   desktops (768px and up) keep the row layout untouched. */
+@media (max-width: 767px) {
   .footer {
     flex-direction: column;
     justify-content: center;
