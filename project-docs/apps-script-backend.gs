@@ -312,6 +312,58 @@ function columnLetter_(index) {
   return letter;
 }
 
+// --- Rewrite old UTC timestamps as readable IST ------------------------------
+/**
+ * Rows recorded before the timestamp change hold a raw UTC string such as
+ * "2026-09-12T11:08:40.744Z". This rewrites those cells in place to read
+ * "12 Sep 2026, 4:38 PM IST", matching what new registrations now write.
+ *
+ * Run it from the Apps Script editor: pick convertTimestampsToIST in the
+ * function dropdown and click Run. It does NOT need a deployment - running a
+ * function in the editor never touches what the web app serves - so the website
+ * is completely unaffected.
+ *
+ * Safe to run as often as you like: a cell that is already readable is left
+ * alone, so re-running after more registrations arrive only converts the new
+ * ones.
+ */
+function convertTimestampsToIST() {
+  var converted = 0;
+  var skipped = 0;
+
+  SpreadsheetApp.getActiveSpreadsheet().getSheets().forEach(function (sheet) {
+    if (sheet.getLastRow() < 2) return;
+
+    var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    var col = headers.indexOf("Timestamp") + 1;
+    if (col === 0) return;
+
+    var range = sheet.getRange(2, col, sheet.getLastRow() - 1, 1);
+    var values = range.getValues();
+
+    var rewritten = values.map(function (row) {
+      var value = row[0];
+
+      // Already-readable text, or a blank cell: leave exactly as it is.
+      if (!(typeof value === "string") || !/^\d{4}-\d{2}-\d{2}T/.test(value)) {
+        if (value !== "" && value !== null) skipped++;
+        return [value];
+      }
+
+      var parsed = new Date(value);
+      if (isNaN(parsed.getTime())) { skipped++; return [value]; }
+
+      converted++;
+      return [Utilities.formatDate(parsed, "Asia/Kolkata", "dd MMM yyyy, h:mm a") + " IST"];
+    });
+
+    range.setValues(rewritten);
+  });
+
+  Logger.log("Converted %s timestamp(s) to IST; left %s already-readable value(s) alone.",
+    converted, skipped);
+}
+
 // --- One-time cleanup for sheets created by an older version -----------------
 /**
  * Removes columns this script never writes - the old "UTR/Transaction ID"
