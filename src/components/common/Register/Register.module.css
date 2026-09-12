@@ -468,6 +468,20 @@
   margin: 0;
 }
 
+.utrBlock {
+  margin-bottom: 0.4rem;
+}
+
+.utrHelp {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: rgba(240, 220, 180, 0.55);
+  /* No negative margin here: the field renders its error message directly
+     above this text, and pulling upwards made the two overlap. */
+  margin-top: 0.2rem;
+}
+
 /* ── Checkbox ── */
 .checkboxRow {
   display: flex;

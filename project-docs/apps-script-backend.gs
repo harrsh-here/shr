@@ -22,18 +22,23 @@
  *   Member2 Name | Member2 Email | Member2 Phone | Member2 College |
  *   Member2 Year | Member2 Branch | Member2 Roll No |
  *   ... (same 7 fields, repeated only as far as the largest team so far) ...
- *   Total Members | Total Amount | Status | Rejection Reason
+ *   Total Members | Total Amount | UTR | Status | Rejection Reason
  *
  * Every column above is written on every submission. Member columns are
  * created on demand: a tab whose biggest team is 6 has member blocks up to
  * Member6 and no further, and the next 9-member team grows it to Member9.
  * Nothing here is left permanently blank.
  *
- * There is no transaction-ID column. Payment happens on the college BillDesk
- * page (a QR + button on the form), the payer gets a receipt from the gateway,
- * and nothing about the payment is typed into the form - so there is nothing
- * for the sheet to store. If you are upgrading a sheet that still has the old
- * "UTR/Transaction ID" column, run cleanUpLegacyColumns() once (see below).
+ * Payment happens on the college BillDesk page (a QR + button on the form).
+ * The payer then copies the transaction reference from their receipt into the
+ * form, and it lands in the UTR column, which is how a payment is matched to a
+ * registration.
+ *
+ * UTRs are normalised (spaces and hyphens stripped, upper-cased) before they
+ * are stored or compared, the column is forced to plain text so a 12-digit
+ * reference is not mangled into 1.23457E+11 or stripped of leading zeros, and
+ * a reference already used by another row is recorded with Status
+ * "On hold - duplicate UTR" rather than being accepted silently.
  *
  * Rows are written BY COLUMN NAME, not by position, so reordering columns in
  * the sheet cannot corrupt later rows.
@@ -66,7 +71,10 @@ var LEADING_HEADERS = ["Timestamp", "Event", "Team Name"];
 var MEMBER_FIELDS = ["Name", "Email", "Phone", "College", "Year", "Branch", "Roll No"];
 
 // Columns that are not per-member, in the order they appear after them.
-var TRAILING_HEADERS = ["Total Members", "Total Amount", "Status", "Rejection Reason"];
+var TRAILING_HEADERS = ["Total Members", "Total Amount", "UTR", "Status", "Rejection Reason"];
+
+// Status given to a row whose reference has already been used elsewhere.
+var DUPLICATE_UTR_STATUS = "On hold - duplicate UTR";
 
 // Registrations opened 12 September 2026, 8:45 AM IST. The site hides the form
 // until then, but that is only a UI state - anyone can POST to this URL
@@ -80,6 +88,55 @@ var REGISTRATION_OPENS_AT = new Date("2026-09-12T08:45:00+05:30").getTime();
 // depend on the spreadsheet's own timezone setting.
 function timestamp_() {
   return Utilities.formatDate(new Date(), "Asia/Kolkata", "dd MMM yyyy, h:mm a") + " IST";
+}
+
+// --- Payment reference helpers ----------------------------------------------
+
+// A reference is copied out of a receipt, an SMS or a screenshot, so it arrives
+// with stray spaces, hyphens and inconsistent case. Everything downstream -
+// storage, duplicate checks, an organiser searching the column - depends on the
+// same payment always producing the same string.
+function normaliseUtr_(value) {
+  return String(value == null ? "" : value).replace(/[\s-]/g, "").toUpperCase();
+}
+
+// Deliberately permissive. A UPI UTR is 12 digits, but the BillDesk page hands
+// back longer alphanumeric references, and someone who has genuinely paid must
+// not be turned away by a format guess that is too narrow.
+function isPlausibleUtr_(utr) {
+  return /^[A-Z0-9]{6,40}$/.test(utr);
+}
+
+// True when this reference already appears on any tab. Catches a double
+// submission and catches one team reusing another team's reference; either way
+// an organiser should look at it rather than the sheet deciding on its own.
+function utrAlreadyUsed_(utr) {
+  var sheets = SpreadsheetApp.getActiveSpreadsheet().getSheets();
+
+  for (var i = 0; i < sheets.length; i++) {
+    var sheet = sheets[i];
+    if (sheet.getLastRow() < 2) continue;
+
+    var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    var col = headers.indexOf("UTR") + 1;
+    if (col === 0) continue;
+
+    var existing = sheet.getRange(2, col, sheet.getLastRow() - 1, 1).getValues();
+    for (var r = 0; r < existing.length; r++) {
+      if (normaliseUtr_(existing[r][0]) === utr) return true;
+    }
+  }
+
+  return false;
+}
+
+// Sheets helpfully turns "123456789012" into a number and "0012..." into "12",
+// which destroys a reference. Forcing the column to plain text BEFORE the row
+// is written is the only way to keep exactly what the payer typed.
+function forceTextColumn_(sheet, headers, name) {
+  var col = headers.indexOf(name) + 1;
+  if (col === 0) return;
+  sheet.getRange(1, col, sheet.getMaxRows(), 1).setNumberFormat("@");
 }
 
 // --- Header helpers ---------------------------------------------------------
@@ -126,6 +183,7 @@ function rowMapFor_(data) {
 
   values["Total Members"]    = data.totalMembers;
   values["Total Amount"]     = data.totalAmount;
+  values["UTR"]              = normaliseUtr_(data.utr);
   values["Status"]           = "Pending";
   values["Rejection Reason"] = "";
   return values;
@@ -187,6 +245,17 @@ function doPost(e) {
     var tabName = data.event; // "Gyration" or "Don-De-Mode"
     if (!tabName) return jsonOut_({ status: "error", message: "Missing event name." });
 
+    var utr = normaliseUtr_(data.utr);
+    if (!utr) {
+      return jsonOut_({ status: "error", message: "Missing payment reference (UTR)." });
+    }
+    if (!isPlausibleUtr_(utr)) {
+      return jsonOut_({
+        status: "error",
+        message: "That payment reference does not look right. Copy it exactly as shown on your receipt."
+      });
+    }
+
     var memberCount = (data.members || []).length + 1;
     var allowed = MAX_MEMBERS_BY_EVENT[tabName] || DEFAULT_MAX_MEMBERS;
     if (memberCount > allowed) {
@@ -200,7 +269,15 @@ function doPost(e) {
     var sheet = ss.getSheetByName(tabName) || ss.insertSheet(tabName);
 
     var headers = ensureHeaders_(sheet, memberCount);
+    forceTextColumn_(sheet, headers, "UTR");
+
     var values = rowMapFor_(data);
+
+    // A reference seen before is still recorded - the team may well have paid -
+    // but it is flagged so nobody has to spot it by eye.
+    if (utrAlreadyUsed_(utr)) {
+      values["Status"] = DUPLICATE_UTR_STATUS;
+    }
 
     // Written by column name: a column the sheet has but this script does not
     // know about stays blank rather than shifting everything after it.
@@ -256,6 +333,7 @@ function insertDummyRow() {
   var payload = {
     event: "Gyration",
     teamName: DUMMY_TEAM_NAME,
+    utr: "TESTUTR" + new Date().getTime(),
     leader: members[0],
     members: members.slice(1),
     totalMembers: members.length,

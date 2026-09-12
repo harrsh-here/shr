@@ -14,6 +14,17 @@ import classes from './Register.module.css';
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 const YEAR_OPTIONS = ['1st Year', '2nd Year', '3rd Year', '4th Year'];
 
+// Reference numbers get copied out of a receipt, an SMS or a screenshot, so
+// they arrive with stray spaces, hyphens and mixed case. Normalise before it is
+// validated, stored or compared, so the same payment always looks the same.
+export const normaliseUtr = (value) =>
+  String(value || '').replace(/[\s-]/g, '').toUpperCase();
+
+// Deliberately permissive: UPI UTRs are 12 digits, but the BillDesk page hands
+// back longer alphanumeric references, and a participant who has genuinely paid
+// must never be blocked by a format guess that is too narrow.
+const UTR_PATTERN = /^[A-Z0-9]{6,40}$/;
+
 const emptyMember = () => ({
   name: '', college: '', year: '', branch: '', email: '', phone: '', rollNo: '',
 });
@@ -194,6 +205,7 @@ const Register = () => {
   const event = findEvent(eventId);
 
   const [teamName, setTeamName] = useState('');
+  const [utr, setUtr] = useState('');
   const [members, setMembers] = useState([]);
   const [amountAck, setAmountAck] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
@@ -232,11 +244,13 @@ const Register = () => {
       const clamped = draft.members.slice(0, event.maxMembers);
       while (clamped.length < Math.max(1, event.minMembers)) clamped.push(emptyMember());
       setTeamName(draft.teamName);
+      setUtr(draft.utr);
       setMembers(clamped);
       setDraftRestored(true);
     } else {
       const count = Math.max(1, event.minMembers);
       setTeamName('');
+      setUtr('');
       setMembers(Array.from({ length: count }, emptyMember));
       setDraftRestored(false);
     }
@@ -251,8 +265,8 @@ const Register = () => {
   // lose the team's details.
   useEffect(() => {
     if (!event || !hydrated.current || submitted) return;
-    saveDraft(event.id, { teamName, members });
-  }, [event, teamName, members, submitted]);
+    saveDraft(event.id, { teamName, utr, members });
+  }, [event, teamName, utr, members, submitted]);
 
   // The success screen must open at the top. Doing this in a layout effect —
   // after React has replaced the form, before the browser paints — means the
@@ -289,6 +303,12 @@ const Register = () => {
     let errs = {};
     if (!teamName.trim()) errs.teamName = 'Team name is required';
     members.forEach((m, i) => Object.assign(errs, validateMember(m, i)));
+    const cleanedUtr = normaliseUtr(utr);
+    if (!cleanedUtr) {
+      errs.utr = 'Enter the reference number from your payment receipt';
+    } else if (!UTR_PATTERN.test(cleanedUtr)) {
+      errs.utr = 'That does not look right \u2014 it should be 6\u201340 letters or digits, exactly as shown on your receipt';
+    }
     if (!amountAck)  errs.amountAck = 'Please confirm you have paid the exact amount shown';
     if (!confirmed)  errs.confirmed = 'Please confirm your details and non-refund policy';
     if (!event) return errs;
@@ -323,6 +343,7 @@ const Register = () => {
       const payload = {
         event: event.name,
         teamName: teamName.trim(),
+        utr: normaliseUtr(utr),
         leader: members[0],
         members: members.slice(1),
         totalMembers: members.length,
@@ -515,8 +536,9 @@ const Register = () => {
                   <span className={classes.amountTag}>(total amount)</span>.
                 </li>
                 <li>
-                  Complete the payment. The payment gateway will show you a receipt — save it,
-                  you may be asked for it at the reporting desk.
+                  Complete the payment. The gateway shows a receipt with a
+                  <strong> transaction / reference number</strong> — keep it, you will enter it
+                  just below, and you may be asked for the receipt at the reporting desk.
                 </li>
                 <li className={classes.payStepKey}>
                   <strong>Do not close this page after paying.</strong> Come back here and submit
@@ -544,6 +566,23 @@ const Register = () => {
               <p className={classes.payLinkNote}>
                 The QR and the button open the same official payment page. Use whichever is
                 easier — scan it from another phone, or tap the button on this one.
+              </p>
+            </div>
+
+            <div className={classes.utrBlock}>
+              <Field
+                label="Payment Reference Number (UTR)"
+                name="utr"
+                value={utr}
+                onChange={e => { setUtr(e.target.value); setErrors(p => { const n={...p}; delete n.utr; return n; }); }}
+                error={errors.utr}
+                placeholder="e.g. 123456789012"
+                required
+              />
+              <p className={classes.utrHelp}>
+                After paying, the payment page and your receipt show a transaction or reference
+                number. Copy it here exactly. We match your payment against this number, so a
+                wrong or made-up reference will hold up your registration.
               </p>
             </div>
 
