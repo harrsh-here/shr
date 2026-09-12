@@ -2,6 +2,7 @@ import React from "react";
 import classes from "./EventCard.module.css";
 import Button from "../Button/Button";
 import { NavLink } from "react-router-dom";
+import { eventPath } from "../../../utils/eventRoutes";
 
 const EventCard = ({ eventData }) => {
   const { id, image, name, prizePool, directLink, link } = eventData;
@@ -39,7 +40,7 @@ const EventCard = ({ eventData }) => {
       <div className={classes.view_more_btn}>
         <Button
           hrefLink={directLink ? link : null}
-          link={!directLink ? `/events/${id}` : null}
+          link={!directLink ? eventPath(eventData) : null}
           label={directLink ? "Register Now" : "View More"}
         />
       </div>
@@ -55,7 +56,7 @@ const EventCard = ({ eventData }) => {
   }
 
   return (
-    <NavLink to={`/events/${id}`} style={{ textDecoration: "none" }}>
+    <NavLink to={eventPath(eventData)} style={{ textDecoration: "none" }}>
       {CardContent}
     </NavLink>
   );

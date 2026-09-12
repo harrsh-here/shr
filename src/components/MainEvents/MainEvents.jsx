@@ -3,6 +3,7 @@ import classes from "./MainEvents.module.css";
 import { eventsData } from "../../assets/eventsData";
 import ReactGA from "react-ga";
 import { NavLink } from "react-router-dom";
+import { eventPath } from "../../utils/eventRoutes";
 import useScrollReveal from "../../hooks/useScrollReveal";
 import eventArtwork from "../About/about.svg";
 import Rangoli from "../common/Rangoli/Rangoli";
@@ -38,7 +39,7 @@ const EventCard3D = ({ event }) => {
 
   return (
     <NavLink
-      to={`/events/${event.id}`}
+      to={eventPath(event)}
       className={classes.poster_link}
       style={{ textDecoration: "none" }}
     >

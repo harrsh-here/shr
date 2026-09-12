@@ -10,6 +10,7 @@ export const BROCHURE_URL = "/brochure.pdf";
 export const eventsData = [
   {
     id: 9,
+    slug: "gyration",
     image: gyrationPlaceholder,
     name: "Gyration",
     category: "Dance Competition",
@@ -47,6 +48,7 @@ export const eventsData = [
   },
   {
     id: 10,
+    slug: "don-de-mode",
     image: donDeModePhaceholder,
     name: "Don-De-Mode",
     category: "Fashion Show",

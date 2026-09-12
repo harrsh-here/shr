@@ -1,12 +1,12 @@
 import { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { eventsData } from '../../../assets/eventsData';
 import { sendRegistrationEmails } from '../../../services/emailNotifications';
 import { GOOGLE_SCRIPT_URL, IS_BACKEND_CONFIGURED, PAYMENT_LINK, PAYMENT_QR } from '../../../config/registrationConfig';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faIdCard, faLock } from '@fortawesome/free-solid-svg-icons';
 import { parseContact, telHref } from '../../../utils/contactInfo';
 import { loadDraft, saveDraft, clearDraft } from '../../../utils/registrationDraft';
+import { findEvent, eventPath, registerPath, isLegacyKey } from '../../../utils/eventRoutes';
 import useRegistrationCountdown from '../../../hooks/useRegistrationCountdown';
 import { OPENS_AT_LABEL } from '../../../config/registrationWindow';
 import classes from './Register.module.css';
@@ -46,7 +46,7 @@ const Field = ({ label, name, type = 'text', value, onChange, error, placeholder
       className={`${classes.input} ${error ? classes.inputError : ''}`}
       aria-invalid={!!error}
     />
-    {error && <p className={classes.errorMsg}>{error}</p>}
+    {error && <p className={classes.errorMsg} data-field-error>{error}</p>}
   </div>
 );
 
@@ -63,7 +63,7 @@ const SelectField = ({ label, name, value, onChange, error, required }) => (
       <option value="">Select year</option>
       {YEAR_OPTIONS.map(y => <option key={y} value={y}>{y}</option>)}
     </select>
-    {error && <p className={classes.errorMsg}>{error}</p>}
+    {error && <p className={classes.errorMsg} data-field-error>{error}</p>}
   </div>
 );
 
@@ -191,7 +191,7 @@ const LockedScreen = ({ event, countdown, onBack }) => (
 const Register = () => {
   const navigate = useNavigate();
   const { eventId } = useParams();
-  const event = eventsData.find(e => e.id === Number(eventId));
+  const event = findEvent(eventId);
 
   const [teamName, setTeamName] = useState('');
   const [members, setMembers] = useState([]);
@@ -206,11 +206,19 @@ const Register = () => {
   // Blocks the save effect from writing over a stored draft with the empty
   // initial state before the restore below has run.
   const hydrated = useRef(false);
+  const formRef = useRef(null);
 
   // Redirect if event not found
   useEffect(() => {
     if (!event) navigate('/events');
   }, [event, navigate]);
+
+  // A /register/9 link still resolves; swap the address bar over to the slug.
+  useEffect(() => {
+    if (isLegacyKey(eventId, event)) {
+      navigate(registerPath(event), { replace: true });
+    }
+  }, [eventId, event, navigate]);
 
   // Restore a saved draft if there is one, otherwise start with (minMembers)
   // blank member cards.
@@ -234,7 +242,10 @@ const Register = () => {
     }
 
     hydrated.current = true;
-  }, [eventId]); // eslint-disable-line react-hooks/exhaustive-deps
+    // Keyed on the event itself, not the URL text: /register/9 rewrites itself
+    // to /register/gyration, and that rewrite must not re-run the restore and
+    // reset whatever is already in the form.
+  }, [event && event.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Persist as the form is filled in, so a reload or accidental close does not
   // lose the team's details.
@@ -294,7 +305,13 @@ const Register = () => {
     const errs = validate();
     if (Object.keys(errs).length) {
       setErrors(errs);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Wait for the messages to render, then bring the first one into view.
+      // Jumping to the top of the page used to lose people who had only missed
+      // a checkbox next to the submit button.
+      requestAnimationFrame(() => {
+        const firstError = formRef.current && formRef.current.querySelector('[data-field-error]');
+        if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
       return;
     }
 
@@ -367,7 +384,7 @@ const Register = () => {
   if (!countdown.open) {
     return (
       <div className={classes.page}>
-        <LockedScreen event={event} countdown={countdown} onBack={() => navigate(`/events/${event.id}`)} />
+        <LockedScreen event={event} countdown={countdown} onBack={() => navigate(eventPath(event))} />
       </div>
     );
   }
@@ -420,10 +437,10 @@ const Register = () => {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} noValidate>
+        <form onSubmit={handleSubmit} noValidate ref={formRef}>
 
           {/* Team size errors */}
-          {errors.teamSize && <p className={classes.errorMsg} style={{ marginBottom: '1.2rem' }}>{errors.teamSize}</p>}
+          {errors.teamSize && <p className={classes.errorMsg} style={{ marginBottom: '1.2rem' }} data-field-error>{errors.teamSize}</p>}
 
           {/* ── Section: Team ───────────────────────── */}
           <div className={classes.sectionBlock}>
@@ -543,7 +560,7 @@ const Register = () => {
                 on hold or get it rejected.
               </span>
             </label>
-            {errors.amountAck && <p className={classes.errorMsg}>{errors.amountAck}</p>}
+            {errors.amountAck && <p className={classes.errorMsg} data-field-error>{errors.amountAck}</p>}
 
             <label className={classes.checkboxRow}>
               <input
@@ -557,7 +574,7 @@ const Register = () => {
                 that the registration fee is <strong>non-refundable</strong>.
               </span>
             </label>
-            {errors.confirmed && <p className={classes.errorMsg}>{errors.confirmed}</p>}
+            {errors.confirmed && <p className={classes.errorMsg} data-field-error>{errors.confirmed}</p>}
           </div>
 
           {submitError && <p className={classes.submitError}>{submitError}</p>}

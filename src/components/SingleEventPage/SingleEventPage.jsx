@@ -4,7 +4,7 @@ import { parseContact, telHref } from "../../utils/contactInfo";
 import useRegistrationCountdown from "../../hooks/useRegistrationCountdown";
 import { OPENS_AT_LABEL } from "../../config/registrationWindow";
 import { useParams, useNavigate } from "react-router-dom";
-import { eventsData } from "../../assets/eventsData";
+import { findEvent, registerPath, eventPath, isLegacyKey } from "../../utils/eventRoutes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark, faIdCard, faLock } from "@fortawesome/free-solid-svg-icons";
 
@@ -23,7 +23,16 @@ const SingleEventPage = () => {
     };
   }, []);
 
-  const requiredEvent = eventsData.find((event) => event.id === +eventId);
+  const requiredEvent = findEvent(eventId);
+
+  // An /events/9 link still resolves; swap the address bar over to the slug so
+  // what people copy from here is the readable form. replace: true keeps the
+  // numeric URL out of the back-button history.
+  useEffect(() => {
+    if (isLegacyKey(eventId, requiredEvent)) {
+      navigate(eventPath(requiredEvent), { replace: true });
+    }
+  }, [eventId, requiredEvent, navigate]);
 
   if (!requiredEvent) {
     return (
@@ -201,7 +210,7 @@ const SingleEventPage = () => {
               )
             ) : link !== "" ? (
               registration.open ? (
-                <button className={classes.registerBtn} onClick={() => navigate(`/register/${eventId}`)}>
+                <button className={classes.registerBtn} onClick={() => navigate(registerPath(requiredEvent))}>
                   Register for {name}
                 </button>
               ) : (
