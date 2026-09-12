@@ -343,25 +343,36 @@ function convertTimestampsToIST() {
 
     var rewritten = values.map(function (row) {
       var value = row[0];
+      if (value === "" || value === null) return [value];
 
-      // Already-readable text, or a blank cell: leave exactly as it is.
-      if (!(typeof value === "string") || !/^\d{4}-\d{2}-\d{2}T/.test(value)) {
-        if (value !== "" && value !== null) skipped++;
-        return [value];
+      var parsed = null;
+
+      // Sheets often parses an ISO string on the way in and stores a real date
+      // value rather than text, so the cell comes back as a Date, not a string.
+      // Both forms have to be handled or the old rows look untouched.
+      if (Object.prototype.toString.call(value) === "[object Date]") {
+        if (!isNaN(value.getTime())) parsed = value;
+      } else if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}T/.test(value)) {
+        parsed = new Date(value);
+        if (isNaN(parsed.getTime())) parsed = null;
       }
 
-      var parsed = new Date(value);
-      if (isNaN(parsed.getTime())) { skipped++; return [value]; }
+      // Anything else - already readable IST, or something unexpected - is left
+      // exactly as it is, which is what makes this safe to re-run.
+      if (!parsed) { skipped++; return [value]; }
 
       converted++;
       return [Utilities.formatDate(parsed, "Asia/Kolkata", "dd MMM yyyy, h:mm a") + " IST"];
     });
 
+    range.setNumberFormat("@");
     range.setValues(rewritten);
   });
 
-  Logger.log("Converted %s timestamp(s) to IST; left %s already-readable value(s) alone.",
-    converted, skipped);
+  Logger.log("Converted %s timestamp(s) to IST; left %s value(s) alone.", converted, skipped);
+  if (converted === 0) {
+    Logger.log("Nothing was converted - every Timestamp cell is already readable IST.");
+  }
 }
 
 // --- One-time cleanup for sheets created by an older version -----------------
