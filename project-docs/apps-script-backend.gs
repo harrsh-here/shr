@@ -38,6 +38,11 @@
  * Rows are written BY COLUMN NAME, not by position, so reordering columns in
  * the sheet cannot corrupt later rows.
  *
+ * Timestamp is recorded in readable IST - "12 Sep 2026, 4:38 PM IST" - because
+ * the sheet is read by people. It is text, not a date value, so rows sort
+ * chronologically by their order in the sheet rather than by sorting on that
+ * column.
+ *
  * NOTE: Status column is manually updated by the admin (Pending -> Verified or Rejected).
  * NOTE: For Rejected rows, fill the "Rejection Reason" column BEFORE changing Status to "Rejected"
  *       so the onEdit trigger can include it in the email.
@@ -69,6 +74,14 @@ var TRAILING_HEADERS = ["Total Members", "Total Amount", "Status", "Rejection Re
 // src/config/registrationWindow.js.
 var REGISTRATION_OPENS_AT = new Date("2026-09-12T08:45:00+05:30").getTime();
 
+// Registrations are read by people, so the Timestamp column is written as
+// readable IST rather than a raw ISO string: "12 Sep 2026, 4:38 PM IST" instead
+// of "2026-09-12T11:08:40.744Z". The zone is stated explicitly so it does not
+// depend on the spreadsheet's own timezone setting.
+function timestamp_() {
+  return Utilities.formatDate(new Date(), "Asia/Kolkata", "dd MMM yyyy, h:mm a") + " IST";
+}
+
 // --- Header helpers ---------------------------------------------------------
 
 // The full set of columns needed to record a team of `memberCount` people.
@@ -88,7 +101,7 @@ function rowMapFor_(data) {
   var leader = data.leader || {};
   var members = data.members || [];
   var values = {
-    "Timestamp": new Date().toISOString(),
+    "Timestamp": timestamp_(),
     "Event": data.event,
     "Team Name": data.teamName || "",
     "Leader Name": leader.name || "",
