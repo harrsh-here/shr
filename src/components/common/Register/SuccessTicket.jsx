@@ -97,10 +97,12 @@ const SuccessTicket = ({ data }) => {
                             <span className={classes.ticketValueHighlight}>₹{totalAmount}</span>
                         </div>
 
-                        <div className={classes.ticketSection}>
-                            <span className={classes.ticketLabel}>Transaction ID</span>
-                            <span className={classes.ticketValue} style={{ fontSize: '16px' }}>{utr}</span>
-                        </div>
+                        {utr && (
+                            <div className={classes.ticketSection}>
+                                <span className={classes.ticketLabel}>Transaction ID</span>
+                                <span className={classes.ticketValue} style={{ fontSize: '16px' }}>{utr}</span>
+                            </div>
+                        )}
                     </div>
 
                     <div className={classes.ticketBadge} style={{ marginTop: '15px' }}>

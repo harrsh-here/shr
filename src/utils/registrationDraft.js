@@ -47,24 +47,25 @@ export const loadDraft = (eventId) => {
     }
 
     const members = parsed.members.map(sanitiseMember);
-    const utr = typeof parsed.utr === 'string' ? parsed.utr : '';
 
     // A draft where nothing was actually typed is not worth restoring.
-    const hasContent = members.some((m) => MEMBER_FIELDS.some((f) => m[f].trim())) || utr.trim();
+    const hasContent = members.some((m) => MEMBER_FIELDS.some((f) => m[f].trim()));
     if (!hasContent) return null;
 
-    return { members, utr };
+    // Older drafts also carried a `utr` field; payments no longer go through a
+    // transaction ID typed into the form, so anything stored there is dropped.
+    return { members };
   } catch {
     // Corrupt JSON or unavailable storage: fall back to a blank form.
     return null;
   }
 };
 
-export const saveDraft = (eventId, { members, utr }) => {
+export const saveDraft = (eventId, { members }) => {
   try {
     window.localStorage.setItem(
       keyFor(eventId),
-      JSON.stringify({ members, utr, savedAt: Date.now() }),
+      JSON.stringify({ members, savedAt: Date.now() }),
     );
   } catch {
     // Quota exceeded or storage blocked — the form still works, just without

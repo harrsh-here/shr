@@ -336,87 +336,172 @@
   text-align: right;
 }
 
-.qrBlock {
-  display: flex;
-  gap: 2.4rem;
-  align-items: center;
+.payHow {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(180, 130, 80, 0.18);
   border-radius: 12px;
-  padding: 2rem;
-  margin-bottom: 2.4rem;
-  flex-wrap: wrap;
+  padding: 1.8rem 2rem;
+  margin-bottom: 1.8rem;
 }
 
-.qrImg {
-  width: 140px;
-  height: 140px;
-  border-radius: 8px;
-  border: 2px solid rgba(232, 163, 61, 0.3);
-  object-fit: contain;
-  background: #fff;
-  flex-shrink: 0;
+.payHowTitle {
+  font-family: 'Cinzel', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #E8A33D;
+  margin-bottom: 1.2rem;
 }
 
-.qrPlaceholder {
-  width: 140px;
-  height: 140px;
+.paySteps {
+  margin: 0;
+  padding-left: 2rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.3rem;
+  line-height: 1.7;
+  color: rgba(240, 220, 180, 0.72);
+}
+
+.paySteps li { margin-bottom: 0.9rem; }
+.paySteps li:last-child { margin-bottom: 0; }
+.paySteps strong { color: #FFD700; font-weight: 600; }
+
+.amountTag {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(240, 220, 180, 0.55);
+  white-space: nowrap;
+}
+
+/* The final step is the one people skip: paying without submitting leaves no
+   registration at all, so it gets pulled out of the plain list. */
+.payStepKey {
+  margin-top: 1.4rem;
+  padding: 1.1rem 1.3rem;
+  margin-left: -0.6rem;
+  background: rgba(232, 163, 61, 0.1);
+  border: 1px solid rgba(232, 163, 61, 0.34);
+  border-left: 3px solid #E8A33D;
   border-radius: 8px;
-  border: 2px dashed rgba(180, 130, 80, 0.35);
+  color: rgba(240, 220, 180, 0.9);
+}
+
+.payStepKey::marker {
+  color: #FFD700;
+  font-weight: 700;
+}
+
+.qrBlock {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-  flex-shrink: 0;
-  color: rgba(180, 130, 80, 0.6);
-  font-family: 'Inter', sans-serif;
-  font-size: 1.2rem;
   text-align: center;
-  padding: 1rem;
+  gap: 1.2rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(180, 130, 80, 0.18);
+  border-radius: 12px;
+  padding: 2.4rem 2rem;
+  margin-bottom: 1.8rem;
 }
 
-.qrPlaceholder span {
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: #E8A33D;
+.qrImg {
+  width: 240px;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  border-radius: 10px;
+  border: 2px solid rgba(232, 163, 61, 0.3);
+  object-fit: contain;
+  background: #fff;
+  padding: 10px;
 }
 
-.qrPlaceholder small {
-  font-size: 1rem;
-  color: rgba(180, 130, 80, 0.5);
-  line-height: 1.4;
-}
-
-.upiInfo {
-  flex: 1;
-  min-width: 160px;
-}
-
-.upiLabel {
+.payLinkLabel {
   font-family: 'Inter', sans-serif;
   font-size: 1.1rem;
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: rgba(240, 220, 180, 0.42);
-  margin-bottom: 0.4rem;
+  margin: 0;
 }
 
-.upiValue {
-  font-family: 'Cinzel', serif;
-  font-size: 1.7rem;
-  font-weight: 700;
-  color: #FFD700;
-  margin-bottom: 1rem;
-  word-break: break-all;
-}
-
-.upiNote {
+.payBtn {
+  display: inline-block;
+  padding: 1.3rem 3rem;
+  border-radius: 50px;
+  background: linear-gradient(135deg, #FFD700, #FF9933);
+  border: none;
   font-family: 'Inter', sans-serif;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #120e0c;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 6px 24px rgba(255, 153, 51, 0.32);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.payBtn:hover,
+.payBtn:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 32px rgba(255, 215, 0, 0.45);
+}
+
+.payBtn:active {
+  transform: translateY(0);
+}
+
+.payLinkNote {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.2rem;
   color: rgba(240, 220, 180, 0.52);
   line-height: 1.6;
+  max-width: 46ch;
+  margin: 0;
+}
+
+/* Amount disclaimer — the payment page does not pre-fill the amount, so this
+   is the one thing on the form that must not be skimmed past. */
+.amountWarning {
+  display: flex;
+  gap: 1.2rem;
+  align-items: flex-start;
+  background: rgba(232, 163, 61, 0.07);
+  border: 1px solid rgba(232, 163, 61, 0.32);
+  border-left: 4px solid #E8A33D;
+  border-radius: 10px;
+  padding: 1.6rem 1.8rem;
+  margin-bottom: 0.6rem;
+}
+
+.amountWarning strong {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #FFD700;
+  margin-bottom: 0.5rem;
+}
+
+.amountWarning p {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.25rem;
+  line-height: 1.65;
+  color: rgba(240, 220, 180, 0.72);
+}
+
+.amountWarning p strong {
+  display: inline;
+  font-size: inherit;
+  margin-bottom: 0;
 }
 
 /* ── Checkbox ── */
@@ -640,8 +725,11 @@
   .formCard { padding: 2.8rem 1.8rem 3.5rem; }
   .memberGrid { grid-template-columns: 1fr; gap: 1.2rem; }
   .sectionBlock { padding: 2rem 1.4rem; }
-  .qrBlock { flex-direction: column; align-items: center; }
-  .upiInfo { text-align: center; }
+  .qrBlock { padding: 1.8rem 1.2rem; }
+  .payBtn { width: 100%; padding: 1.3rem 1.6rem; }
+  .qrImg { width: 200px; }
+  .payHow { padding: 1.4rem 1.4rem; }
+  .paySteps { padding-left: 1.6rem; }
   .memberCard { padding: 1.6rem 1.4rem 1.8rem; }
   .noteBox { padding: 1.8rem 1.5rem; font-size: 1.32rem; }
   .idReminder { padding: 1.1rem 1.2rem; }

@@ -39,7 +39,7 @@ const PrintableTicket = forwardRef(({ registrationData, eventsList }, ref) => {
                                 <span className={classes.label}>Registration / Txn ID:</span>
                                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px' }}>
                                     <span className={classes.valueId}>{registrationId}</span>
-                                    <span className={classes.valueUtr}>{utr}</span>
+                                    {utr && <span className={classes.valueUtr}>{utr}</span>}
                                 </div>
                             </div>
                         </div>

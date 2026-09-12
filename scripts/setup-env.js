@@ -14,7 +14,7 @@ const fs = require('fs');
 const path = require('path');
 
 // bare name -> the REACT_APP_ name the frontend actually reads
-const BRIDGED = ['GOOGLE_SCRIPT_URL', 'UPI_ID', 'UPI_PAYEE_NAME'];
+const BRIDGED = ['GOOGLE_SCRIPT_URL'];
 
 const lines = [];
 for (const name of BRIDGED) {

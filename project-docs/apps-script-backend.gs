@@ -1,131 +1,271 @@
 /**
- * Shraddhanjali 2026 — Google Apps Script Backend
+ * Shraddhanjali 2026 - Google Apps Script Backend
  * =================================================
  * SETUP INSTRUCTIONS (do this manually):
  *  1. Create a new Google Sheet named "Shraddhanjali 2026 Registrations"
- *  2. Add two tabs: "Gyration" and "Don-De-Mode"
- *  3. In the sheet, open Extensions → Apps Script
- *  4. Paste this entire file into the editor (replace any default content)
- *  5. Save, then click Deploy → New Deployment
+ *  2. In the sheet, open Extensions -> Apps Script
+ *  3. Paste this entire file into the editor (replace any default content)
+ *  4. Save, then click Deploy -> New Deployment
  *     - Type: Web App
  *     - Execute as: Me
  *     - Who has access: Anyone
- *  6. Copy the resulting /exec URL
- *  7. Put it in the frontend env as REACT_APP_GOOGLE_SCRIPT_URL
+ *  5. Copy the resulting /exec URL
+ *  6. Put it in the frontend env as REACT_APP_GOOGLE_SCRIPT_URL
  *     (.env.local for dev, Vercel project settings for production)
  *
- * COLUMNS per tab (added automatically by doPost):
+ * A tab is created per event on its first registration ("Gyration",
+ * "Don-De-Mode"), so there is nothing to set up by hand.
+ *
+ * COLUMNS per tab:
  *   Timestamp | Event | Leader Name | Leader Email | Leader Phone |
  *   Leader College | Leader Year | Leader Branch | Leader Roll No |
  *   Member2 Name | Member2 Email | Member2 Phone | Member2 College |
  *   Member2 Year | Member2 Branch | Member2 Roll No |
- *   ... (same 7 fields repeated for Members 3–20) ...
- *   Total Members | Total Amount | UTR/Transaction ID |
- *   Status | Rejection Reason
+ *   ... (same 7 fields, repeated only as far as the largest team so far) ...
+ *   Total Members | Total Amount | Status | Rejection Reason
  *
- * NOTE: Status column is manually updated by the admin (Pending → Verified or Rejected).
+ * Every column above is written on every submission. Member columns are
+ * created on demand: a tab whose biggest team is 6 has member blocks up to
+ * Member6 and no further, and the next 9-member team grows it to Member9.
+ * Nothing here is left permanently blank.
+ *
+ * There is no transaction-ID column. Payment happens on the college BillDesk
+ * page (a QR + button on the form), the payer gets a receipt from the gateway,
+ * and nothing about the payment is typed into the form - so there is nothing
+ * for the sheet to store. If you are upgrading a sheet that still has the old
+ * "UTR/Transaction ID" column, run cleanUpLegacyColumns() once (see below).
+ *
+ * Rows are written BY COLUMN NAME, not by position, so reordering columns in
+ * the sheet cannot corrupt later rows.
+ *
+ * NOTE: Status column is manually updated by the admin (Pending -> Verified or Rejected).
  * NOTE: For Rejected rows, fill the "Rejection Reason" column BEFORE changing Status to "Rejected"
  *       so the onEdit trigger can include it in the email.
  */
 
-// Largest team size across all events (Don-De-Mode allows 20).
-// Bump this if any event's maxMembers ever exceeds it.
-var MAX_MEMBERS = 20;
+// Largest team each event allows, mirroring maxMembers in
+// src/assets/eventsData.js. A payload claiming more members than this is
+// rejected rather than silently trimmed.
+var MAX_MEMBERS_BY_EVENT = {
+  "Gyration": 15,
+  "Don-De-Mode": 20
+};
 
-// Registrations open 12 September 2026, 6:00 PM IST. The site hides the form
-// until then, but that is only a UI state — anyone can POST to this URL
+// Fallback for an event that is not listed above.
+var DEFAULT_MAX_MEMBERS = 20;
+
+// The seven fields captured per person, in column order.
+var MEMBER_FIELDS = ["Name", "Email", "Phone", "College", "Year", "Branch", "Roll No"];
+
+// Columns that are not per-member, in the order they appear after them.
+var TRAILING_HEADERS = ["Total Members", "Total Amount", "Status", "Rejection Reason"];
+
+// Registrations opened 12 September 2026, 8:45 AM IST. The site hides the form
+// until then, but that is only a UI state - anyone can POST to this URL
 // directly, so the window is enforced here as well. Keep this in sync with
 // src/config/registrationWindow.js.
-var REGISTRATION_OPENS_AT = new Date("2026-09-12T18:00:00+05:30").getTime();
+var REGISTRATION_OPENS_AT = new Date("2026-09-12T08:45:00+05:30").getTime();
 
-// ─── doPost: receives form data and appends to the correct sheet tab ──────────
+// --- Header helpers ---------------------------------------------------------
+
+// The full set of columns needed to record a team of `memberCount` people.
+function headersFor_(memberCount) {
+  var headers = ["Timestamp", "Event"];
+  MEMBER_FIELDS.forEach(function (f) { headers.push("Leader " + f); });
+
+  for (var m = 2; m <= memberCount; m++) {
+    MEMBER_FIELDS.forEach(function (f) { headers.push("Member" + m + " " + f); });
+  }
+
+  return headers.concat(TRAILING_HEADERS);
+}
+
+// Flattens a submission into a { columnName: value } map.
+function rowMapFor_(data) {
+  var leader = data.leader || {};
+  var members = data.members || [];
+  var values = {
+    "Timestamp": new Date().toISOString(),
+    "Event": data.event,
+    "Leader Name": leader.name || "",
+    "Leader Email": leader.email || "",
+    "Leader Phone": leader.phone || "",
+    "Leader College": leader.college || "",
+    "Leader Year": leader.year || "",
+    "Leader Branch": leader.branch || "",
+    "Leader Roll No": leader.rollNo || ""
+  };
+
+  members.forEach(function (member, i) {
+    var prefix = "Member" + (i + 2) + " ";
+    values[prefix + "Name"]    = member.name    || "";
+    values[prefix + "Email"]   = member.email   || "";
+    values[prefix + "Phone"]   = member.phone   || "";
+    values[prefix + "College"] = member.college || "";
+    values[prefix + "Year"]    = member.year    || "";
+    values[prefix + "Branch"]  = member.branch  || "";
+    values[prefix + "Roll No"] = member.rollNo  || "";
+  });
+
+  values["Total Members"]    = data.totalMembers;
+  values["Total Amount"]     = data.totalAmount;
+  values["Status"]           = "Pending";
+  values["Rejection Reason"] = "";
+  return values;
+}
+
+// Makes sure every column this submission needs exists, adding only the ones
+// that are missing. Existing columns are never moved or deleted here - see
+// cleanUpLegacyColumns() for that. Returns the sheet's header row.
+function ensureHeaders_(sheet, memberCount) {
+  var needed = headersFor_(memberCount);
+
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(needed);
+    sheet.setFrozenRows(1);
+    return needed;
+  }
+
+  var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+  var missing = needed.filter(function (h) { return headers.indexOf(h) === -1; });
+  if (!missing.length) return headers;
+
+  // New member blocks belong before the trailing columns so the sheet stays
+  // readable left to right; values are written by name regardless.
+  var trailingStart = headers.length;
+  TRAILING_HEADERS.forEach(function (h) {
+    var at = headers.indexOf(h);
+    if (at !== -1 && at < trailingStart) trailingStart = at;
+  });
+
+  var newMemberCols = missing.filter(function (h) { return TRAILING_HEADERS.indexOf(h) === -1; });
+  var newTrailing   = missing.filter(function (h) { return TRAILING_HEADERS.indexOf(h) !== -1; });
+
+  // The new columns have to be inserted at the position they will occupy, so
+  // that Sheets shifts the existing rows' values along with the header. Adding
+  // them at the far right and then rewriting the header row in the new order
+  // would leave every earlier row's Total Members / Status under the wrong
+  // heading.
+  if (newMemberCols.length) sheet.insertColumnsBefore(trailingStart + 1, newMemberCols.length);
+  if (newTrailing.length) sheet.insertColumnsAfter(sheet.getLastColumn(), newTrailing.length);
+
+  var updated = headers.slice(0, trailingStart)
+    .concat(newMemberCols)
+    .concat(headers.slice(trailingStart))
+    .concat(newTrailing);
+
+  sheet.getRange(1, 1, 1, updated.length).setValues([updated]);
+  return updated;
+}
+
+// --- doPost: receives form data and appends to the correct sheet tab ---------
 function doPost(e) {
   try {
     if (new Date().getTime() < REGISTRATION_OPENS_AT) {
-      return ContentService
-        .createTextOutput(JSON.stringify({
-          status: "error",
-          message: "Registrations are not open yet."
-        }))
-        .setMimeType(ContentService.MimeType.JSON);
+      return jsonOut_({ status: "error", message: "Registrations are not open yet." });
     }
 
     var data = JSON.parse(e.postData.contents);
 
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
-
-    // Map event name to sheet tab name
     var tabName = data.event; // "Gyration" or "Don-De-Mode"
-    var sheet = ss.getSheetByName(tabName);
-    if (!sheet) {
-      sheet = ss.insertSheet(tabName);
+    if (!tabName) return jsonOut_({ status: "error", message: "Missing event name." });
+
+    var memberCount = (data.members || []).length + 1;
+    var allowed = MAX_MEMBERS_BY_EVENT[tabName] || DEFAULT_MAX_MEMBERS;
+    if (memberCount > allowed) {
+      return jsonOut_({
+        status: "error",
+        message: tabName + " allows at most " + allowed + " members per team."
+      });
     }
 
-    // Add header row if sheet is empty
-    if (sheet.getLastRow() === 0) {
-      var headers = [
-        "Timestamp", "Event",
-        "Leader Name", "Leader Email", "Leader Phone",
-        "Leader College", "Leader Year", "Leader Branch", "Leader Roll No"
-      ];
-      for (var m = 2; m <= MAX_MEMBERS; m++) {
-        headers.push(
-          "Member" + m + " Name", "Member" + m + " Email", "Member" + m + " Phone",
-          "Member" + m + " College", "Member" + m + " Year",
-          "Member" + m + " Branch", "Member" + m + " Roll No"
-        );
-      }
-      headers.push("Total Members", "Total Amount", "UTR/Transaction ID", "Status", "Rejection Reason");
-      sheet.appendRow(headers);
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = ss.getSheetByName(tabName) || ss.insertSheet(tabName);
 
-      // Freeze header row
-      sheet.setFrozenRows(1);
-    }
+    var headers = ensureHeaders_(sheet, memberCount);
+    var values = rowMapFor_(data);
 
-    // Build the row
-    var leader = data.leader;
-    var members = data.members || [];
-
-    var row = [
-      new Date().toISOString(),
-      data.event,
-      leader.name, leader.email, leader.phone,
-      leader.college, leader.year, leader.branch, leader.rollNo
-    ];
-
-    // Fill member columns (leader + MAX_MEMBERS-1 additional members)
-    for (var i = 0; i < MAX_MEMBERS - 1; i++) {
-      var member = members[i] || {};
-      row.push(
-        member.name    || "",
-        member.email   || "",
-        member.phone   || "",
-        member.college || "",
-        member.year    || "",
-        member.branch  || "",
-        member.rollNo  || ""
-      );
-    }
-
-    row.push(
-      data.totalMembers,
-      data.totalAmount,
-      data.utr,
-      "Pending",  // Default status
-      ""          // Rejection reason (blank by default)
-    );
+    // Written by column name: a column the sheet has but this script does not
+    // know about stays blank rather than shifting everything after it.
+    var row = headers.map(function (h) {
+      return Object.prototype.hasOwnProperty.call(values, h) ? values[h] : "";
+    });
 
     sheet.appendRow(row);
 
-    return ContentService
-      .createTextOutput(JSON.stringify({ status: "success", message: "Registration recorded." }))
-      .setMimeType(ContentService.MimeType.JSON);
+    return jsonOut_({ status: "success", message: "Registration recorded." });
 
   } catch (err) {
-    return ContentService
-      .createTextOutput(JSON.stringify({ status: "error", message: err.toString() }))
-      .setMimeType(ContentService.MimeType.JSON);
+    return jsonOut_({ status: "error", message: err.toString() });
   }
+}
+
+function jsonOut_(payload) {
+  return ContentService
+    .createTextOutput(JSON.stringify(payload))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+// --- One-time cleanup for sheets created by an older version -----------------
+/**
+ * Removes columns this script never writes - the old "UTR/Transaction ID"
+ * column, and member blocks past the largest team that actually registered.
+ *
+ * Run it from the Apps Script editor: pick cleanUpLegacyColumns from the
+ * function dropdown, click Run, then read the execution log for what it did.
+ *
+ * A column that still holds data is REPORTED AND KEPT, not deleted, so an
+ * accidental run cannot lose registrations. If you have read the log and still
+ * want those columns gone, set the flag below to true and run it again.
+ */
+var DELETE_COLUMNS_THAT_STILL_HAVE_DATA = false;
+
+function cleanUpLegacyColumns() {
+  var sheets = SpreadsheetApp.getActiveSpreadsheet().getSheets();
+
+  sheets.forEach(function (sheet) {
+    if (sheet.getLastRow() === 0) return;
+
+    var lastCol = sheet.getLastColumn();
+    var headers = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
+    var dataRows = sheet.getLastRow() - 1;
+
+    // The largest team recorded on this tab decides how many member blocks are
+    // legitimately in use.
+    var biggestTeam = 1;
+    var totalCol = headers.indexOf("Total Members");
+    if (totalCol !== -1 && dataRows > 0) {
+      sheet.getRange(2, totalCol + 1, dataRows, 1).getValues().forEach(function (r) {
+        var n = Number(r[0]);
+        if (!isNaN(n) && n > biggestTeam) biggestTeam = n;
+      });
+    }
+
+    var keep = headersFor_(biggestTeam);
+
+    // Right to left, so deleting one column cannot shift the next index.
+    for (var c = lastCol; c >= 1; c--) {
+      var name = headers[c - 1];
+      if (keep.indexOf(name) !== -1) continue;
+
+      var hasData = false;
+      if (dataRows > 0) {
+        hasData = sheet.getRange(2, c, dataRows, 1).getValues().some(function (r) {
+          return r[0] !== "" && r[0] !== null;
+        });
+      }
+
+      if (hasData && !DELETE_COLUMNS_THAT_STILL_HAVE_DATA) {
+        Logger.log('[' + sheet.getName() + '] KEPT "' + name + '" - it still contains data. Set DELETE_COLUMNS_THAT_STILL_HAVE_DATA = true to remove it.');
+        continue;
+      }
+
+      sheet.deleteColumn(c);
+      Logger.log('[' + sheet.getName() + '] Deleted "' + name + '"' + (hasData ? ' (had data)' : ' (was empty)'));
+    }
+  });
+
+  Logger.log("Cleanup finished.");
 }
 
 // ─── onEdit trigger: watches Status column, sends emails on change ────────────

@@ -1,3 +1,5 @@
+import paymentQr from "../assets/payment-qr.jpg";
+
 // ─── Registration Backend Config ─────────────────────────────────────────────
 // The Apps Script Web App URL is read from the environment so it never has to be
 // committed. Create a `.env.local` (dev) and set the same key in your Vercel
@@ -13,10 +15,15 @@ export const GOOGLE_SCRIPT_URL =
 export const IS_BACKEND_CONFIGURED =
   Boolean(GOOGLE_SCRIPT_URL) && GOOGLE_SCRIPT_URL !== "PLACEHOLDER_GOOGLE_SCRIPT_URL";
 
-// UPI collection details shown on the payment step.
-export const UPI_ID = process.env.REACT_APP_UPI_ID || "PLACEHOLDER@upi";
-export const UPI_PAYEE_NAME = process.env.REACT_APP_UPI_PAYEE_NAME || "Shraddhanjali 2026";
+// ─── Payment ─────────────────────────────────────────────────────────────────
+// Payments are collected on the college's official BillDesk collect page. The
+// same destination is offered two ways on the form: the QR image below and the
+// plain link. There is no UPI ID and no in-app payment — the participant pays
+// on that page and gets a receipt from the gateway.
+//
+// NOTE: the amount is NOT pre-filled on the BillDesk page; the payer types it
+// in. That is why the form states the exact amount so prominently.
+export const PAYMENT_LINK =
+  "https://payments.billdesk.com/bdcollect/bd/aryacollegeofengineeringandit/22311";
 
-// Drop the organiser's UPI QR image into src/assets/ and import it here.
-// e.g. import upiQr from "../assets/upi-qr.png";  ->  export const QR_CODE_PLACEHOLDER = upiQr;
-export const QR_CODE_PLACEHOLDER = null;
+export const PAYMENT_QR = paymentQr;

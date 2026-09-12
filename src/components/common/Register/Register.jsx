@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { eventsData } from '../../../assets/eventsData';
 import { sendRegistrationEmails } from '../../../services/emailNotifications';
-import { GOOGLE_SCRIPT_URL, IS_BACKEND_CONFIGURED, UPI_ID, QR_CODE_PLACEHOLDER } from '../../../config/registrationConfig';
+import { GOOGLE_SCRIPT_URL, IS_BACKEND_CONFIGURED, PAYMENT_LINK, PAYMENT_QR } from '../../../config/registrationConfig';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faIdCard, faLock } from '@fortawesome/free-solid-svg-icons';
 import { parseContact, telHref } from '../../../utils/contactInfo';
@@ -194,7 +194,6 @@ const Register = () => {
   const event = eventsData.find(e => e.id === Number(eventId));
 
   const [members, setMembers] = useState([]);
-  const [utr, setUtr]         = useState('');
   const [confirmed, setConfirmed] = useState(false);
   const [errors, setErrors]   = useState({});
   const [submitting, setSubmitting] = useState(false);
@@ -223,12 +222,10 @@ const Register = () => {
       const clamped = draft.members.slice(0, event.maxMembers);
       while (clamped.length < Math.max(1, event.minMembers)) clamped.push(emptyMember());
       setMembers(clamped);
-      setUtr(draft.utr);
       setDraftRestored(true);
     } else {
       const count = Math.max(1, event.minMembers);
       setMembers(Array.from({ length: count }, emptyMember));
-      setUtr('');
       setDraftRestored(false);
     }
 
@@ -239,8 +236,8 @@ const Register = () => {
   // lose the team's details.
   useEffect(() => {
     if (!event || !hydrated.current || submitted) return;
-    saveDraft(event.id, { members, utr });
-  }, [event, members, utr, submitted]);
+    saveDraft(event.id, { members });
+  }, [event, members, submitted]);
 
   const totalAmount = event
     ? (event.feePerPerson ?? event.price ?? 0) * members.length
@@ -264,7 +261,6 @@ const Register = () => {
   const validate = () => {
     let errs = {};
     members.forEach((m, i) => Object.assign(errs, validateMember(m, i)));
-    if (!utr.trim()) errs.utr = 'Transaction / Reference ID is required';
     if (!confirmed)  errs.confirmed = 'Please confirm your details and non-refund policy';
     if (!event) return errs;
     if (members.length < event.minMembers)
@@ -286,15 +282,15 @@ const Register = () => {
 
     setSubmitting(true);
     try {
+      // Every key here maps to a column the Apps Script backend writes; it
+      // records its own server-side Timestamp, so nothing else is sent.
+      // See project-docs/apps-script-backend.gs.
       const payload = {
         event: event.name,
-        eventId: event.id,
         leader: members[0],
         members: members.slice(1),
         totalMembers: members.length,
         totalAmount,
-        utr,
-        timestamp: new Date().toISOString(),
       };
 
       if (IS_BACKEND_CONFIGURED) {
@@ -385,7 +381,7 @@ const Register = () => {
           <div>
             <strong>Registration Fee is Strictly Non-Refundable</strong>
             <p>
-              Please double-check all team details and ensure your UPI payment is complete before submitting.
+              Please double-check all team details and ensure your payment is complete before submitting.
               Fees will not be returned under any circumstances, including rejected registrations.
             </p>
           </div>
@@ -457,35 +453,63 @@ const Register = () => {
               ₹{event.feePerPerson ?? event.price} × {members.length} member{members.length !== 1 ? 's' : ''}
             </p>
 
+            <div className={classes.payHow}>
+              <h3 className={classes.payHowTitle}>How to pay</h3>
+              <ol className={classes.paySteps}>
+                <li>
+                  <strong>Scan the QR below, or tap the payment button.</strong> Both go to the
+                  same official college payment page — you only need to use one of them.
+                </li>
+                <li>
+                  That page does <strong>not</strong> fill in the amount for you. Type the amount
+                  yourself and make sure it is exactly <strong>₹{totalAmount}</strong>{' '}
+                  <span className={classes.amountTag}>(total amount)</span>.
+                </li>
+                <li>
+                  Complete the payment. The payment gateway will show you a receipt — save it,
+                  you may be asked for it at the reporting desk.
+                </li>
+                <li className={classes.payStepKey}>
+                  <strong>Do not close this page after paying.</strong> Come back here and submit
+                  the form below — your registration is only recorded once this form is
+                  submitted. Paying alone does not register your team.
+                </li>
+              </ol>
+            </div>
+
             <div className={classes.qrBlock}>
-              {QR_CODE_PLACEHOLDER
-                ? <img src={QR_CODE_PLACEHOLDER} alt="UPI QR Code" className={classes.qrImg} />
-                : (
-                  <div className={classes.qrPlaceholder}>
-                    <span>QR Code</span>
-                    <small>Actual UPI QR to be supplied by organiser</small>
-                  </div>
-                )
-              }
-              <div className={classes.upiInfo}>
-                <p className={classes.upiLabel}>UPI ID</p>
-                <p className={classes.upiValue}>{UPI_ID}</p>
-                <p className={classes.upiNote}>
-                  Scan the QR or pay to the UPI ID above, then enter your
-                  transaction reference below.
+              <img
+                src={PAYMENT_QR}
+                alt="Scan to open the Shraddhanjali 2026 payment page"
+                className={classes.qrImg}
+              />
+              <p className={classes.payLinkLabel}>Can't scan from this device?</p>
+              <a
+                className={classes.payBtn}
+                href={PAYMENT_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Open Payment Page →
+              </a>
+              <p className={classes.payLinkNote}>
+                The QR and the button open the same official payment page. Use whichever is
+                easier — scan it from another phone, or tap the button on this one.
+              </p>
+            </div>
+
+            <div className={classes.amountWarning}>
+              <span className={classes.warnIcon}>⚠</span>
+              <div>
+                <strong>Enter ₹{totalAmount} on the payment page — check it carefully.</strong>
+                <p>
+                  The amount is typed in by you, so a wrong figure is easy to send. If the amount
+                  you pay does not match ₹{totalAmount}, your registration will be put
+                  <strong> on hold</strong> and it may be <strong>rejected</strong>. The fee is
+                  non-refundable, so please confirm the amount before you pay.
                 </p>
               </div>
             </div>
-
-            <Field
-              label="UPI Transaction / Reference ID (UTR)"
-              name="utr"
-              value={utr}
-              onChange={e => { setUtr(e.target.value); setErrors(p => { const n={...p}; delete n.utr; return n; }); }}
-              error={errors.utr}
-              placeholder="e.g. 123456789012"
-              required
-            />
 
             <label className={classes.checkboxRow}>
               <input
