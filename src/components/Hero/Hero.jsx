@@ -90,6 +90,9 @@ useEffect(() => {
           <h3 className={classes.collegeName} style={{ animationDelay: '0.2s' }}>
             Arya College of Engineering & I.T, Jaipur
           </h3>
+          <p className={classes.campusName} style={{ animationDelay: '0.25s' }}>
+            Arya Old Campus
+          </p>
 
           {/* Title crossfade — stagger delay 0.4s */}
           <div className={classes.titleContainer} style={{ animationDelay: '0.4s' }}>

@@ -230,6 +230,10 @@
         height: 8.5rem;
     }
 
+    .collegeBadge img {
+        transform: translateX(2.5px) translateY(-0.5px) scale(1.45);
+    }
+
     .collegeName {
         font-size: 0.95rem;
         max-width: 12rem;

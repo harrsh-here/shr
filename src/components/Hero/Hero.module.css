@@ -165,7 +165,7 @@
   align-items: center;
   width: 100%;
   max-width: 1200px;
-  padding: 7rem 2rem 1.5rem;
+  padding: 5rem 2rem 1rem;
   z-index: 5;
 }
 
@@ -178,6 +178,7 @@
 /* Staggered entry — all children use this */
 .logoWrapper,
 .collegeName,
+.campusName,
 .titleContainer,
 .titleTagline,
 .caption,
@@ -206,7 +207,7 @@
 }
 
 .collegeLogoImg {
-  height: 110px;
+  height: 94px;
   width: auto;
   margin-bottom: 0.6rem;
   filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.35));
@@ -225,10 +226,21 @@
   text-align: center;
 }
 
+.campusName {
+  margin: -0.1rem 0 0.35rem;
+  color: rgba(255, 225, 164, 0.9);
+  font-family: 'Inter', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.65);
+}
+
 /* Title crossfade container */
 .titleContainer {
   position: relative;
-  min-height: 11rem;
+  min-height: 9rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -238,7 +250,7 @@
 
 .heading {
   font-family: 'Cinzel Decorative', 'Times New Roman', serif;
-  font-size: clamp(5.5rem, 8.5vw, 10rem);
+  font-size: clamp(4.8rem, 7vw, 8.5rem);
   font-weight: 700;
   display: inline-block;
   background: linear-gradient(135deg, #FFD700 0%, #FFA500 40%, #FF8C00 100%);
@@ -315,7 +327,7 @@
 }
 
 .titleTagline {
-  margin-top: 0.6rem;
+  margin-top: 0.35rem;
   color: rgba(255, 225, 164, 0.78);
   font-family: 'Inter', sans-serif;
   font-size: 1.3rem;
@@ -339,10 +351,10 @@
 .caption {
   font-family: 'Inter', sans-serif;
   color: rgba(248, 241, 228, 0.85);
-  font-size: 2.5rem;
+  font-size: 2.2rem;
   font-weight: 500;
   letter-spacing: 2px;
-  margin-top: 1.2rem;
+  margin-top: 0.7rem;
   text-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
   text-align: center;
 }
@@ -353,8 +365,8 @@
   color: #FFD700;
   font-size: clamp(3rem, 3.8vw, 4.4rem);
   font-weight: 700;
-  margin-top: 1.2rem;
-  margin-bottom: 1.2rem;
+  margin-top: 0.7rem;
+  margin-bottom: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 5px;
   position: relative;
@@ -381,7 +393,7 @@
 }
 
 .eventTime {
-  margin: -0.8rem 0 1.4rem;
+  margin: -0.5rem 0 0.9rem;
   color: #fff0ca;
   font-family: 'Cinzel', serif;
   font-size: clamp(1.55rem, 2vw, 2.15rem);
@@ -395,7 +407,7 @@
 .ctaBtn {
   display: inline-block;
   background: linear-gradient(135deg, #FFD700, #FF9933);
-  padding: 1.6rem 4.5rem;
+  padding: 1.2rem 4rem;
   border: 2px solid rgba(255, 215, 0, 0.4);
   border-radius: 50px;
   font-size: 2rem;
@@ -439,11 +451,11 @@
   justify-content: center;
   align-items: center;
   gap: 2rem;
-  margin-top: 1.6rem;
+  margin-top: 1rem;
   background: rgba(42, 0, 0, 0.6);
   border: 1px solid rgba(255, 215, 0, 0.2);
   border-radius: 16px;
-  padding: 2rem 3.5rem;
+  padding: 1.4rem 3rem;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
@@ -589,13 +601,19 @@
     margin-bottom: 0.6rem;
   }
 
+  .campusName {
+    margin: -0.45rem 0 0.15rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+  }
+
   .caption {
-    margin-top: 1.4rem;
+    margin-top: 1rem;
   }
 
   .date {
-    margin-top: 1.6rem;
-    margin-bottom: 1.2rem;
+    margin-top: 1rem;
+    margin-bottom: 0.8rem;
   }
   .heading {
     font-size: clamp(2.6rem, 9.5vw, 3.6rem);
