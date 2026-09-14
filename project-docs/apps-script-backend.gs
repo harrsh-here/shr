@@ -655,55 +655,90 @@ function onEdit(e) {
   var eventName     = sheet.getRange(row, eventNameIndex).getValue();
   var rejectionReason = sheet.getRange(row, rejectionColIndex).getValue();
 
-  var subject, body;
+  var subject, body, htmlBody;
 
   if (newStatus === "Verified") {
-    subject = "✅ Registration Confirmed — Shraddhanjali 2026";
-    body = [
-      "Dear " + leaderName + ",",
-      "",
-      "Great news! Your team's registration for " + eventName + " at Shraddhanjali 2026 has been verified and confirmed.",
-      "",
-      "Please arrive at the venue on 19 September 2026 with your team. Final reporting times and venue details will be shared closer to the event.",
-      "",
-      "PLEASE CARRY A PHYSICAL PHOTO ID",
-      "Every team member must bring their original college ID card or a government ID (Aadhaar, Driving Licence, Passport, etc.). Digital copies and photographs are not accepted. IDs are checked at the reporting desk, and members without one may not be allowed to participate.",
-      "",
-      "REMINDER: The registration fee is strictly non-refundable.",
-      "",
-      "For any queries, please contact the event coordinators listed on the event page.",
-      "",
-      "Best regards,",
-      "Team Shraddhanjali 2026",
-      "Arya College of Engineering & I.T., Jaipur"
-    ].join("\n");
+    subject = "\u2705 Registration Confirmed \u2014 Shraddhanjali 2026";
+
+    // Plain text fallback
+    body = "Dear " + leaderName + ",\n\n" +
+      "Your team's registration for " + eventName + " at Shraddhanjali 2026 is confirmed!\n\n" +
+      "EVENT DETAILS:\n" +
+      "\u2022 Date: 19 September 2026\n" +
+      "\u2022 Reporting Time: 5:00 PM\n" +
+      "\u2022 Venue: Arya College of Engineering & I.T., Jaipur\n\n" +
+      "MANDATORY REQUIREMENT:\n" +
+      "Every team member must carry an original physical photo ID (College ID or Government ID). Photos or digital copies will not be accepted at the reporting desk.\n\n" +
+      "Note: The registration fee is non-refundable.\n\n" +
+      "Best regards,\nTeam Shraddhanjali 2026";
+
+    // HTML Formatted Version
+    htmlBody =
+      "<div style='font-family: Arial, sans-serif; font-size: 14px; color: #222; line-height: 1.6; max-width: 600px;'>" +
+        "<p>Dear <strong>" + leaderName + "</strong>,</p>" +
+        "<p>Great news! Your team's registration for <strong>" + eventName + "</strong> at <strong>Shraddhanjali 2026</strong> is confirmed.</p>" +
+
+        "<div style='background-color: #f4f6f8; border-left: 4px solid #007bff; padding: 14px; margin: 16px 0; border-radius: 4px;'>" +
+          "<strong style='color: #007bff; font-size: 15px;'>\U0001F4C5 Event Schedule & Venue</strong><br><br>" +
+          "\u2022 <strong>Date:</strong> 19 September 2026<br>" +
+          "\u2022 <strong>Reporting Time:</strong> 5:00 PM<br>" +
+          "\u2022 <strong>Venue:</strong> Arya College of Engineering & I.T., Jaipur" +
+        "</div>" +
+
+        "<div style='background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 14px; margin: 16px 0; border-radius: 4px; color: #856404;'>" +
+          "<strong>\u26A0\uFE0F Important: Carry Physical Photo ID</strong><br>" +
+          "Every team member must bring an original physical ID (College ID or official Government ID). Digital photos or soft copies on phones will <strong>not</strong> be accepted at the entry desk." +
+        "</div>" +
+
+        "<div style='background-color: #f8d7da; border-left: 4px solid #dc3545; padding: 12px; margin: 16px 0; color: #721c24; border-radius: 4px;'>" +
+          "<strong>Reminder:</strong> The registration fee is strictly non-refundable." +
+        "</div>" +
+
+        "<p>For any questions, feel free to contact the event coordinators listed on the website.</p>" +
+        "<br>" +
+        "<p style='margin-bottom: 0;'>Best regards,<br>" +
+        "<strong>Team Shraddhanjali 2026</strong><br>" +
+        "<span style='color: #666;'>Arya College of Engineering & I.T., Jaipur</span></p>" +
+      "</div>";
 
   } else if (newStatus === "Rejected") {
-    subject = "❌ Registration Not Verified — Shraddhanjali 2026";
-    body = [
-      "Dear " + leaderName + ",",
-      "",
-      "Unfortunately, your team's registration for " + eventName + " at Shraddhanjali 2026 could not be verified.",
-      "",
-      "Reason: " + (rejectionReason || "Not specified — please contact the coordinators."),
-      "",
-      "IMPORTANT: The registration fee is strictly non-refundable, including in cases of rejected registrations.",
-      "If you believe this rejection is in error, please contact the event coordinators immediately.",
-      "",
-      "We apologise for the inconvenience.",
-      "",
-      "Best regards,",
-      "Team Shraddhanjali 2026",
-      "Arya College of Engineering & I.T., Jaipur"
-    ].join("\n");
+    subject = "\u274C Registration Status \u2014 Shraddhanjali 2026";
+
+    // Plain text fallback
+    body = "Dear " + leaderName + ",\n\n" +
+      "Unfortunately, your team's registration for " + eventName + " at Shraddhanjali 2026 could not be verified.\n\n" +
+      "Reason: " + (rejectionReason || "Not specified \u2014 please contact the coordinators.") + "\n\n" +
+      "Note: Registration fees are non-refundable. If you think this is a mistake, please reach out to the event coordinators immediately.\n\n" +
+      "Best regards,\nTeam Shraddhanjali 2026";
+
+    // HTML Formatted Version
+    htmlBody =
+      "<div style='font-family: Arial, sans-serif; font-size: 14px; color: #222; line-height: 1.6; max-width: 600px;'>" +
+        "<p>Dear <strong>" + leaderName + "</strong>,</p>" +
+        "<p>Unfortunately, your team's registration for <strong>" + eventName + "</strong> at <strong>Shraddhanjali 2026</strong> could not be verified.</p>" +
+
+        "<div style='background-color: #f8d7da; border-left: 4px solid #dc3545; padding: 14px; margin: 16px 0; color: #721c24; border-radius: 4px;'>" +
+          "<strong>Reason for Rejection:</strong> " + (rejectionReason || "Not specified \u2014 please contact the coordinators.") +
+        "</div>" +
+
+        "<p><strong>Please Note:</strong> Registration fees are strictly non-refundable. If you believe this rejection was made in error, please contact the event coordinators immediately.</p>" +
+
+        "<p>We apologize for the inconvenience.</p>" +
+        "<br>" +
+        "<p style='margin-bottom: 0;'>Best regards,<br>" +
+        "<strong>Team Shraddhanjali 2026</strong><br>" +
+        "<span style='color: #666;'>Arya College of Engineering & I.T., Jaipur</span></p>" +
+      "</div>";
 
   } else {
-    // Any other status change — do nothing
+    // Any other status change - do nothing
     return;
   }
 
   if (leaderEmail) {
-    GmailApp.sendEmail(leaderEmail, subject, body);
+    GmailApp.sendEmail(leaderEmail, subject, body, {
+      htmlBody: htmlBody
+    });
   }
 }
 
