@@ -207,6 +207,13 @@ const Register = () => {
 
   const [teamName, setTeamName] = useState('');
   const [utr, setUtr] = useState('');
+  // Two steps of the leaving-to-pay flow. `payPrompt` is the panel shown beside
+  // the submit button before the payment tab opens; `paymentStarted` survives in
+  // the draft, so someone returning hours later still sees the reminder.
+  const [payPrompt, setPayPrompt] = useState(false);
+  const [payAck, setPayAck] = useState(false);
+  const [paymentStarted, setPaymentStarted] = useState(false);
+  const [justReturned, setJustReturned] = useState(false);
   const [members, setMembers] = useState([]);
   const [amountAck, setAmountAck] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
@@ -220,6 +227,8 @@ const Register = () => {
   // initial state before the restore below has run.
   const hydrated = useRef(false);
   const formRef = useRef(null);
+  const submitRef = useRef(null);
+  const utrRef = useRef(null);
 
   // Redirect if event not found
   useEffect(() => {
@@ -246,12 +255,14 @@ const Register = () => {
       while (clamped.length < Math.max(1, event.minMembers)) clamped.push(emptyMember());
       setTeamName(draft.teamName);
       setUtr(draft.utr);
+      setPaymentStarted(Boolean(draft.paymentStarted));
       setMembers(clamped);
       setDraftRestored(true);
     } else {
       const count = Math.max(1, event.minMembers);
       setTeamName('');
       setUtr('');
+      setPaymentStarted(false);
       setMembers(Array.from({ length: count }, emptyMember));
       setDraftRestored(false);
     }
@@ -266,8 +277,8 @@ const Register = () => {
   // lose the team's details.
   useEffect(() => {
     if (!event || !hydrated.current || submitted) return;
-    saveDraft(event.id, { teamName, utr, members });
-  }, [event, teamName, utr, members, submitted]);
+    saveDraft(event.id, { teamName, utr, members, paymentStarted });
+  }, [event, teamName, utr, members, paymentStarted, submitted]);
 
   // The success screen must open at the top. Doing this in a layout effect —
   // after React has replaced the form, before the browser paints — means the
@@ -284,6 +295,46 @@ const Register = () => {
   const totalAmount = event
     ? (event.feePerPerson ?? event.price ?? 0) * members.length
     : 0;
+
+  // The payment page cannot send anyone back here - the two sites are not
+  // linked - so the one moment we know someone is about to leave is this click.
+  // Rather than spending it on a sentence they will skim, walk them down to the
+  // button they have to press afterwards and let them see it.
+  const openPayPrompt = () => {
+    setPayPrompt(true);
+    requestAnimationFrame(() => {
+      if (submitRef.current) submitRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  };
+
+  const goToPayment = () => {
+    setPaymentStarted(true);
+    setPayPrompt(false);
+    // A new tab keeps this form alive behind the payment page.
+    window.open(PAYMENT_LINK, '_blank', 'noopener,noreferrer');
+  };
+
+  const goToUtr = () => {
+    setJustReturned(false);
+    if (utrRef.current) {
+      utrRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // The ref is the wrapper; the caret belongs in the input inside it.
+      const input = utrRef.current.querySelector('input');
+      if (input) input.focus({ preventScroll: true });
+    }
+  };
+
+  // Coming back to this tab after paying is the moment to point at what is left.
+  useEffect(() => {
+    if (!paymentStarted || submitted) return;
+    const onVisible = () => { if (document.visibilityState === 'visible') setJustReturned(true); };
+    document.addEventListener('visibilitychange', onVisible);
+    window.addEventListener('focus', onVisible);
+    return () => {
+      document.removeEventListener('visibilitychange', onVisible);
+      window.removeEventListener('focus', onVisible);
+    };
+  }, [paymentStarted, submitted]);
 
   const handleMemberChange = useCallback((index, field, value) => {
     setMembers(prev => prev.map((m, i) => i === index ? { ...m, [field]: value } : m));
@@ -428,7 +479,7 @@ const Register = () => {
           <p className={classes.formEvent}>{event.name}</p>
           <h1 className={classes.formTitle}>Team Registration</h1>
           <p className={classes.formMeta}>
-            {event.minMembers}–{event.maxMembers} members · ₹{event.feePerPerson ?? event.price} per person
+            Min {event.minMembers} members · max {event.maxMembers} on stage at once · ₹{event.feePerPerson ?? event.price} per person
           </p>
         </div>
 
@@ -483,7 +534,7 @@ const Register = () => {
             <div className={classes.sectionHeader}>
               <h2 className={classes.sectionTitle}>Team Members</h2>
               <span className={classes.memberCounter}>
-                {members.length} member{members.length !== 1 ? 's' : ''} · stage limit {event.maxMembers}
+                {members.length} member{members.length !== 1 ? 's' : ''} · max {event.maxMembers} on stage at once
               </span>
             </div>
 
@@ -513,8 +564,9 @@ const Register = () => {
 
             {members.length > event.maxMembers && (
               <p className={classes.stageLimitNote}>
-                Only <strong>{event.maxMembers}</strong> members can be on stage for this event.
-                You can still register the rest of your team, but they may not be able to perform.
+                No more than <strong>{event.maxMembers}</strong> members may be on stage at any one
+                time. A larger team is fine — register everyone and rotate them during your
+                performance, just keep {event.maxMembers} or fewer on stage at once.
               </p>
             )}
           </div>
@@ -563,34 +615,34 @@ const Register = () => {
                 className={classes.qrImg}
               />
               <p className={classes.payLinkLabel}>Can't scan from this device?</p>
-              <a
+              <button
+                type="button"
                 className={classes.payBtn}
-                href={PAYMENT_LINK}
-                target="_blank"
-                rel="noopener noreferrer"
+                onClick={openPayPrompt}
               >
-                Open Payment Page →
-              </a>
+                {paymentStarted ? 'Open Payment Page again →' : 'Open Payment Page →'}
+              </button>
               <p className={classes.payLinkNote}>
                 The QR and the button open the same official payment page. Use whichever is
                 easier — scan it from another phone, or tap the button on this one.
               </p>
             </div>
 
-            <div className={classes.utrBlock}>
+            <div className={classes.utrBlock} ref={utrRef}>
               <Field
                 label="Payment Reference Number (UTR)"
                 name="utr"
                 value={utr}
                 onChange={e => { setUtr(e.target.value); setErrors(p => { const n={...p}; delete n.utr; return n; }); }}
                 error={errors.utr}
-                placeholder="e.g. 123456789012"
+                placeholder="e.g. DKT5TPS1V34SDFVS (from your downloaded receipt)"
                 required
               />
               <p className={classes.utrHelp}>
-                After paying, the payment page and your receipt show a transaction or reference
-                number. Copy it here exactly. We match your payment against this number, so a
-                wrong or made-up reference will hold up your registration.
+                After paying, download your receipt — the transaction / reference number is
+                printed on it (it looks like <strong>DKT5TPS1V34SDFVS</strong>). Copy it here
+                exactly. We match your payment against this number, so a wrong or made-up
+                reference will hold up your registration.
               </p>
             </div>
 
@@ -624,17 +676,74 @@ const Register = () => {
             {errors.confirmed && <p className={classes.errorMsg} data-field-error>{errors.confirmed}</p>}
           </div>
 
+          {payPrompt && (
+            <div className={classes.payPrompt}>
+              <h3 className={classes.payPromptTitle}>Before you pay — this is the last step</h3>
+              <ol className={classes.payPromptSteps}>
+                <li>The payment page opens in a <strong>new tab</strong>. Leave this one open.</li>
+                <li>Pay <strong>₹{totalAmount}</strong> there, and download your receipt.</li>
+                <li>Come back to this tab and enter the reference number from that receipt.</li>
+                <li>
+                  Press <strong>Submit Registration</strong> — the button just below. Your team is
+                  <strong> not registered</strong> until you do.
+                </li>
+              </ol>
+
+              <label className={classes.payPromptAck}>
+                <input
+                  type="checkbox"
+                  checked={payAck}
+                  onChange={e => setPayAck(e.target.checked)}
+                  className={classes.checkbox}
+                />
+                <span>I understand I must come back here and press Submit after paying.</span>
+              </label>
+
+              <div className={classes.payPromptActions}>
+                <button
+                  type="button"
+                  className={`${classes.payPromptGo} ${payAck ? '' : classes.payPromptGoDisabled}`}
+                  onClick={goToPayment}
+                  disabled={!payAck}
+                >
+                  Open payment page →
+                </button>
+                <button type="button" className={classes.payPromptCancel} onClick={() => setPayPrompt(false)}>
+                  Not yet
+                </button>
+              </div>
+              <p className={classes.payPromptArrow}>↓ this button ↓</p>
+            </div>
+          )}
+
           {submitError && <p className={classes.submitError}>{submitError}</p>}
 
           <button
             type="submit"
-            className={classes.submitBtn}
+            ref={submitRef}
+            className={`${classes.submitBtn} ${payPrompt || justReturned ? classes.submitBtnHighlight : ''}`}
             disabled={submitting}
           >
             {submitting ? 'Submitting…' : 'Submit Registration →'}
           </button>
         </form>
       </div>
+
+      {paymentStarted && !submitted && (
+        <div className={classes.stickyReminder} role="status">
+          <div>
+            <strong>Not registered yet.</strong>
+            <span>
+              {justReturned
+                ? ' Welcome back — enter your payment reference and press Submit.'
+                : ' Finish here after paying: enter your reference, then press Submit.'}
+            </span>
+          </div>
+          <button type="button" className={classes.stickyReminderBtn} onClick={goToUtr}>
+            Finish now
+          </button>
+        </div>
+      )}
     </div>
   );
 };

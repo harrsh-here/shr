@@ -70,7 +70,7 @@ const EventCard3D = ({ event }) => {
               : "Creativity · Confidence · Conceptual Storytelling"}
           </p>
           <div className={classes.eventMeta}>
-            <span>⌘ Team size: Min {event.minMembers} · Max Participants {event.maxMembers}</span>
+            <span>⌘ Team size: Min {event.minMembers} · Max {event.maxMembers} on stage at once</span>
             <span>⌖ Arya Old Campus Ground</span>
           </div>
           <span className={classes.detailsLink}>View details &amp; register <span>→</span></span>

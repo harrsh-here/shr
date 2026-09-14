@@ -111,7 +111,7 @@ const SingleEventPage = () => {
           <div className={classes.rowcol}>
             <div className={classes.sectionWrap}>
               <h2 className={classes.heading}>Team Size</h2>
-              <p className={classes.content}>Min {minMembers} · Max Participants {maxMembers}</p>
+              <p className={classes.content}>Min {minMembers} · Max {maxMembers} on stage at once</p>
             </div>
 
             <div className={classes.sectionWrap}>
