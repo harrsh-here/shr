@@ -227,14 +227,16 @@
 }
 
 .campusName {
-  margin: -0.1rem 0 0.35rem;
-  color: rgba(255, 225, 164, 0.9);
+  margin: 0.1rem 0 0.45rem;
+  /* Full opacity and a heavier weight: this line names the venue, and at the
+     old size and 0.9 alpha it disappeared against the bright hero backdrop. */
+  color: #FFE7B2;
   font-family: 'Inter', sans-serif;
-  font-size: 1.05rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
+  font-size: 1.95rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.65);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.75);
 }
 
 /* Title crossfade container */
@@ -369,6 +371,10 @@
   margin-bottom: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 5px;
+  /* The element is an inline-block, so when the date wraps its lines align
+     left unless this says otherwise - which left "2026" hanging off to the
+     side on narrow phones while wider ones kept it on one line. */
+  text-align: center;
   position: relative;
   display: inline-block;
   text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
@@ -602,9 +608,9 @@
   }
 
   .campusName {
-    margin: -0.45rem 0 0.15rem;
-    font-size: 0.78rem;
-    letter-spacing: 0.14em;
+    margin: -0.1rem 0 0.3rem;
+    font-size: 1.45rem;
+    letter-spacing: 0.09em;
   }
 
   .caption {
@@ -614,6 +620,10 @@
   .date {
     margin-top: 1rem;
     margin-bottom: 0.8rem;
+    /* Scale with the viewport and tighten the tracking so the date stays on a
+       single line down to 320px, rather than wrapping on some phones only. */
+    font-size: clamp(2.1rem, 6.2vw, 2.9rem);
+    letter-spacing: 2px;
   }
   .heading {
     font-size: clamp(2.6rem, 9.5vw, 3.6rem);

@@ -16,18 +16,29 @@
  * A tab is created per event on its first registration ("Gyration",
  * "Don-De-Mode"), so there is nothing to set up by hand.
  *
- * COLUMNS per tab:
- *   Timestamp | Event | Team Name | Leader Name | Leader Email | Leader Phone |
- *   Leader College | Leader Year | Leader Branch | Leader Roll No |
- *   Member2 Name | Member2 Email | Member2 Phone | Member2 College |
- *   Member2 Year | Member2 Branch | Member2 Roll No |
- *   ... (same 7 fields, repeated only as far as the largest team so far) ...
- *   Total Members | Total Amount | UTR | duplicate_utr | Status | Rejection Reason
+ * COLUMNS per tab - everything worth reading comes first, and the per-member
+ * detail follows, so Status and the payment reference are visible without
+ * scrolling past a couple of hundred member columns:
+ *   Timestamp | Event | Team Name | Total Members | Total Amount | UTR |
+ *   duplicate_utr | Status | Rejection Reason |
+ *   Leader Name | Leader Email | Leader Phone | Leader College |
+ *   Leader Year | Leader Branch | Leader Roll No |
+ *   Member2 Name ... Member2 Roll No | Member3 ... |
+ *   ... (repeated only as far as the largest team so far) ...
+ *
+ * A sheet built by an earlier version has those columns at the far right
+ * instead. Run reorderColumns() once to bring them to the front; rows are
+ * written by column name, so nothing breaks either way.
  *
  * Every column above is written on every submission. Member columns are
  * created on demand: a tab whose biggest team is 6 has member blocks up to
  * Member6 and no further, and the next 9-member team grows it to Member9.
  * Nothing here is left permanently blank.
+ *
+ * HARD_MAX_MEMBERS is capacity, not the stage limit. Each event shows
+ * participants its own smaller limit ("max stage limit 15/20"); this is the
+ * figure that actually refuses a submission, and it is deliberately not shown
+ * to them. Keep it in sync with TEAM_SIZE_HARD_CAP in src/assets/eventsData.js.
  *
  * Payment happens on the college BillDesk page (a QR + button on the form).
  * The payer then copies the transaction reference from their receipt into the
@@ -58,27 +69,27 @@
  *       so the onEdit trigger can include it in the email.
  */
 
-// Largest team each event allows, mirroring maxMembers in
-// src/assets/eventsData.js. A payload claiming more members than this is
-// rejected rather than silently trimmed.
-var MAX_MEMBERS_BY_EVENT = {
-  "Gyration": 15,
-  "Don-De-Mode": 20
-};
+// Capacity: the largest team the sheet will accept, for any event. This is not
+// the stage limit shown on the site (15 for Gyration, 20 for Don-De-Mode) - it
+// is the figure that actually refuses a submission, and participants are not
+// shown it. Mirrors TEAM_SIZE_HARD_CAP in src/assets/eventsData.js.
+var HARD_MAX_MEMBERS = 35;
 
-// Fallback for an event that is not listed above.
-var DEFAULT_MAX_MEMBERS = 20;
-
-// Columns that come before the people, in order.
-var LEADING_HEADERS = ["Timestamp", "Event", "Team Name"];
+// Columns that come before the people, in order. Everything an organiser reads
+// at a glance lives here, ahead of the member detail.
+var LEADING_HEADERS = [
+  "Timestamp", "Event", "Team Name",
+  "Total Members", "Total Amount", "UTR", "duplicate_utr",
+  "Status", "Rejection Reason"
+];
 
 // The seven fields captured per person, in column order.
 var MEMBER_FIELDS = ["Name", "Email", "Phone", "College", "Year", "Branch", "Roll No"];
 
 // Columns that are not per-member, in the order they appear after them.
-var TRAILING_HEADERS = [
-  "Total Members", "Total Amount", "UTR", "duplicate_utr", "Status", "Rejection Reason"
-];
+// Nothing follows the member blocks any more; kept as an empty list so the
+// header helpers below read the same way.
+var TRAILING_HEADERS = [];
 
 // Values written into duplicate_utr. Plain Yes/No so the column can be filtered
 // and eyeballed without interpretation.
@@ -267,11 +278,10 @@ function doPost(e) {
     }
 
     var memberCount = (data.members || []).length + 1;
-    var allowed = MAX_MEMBERS_BY_EVENT[tabName] || DEFAULT_MAX_MEMBERS;
-    if (memberCount > allowed) {
+    if (memberCount > HARD_MAX_MEMBERS) {
       return jsonOut_({
         status: "error",
-        message: tabName + " allows at most " + allowed + " members per team."
+        message: "That team is too large to register online. Please contact the coordinators."
       });
     }
 
@@ -397,6 +407,88 @@ function columnLetter_(index) {
     index = Math.floor((index - rem) / 26);
   }
   return letter;
+}
+
+// --- One-off: move the key columns to the front ------------------------------
+/**
+ * A sheet built by an earlier version has Total Members, Total Amount, UTR,
+ * duplicate_utr, Status and Rejection Reason at the far right, past every
+ * member column. This rewrites each tab so they sit just after Team Name.
+ *
+ * Run it from the Apps Script editor: pick reorderColumns from the function
+ * dropdown and click Run. No deployment needed, so the website is unaffected.
+ *
+ * Values move with their headings - rows are matched by column name, not
+ * position - and any column this script does not recognise (an older
+ * "UTR/Transaction ID", or anything you added by hand) is kept and placed
+ * directly after Rejection Reason rather than being dropped.
+ *
+ * Safe to run twice: a sheet already in this order is left untouched.
+ */
+function reorderColumns() {
+  SpreadsheetApp.getActiveSpreadsheet().getSheets().forEach(function (sheet) {
+    if (sheet.getLastRow() < 1 || sheet.getLastColumn() < 1) return;
+
+    var width = sheet.getLastColumn();
+    var height = sheet.getLastRow();
+    var grid = sheet.getRange(1, 1, height, width).getValues();
+    var headers = grid[0];
+
+    if (headers.indexOf("Timestamp") === -1) return;  // not a registrations tab
+
+    // Biggest team on this tab decides how many member blocks to account for.
+    var biggest = 1;
+    var totalCol = headers.indexOf("Total Members");
+    if (totalCol !== -1) {
+      for (var r = 1; r < grid.length; r++) {
+        var n = Number(grid[r][totalCol]);
+        if (!isNaN(n) && n > biggest) biggest = n;
+      }
+    }
+
+    var wanted = headersFor_(biggest).filter(function (h) {
+      return headers.indexOf(h) !== -1;
+    });
+
+    // Unknown columns keep their relative order, parked after the key columns.
+    var extras = headers.filter(function (h) {
+      return h !== "" && wanted.indexOf(h) === -1;
+    });
+    var insertAt = wanted.indexOf("Rejection Reason");
+    var order = insertAt === -1
+      ? wanted.concat(extras)
+      : wanted.slice(0, insertAt + 1).concat(extras, wanted.slice(insertAt + 1));
+
+    var alreadyOrdered = order.length === headers.filter(function (h) { return h !== ""; }).length
+      && order.every(function (h, i) { return headers[i] === h; });
+    if (alreadyOrdered) {
+      Logger.log('[%s] already in order; left alone.', sheet.getName());
+      return;
+    }
+
+    var index = {};
+    headers.forEach(function (h, i) { if (index[h] === undefined) index[h] = i; });
+
+    var rewritten = grid.map(function (row) {
+      return order.map(function (h) {
+        var from = index[h];
+        return from === undefined ? "" : row[from];
+      });
+    });
+
+    sheet.getRange(1, 1, rewritten.length, order.length).setValues(rewritten);
+
+    // Anything left to the right of the rebuilt block is now a duplicate.
+    if (width > order.length) {
+      sheet.deleteColumns(order.length + 1, width - order.length);
+    }
+
+    forceTextColumn_(sheet, order, "UTR");
+    Logger.log('[%s] reordered %s columns; key columns now start at column D.',
+      sheet.getName(), order.length);
+  });
+
+  Logger.log("Reorder finished.");
 }
 
 // --- Rewrite old UTC timestamps as readable IST ------------------------------

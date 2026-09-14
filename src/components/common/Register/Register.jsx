@@ -1,6 +1,7 @@
 import { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { sendRegistrationEmails } from '../../../services/emailNotifications';
+import { TEAM_SIZE_HARD_CAP } from '../../../assets/eventsData';
 import { GOOGLE_SCRIPT_URL, IS_BACKEND_CONFIGURED, PAYMENT_LINK, PAYMENT_QR } from '../../../config/registrationConfig';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faIdCard, faLock } from '@fortawesome/free-solid-svg-icons';
@@ -241,7 +242,7 @@ const Register = () => {
     const draft = loadDraft(event.id);
     if (draft) {
       // Team size limits may have changed since the draft was written.
-      const clamped = draft.members.slice(0, event.maxMembers);
+      const clamped = draft.members.slice(0, TEAM_SIZE_HARD_CAP);
       while (clamped.length < Math.max(1, event.minMembers)) clamped.push(emptyMember());
       setTeamName(draft.teamName);
       setUtr(draft.utr);
@@ -290,7 +291,7 @@ const Register = () => {
   }, []);
 
   const addMember = () => {
-    if (!event || members.length >= event.maxMembers) return;
+    if (!event || members.length >= TEAM_SIZE_HARD_CAP) return;
     setMembers(prev => [...prev, emptyMember()]);
   };
 
@@ -314,8 +315,8 @@ const Register = () => {
     if (!event) return errs;
     if (members.length < event.minMembers)
       errs.teamSize = `Minimum ${event.minMembers} members required`;
-    if (members.length > event.maxMembers)
-      errs.teamSize = `Maximum ${event.maxMembers} members allowed`;
+    if (members.length > TEAM_SIZE_HARD_CAP)
+      errs.teamSize = 'This team is too large to register online. Please contact the coordinators.';
     return errs;
   };
 
@@ -482,7 +483,7 @@ const Register = () => {
             <div className={classes.sectionHeader}>
               <h2 className={classes.sectionTitle}>Team Members</h2>
               <span className={classes.memberCounter}>
-                {members.length} of {event.minMembers}–{event.maxMembers} members
+                {members.length} member{members.length !== 1 ? 's' : ''} · stage limit {event.maxMembers}
               </span>
             </div>
 
@@ -501,14 +502,21 @@ const Register = () => {
 
             <button
               type="button"
-              className={`${classes.addBtn} ${members.length >= event.maxMembers ? classes.addBtnDisabled : ''}`}
+              className={`${classes.addBtn} ${members.length >= TEAM_SIZE_HARD_CAP ? classes.addBtnDisabled : ''}`}
               onClick={addMember}
-              disabled={members.length >= event.maxMembers}
+              disabled={members.length >= TEAM_SIZE_HARD_CAP}
             >
-              {members.length >= event.maxMembers
-                ? `Maximum ${event.maxMembers} members reached`
+              {members.length >= TEAM_SIZE_HARD_CAP
+                ? 'Maximum team size reached'
                 : '+ Add Team Member'}
             </button>
+
+            {members.length > event.maxMembers && (
+              <p className={classes.stageLimitNote}>
+                Only <strong>{event.maxMembers}</strong> members can be on stage for this event.
+                You can still register the rest of your team, but they may not be able to perform.
+              </p>
+            )}
           </div>
 
           {/* ── Section: Payment ─────────────────────────────────────── */}

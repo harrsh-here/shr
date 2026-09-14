@@ -4,7 +4,7 @@ import classes from "./EventStats.module.css";
 const stats = [
   { value: "1", label: "Day", detail: "of cultural celebration" },
   { value: "2", label: "Events", detail: "on the main stage" },
-  { value: "40+", label: "Colleges", detail: "welcome across Rajasthan" },
+  { value: "15+", label: "Colleges", detail: "welcome across Rajasthan" },
   { value: "19 Sep", label: "2026", detail: "at ACEIT Jaipur" },
 ];
 

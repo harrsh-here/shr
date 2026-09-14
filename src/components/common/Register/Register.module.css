@@ -299,6 +299,23 @@
   cursor: not-allowed;
 }
 
+.stageLimitNote {
+  margin-top: 1rem;
+  padding: 1rem 1.2rem;
+  background: rgba(232, 163, 61, 0.07);
+  border: 1px solid rgba(232, 163, 61, 0.28);
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: rgba(240, 220, 180, 0.75);
+}
+
+.stageLimitNote strong {
+  color: #FFD700;
+  font-weight: 700;
+}
+
 /* ── Payment Section ── */
 .totalRow {
   display: flex;

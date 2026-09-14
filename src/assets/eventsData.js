@@ -7,6 +7,13 @@ import donDeModePhaceholder from "./placeholders/donde-mode-poster-placeholder.j
 // Brochure is served from the public folder so it's accessible at /brochure.pdf
 export const BROCHURE_URL = "/brochure.pdf";
 
+// Largest team the system will accept, regardless of event. This is capacity,
+// not the stage limit: `maxMembers` on each event below is what participants
+// are shown ("max stage limit"), while this is what actually stops a
+// submission. Keep it in sync with HARD_MAX_MEMBERS in
+// /project-docs/apps-script-backend.gs.
+export const TEAM_SIZE_HARD_CAP = 35;
+
 export const eventsData = [
   {
     id: 9,
