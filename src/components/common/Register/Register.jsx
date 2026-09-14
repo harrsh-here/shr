@@ -207,11 +207,8 @@ const Register = () => {
 
   const [teamName, setTeamName] = useState('');
   const [utr, setUtr] = useState('');
-  // Two steps of the leaving-to-pay flow. `payPrompt` is the panel shown beside
-  // the submit button before the payment tab opens; `paymentStarted` survives in
-  // the draft, so someone returning hours later still sees the reminder.
-  const [payPrompt, setPayPrompt] = useState(false);
-  const [payAck, setPayAck] = useState(false);
+  // `paymentStarted` survives in the draft, so someone returning hours later
+  // still sees the reminder rather than an innocent-looking form.
   const [paymentStarted, setPaymentStarted] = useState(false);
   const [justReturned, setJustReturned] = useState(false);
   const [members, setMembers] = useState([]);
@@ -295,24 +292,6 @@ const Register = () => {
   const totalAmount = event
     ? (event.feePerPerson ?? event.price ?? 0) * members.length
     : 0;
-
-  // The payment page cannot send anyone back here - the two sites are not
-  // linked - so the one moment we know someone is about to leave is this click.
-  // Rather than spending it on a sentence they will skim, walk them down to the
-  // button they have to press afterwards and let them see it.
-  const openPayPrompt = () => {
-    setPayPrompt(true);
-    requestAnimationFrame(() => {
-      if (submitRef.current) submitRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    });
-  };
-
-  const goToPayment = () => {
-    setPaymentStarted(true);
-    setPayPrompt(false);
-    // A new tab keeps this form alive behind the payment page.
-    window.open(PAYMENT_LINK, '_blank', 'noopener,noreferrer');
-  };
 
   const goToUtr = () => {
     setJustReturned(false);
@@ -471,7 +450,7 @@ const Register = () => {
   }
 
   return (
-    <div className={classes.page}>
+    <div className={`${classes.page} ${paymentStarted && !submitted ? classes.pageWithReminder : ''}`}>
       <div className={classes.formCard}>
 
         {/* Header */}
@@ -615,16 +594,23 @@ const Register = () => {
                 className={classes.qrImg}
               />
               <p className={classes.payLinkLabel}>Can't scan from this device?</p>
-              <button
-                type="button"
+              <a
                 className={classes.payBtn}
-                onClick={openPayPrompt}
+                href={PAYMENT_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setPaymentStarted(true)}
               >
-                {paymentStarted ? 'Open Payment Page again →' : 'Open Payment Page →'}
-              </button>
+                Open Payment Page →
+              </a>
               <p className={classes.payLinkNote}>
                 The QR and the button open the same official payment page. Use whichever is
                 easier — scan it from another phone, or tap the button on this one.
+              </p>
+
+              <p className={classes.comeBackNote}>
+                After paying, come back to this page and press <strong>Submit Registration</strong>.
+                Your team is <strong>not registered</strong> until you do.
               </p>
             </div>
 
@@ -676,52 +662,12 @@ const Register = () => {
             {errors.confirmed && <p className={classes.errorMsg} data-field-error>{errors.confirmed}</p>}
           </div>
 
-          {payPrompt && (
-            <div className={classes.payPrompt}>
-              <h3 className={classes.payPromptTitle}>Before you pay — this is the last step</h3>
-              <ol className={classes.payPromptSteps}>
-                <li>The payment page opens in a <strong>new tab</strong>. Leave this one open.</li>
-                <li>Pay <strong>₹{totalAmount}</strong> there, and download your receipt.</li>
-                <li>Come back to this tab and enter the reference number from that receipt.</li>
-                <li>
-                  Press <strong>Submit Registration</strong> — the button just below. Your team is
-                  <strong> not registered</strong> until you do.
-                </li>
-              </ol>
-
-              <label className={classes.payPromptAck}>
-                <input
-                  type="checkbox"
-                  checked={payAck}
-                  onChange={e => setPayAck(e.target.checked)}
-                  className={classes.checkbox}
-                />
-                <span>I understand I must come back here and press Submit after paying.</span>
-              </label>
-
-              <div className={classes.payPromptActions}>
-                <button
-                  type="button"
-                  className={`${classes.payPromptGo} ${payAck ? '' : classes.payPromptGoDisabled}`}
-                  onClick={goToPayment}
-                  disabled={!payAck}
-                >
-                  Open payment page →
-                </button>
-                <button type="button" className={classes.payPromptCancel} onClick={() => setPayPrompt(false)}>
-                  Not yet
-                </button>
-              </div>
-              <p className={classes.payPromptArrow}>↓ this button ↓</p>
-            </div>
-          )}
-
           {submitError && <p className={classes.submitError}>{submitError}</p>}
 
           <button
             type="submit"
             ref={submitRef}
-            className={`${classes.submitBtn} ${payPrompt || justReturned ? classes.submitBtnHighlight : ''}`}
+            className={`${classes.submitBtn} ${justReturned ? classes.submitBtnHighlight : ''}`}
             disabled={submitting}
           >
             {submitting ? 'Submitting…' : 'Submit Registration →'}
