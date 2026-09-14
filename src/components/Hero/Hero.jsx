@@ -3,9 +3,7 @@ import classes from "./Hero.module.css";
 import { Link as ScrollLink } from "react-scroll";
 import collegeLogo from "../../assets/collegeLogo.png";
 import useEventLifecycle from "../../hooks/useEventLifecycle";
-
-// Event starts: 19 Sep 2026 6:30 PM IST
-const EVENT_START = new Date("2026-09-19T18:30:00+05:30").getTime();
+import { EVENT_START } from "../../config/eventLifecycle";
 
 
 
@@ -23,9 +21,9 @@ useEffect(() => {
   window.addEventListener("scroll", onScroll, { passive: true });
   return () => window.removeEventListener("scroll", onScroll);
 }, []);
-  // Countdown timer — synced to the event cards: 19 September 2026, 6:30 PM IST.
+  // Countdown timer — counts down to EVENT_START (19 September 2026, 6:00 PM IST).
   useEffect(() => {
-    const interval = setInterval(() => {
+    const tick = () => {
       const now = Date.now();
       const distance = EVENT_START - now;
       if (phase === "upcoming" && distance > 0) {
@@ -34,7 +32,11 @@ useEffect(() => {
         setMinutes(Math.floor((distance / 1000 / 60) % 60));
         setSeconds(Math.floor((distance % (1000 * 60)) / 1000));
       }
-    }, 1000);
+    };
+    // Run once straight away: waiting for the first interval showed 00:00:00:00
+    // for a full second after every page load.
+    tick();
+    const interval = setInterval(tick, 1000);
     return () => clearInterval(interval);
   }, [phase]);
 
@@ -117,7 +119,7 @@ useEffect(() => {
           <p className={classes.date} style={{ animationDelay: '0.8s' }}>
             19 September 2026
           </p>
-          <p className={classes.eventTime} style={{ animationDelay: '0.9s' }}>6:30 PM onwards</p>
+          <p className={classes.eventTime} style={{ animationDelay: '0.9s' }}>6:00 PM onwards</p>
 
           {/* CTA — stagger delay 1.0s — inline button, no old Button component */}
           <ScrollLink
@@ -134,7 +136,7 @@ useEffect(() => {
 
         {/* Countdown / Live / Over — phase-aware */}
         {phase === "upcoming" && (
-          <div className={classes.countdownbox}>
+          <div className={classes.countdownbox} style={{ animationDelay: '1.1s' }}>
             <div className={classes.countdown}>
               <p className={classes.countNum}>{countDays.toString().padStart(2, '0')}</p>
               <p className={classes.countLabel}>days</p>
@@ -161,7 +163,7 @@ useEffect(() => {
           <div className={classes.liveBanner}>
             <p className={classes.liveText}>🎉 Shraddhanjali 2026 is happening NOW!</p>
             <p className={classes.liveSubtext}>Event has begun — join the celebration!</p>
-            <div className={classes.countdownbox} style={{ marginTop: 0 }}>
+            <div className={classes.countdownbox} style={{ marginTop: 0, animationDelay: '1.1s' }}>
               {["00","00","00","00"].map((n, i) => (
                 <span key={i} style={{ display: "contents" }}>
                   {i > 0 && <span className={classes.column}>:</span>}

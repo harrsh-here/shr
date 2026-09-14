@@ -183,7 +183,9 @@
 .titleTagline,
 .caption,
 .date,
-.anchorBtn {
+.eventTime,
+.anchorBtn,
+.countdownbox {
   animation: staggerIn 0.8s ease-out both;
 }
 

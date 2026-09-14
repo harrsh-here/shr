@@ -17,7 +17,7 @@ const FormContainer = ({ children, title }) => {
                     <FontAwesomeIcon icon={faXmark} />
                 </button>
                 {title && <h1 className={classes.title}>{title}</h1>}
-                {title && <p className={classes.formIntro}>Shraddhanjali ’26 · 19 September · 6:30 PM onwards</p>}
+                {title && <p className={classes.formIntro}>Shraddhanjali ’26 · 19 September · 6:00 PM onwards</p>}
                 <div className={classes.formContent}>
                     {children}
                 </div>

@@ -16,7 +16,7 @@
 - Replaced the About and FAQ placeholders with provisional public-facing content based on the supplied event description and sample-site information. These remain easy to update when final details arrive.
 - Added a responsive, transparent festival-statistics strip after the Hero: one day, two events, 15+ invited colleges, and the confirmed date/location.
 - Made the footer shell transparent so the shared maroon backdrop continues through every homepage section; the intentional About and Contact inner panels remain framed.
-- Added the tribute tagline and synchronized the Hero countdown with both events: 19 September 2026, 6:30 PM IST.
+- Added the tribute tagline and synchronized the Hero countdown with both events: 19 September 2026, 6:00 PM IST.
 - Removed the cart and combined checkout flow. Gyration and Don-De-Mode cards now route to their own team-registration form; all cart state and UI files are removed.
 - Confirmed both events are team-only, clarified all capacity labels as “Max Participants,” and added a disabled “Download Brochure · Coming Soon” state.
 - Matched the About title to the Hero’s Cinzel Decorative treatment, aligned the portrait with the rangoli, and matched Contact Us to the FAQ heading treatment.

@@ -1,6 +1,9 @@
-// Event starts: 19 Sep 2026, 6:30 PM IST
-// Live window: 12 hrs — ends 20 Sep 2026, 6:30 AM IST
-const EVENT_START    = new Date("2026-09-19T18:30:00+05:30").getTime();
+// Event starts: 19 Sep 2026, 6:00 PM IST
+// Live window: 12 hrs — ends 20 Sep 2026, 6:00 AM IST
+//
+// This is the only place the start time lives. The Hero countdown imports it
+// rather than keeping its own copy, so the two can no longer drift apart.
+export const EVENT_START = new Date("2026-09-19T18:00:00+05:30").getTime();
 const LIVE_DURATION  = 12 * 60 * 60 * 1000; // 12 hours in ms
 
 // ─── DEV PREVIEW ──────────────────────────────────────────────────────────────
