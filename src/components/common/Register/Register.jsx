@@ -336,9 +336,9 @@ const Register = () => {
     members.forEach((m, i) => Object.assign(errs, validateMember(m, i)));
     const cleanedUtr = normaliseUtr(utr);
     if (!cleanedUtr) {
-      errs.utr = 'Enter the reference number from your payment receipt';
+      errs.utr = 'Enter the payment reference number from your payment slip';
     } else if (!UTR_PATTERN.test(cleanedUtr)) {
-      errs.utr = 'That does not look right \u2014 it should be 6\u201340 letters or digits, exactly as shown on your receipt';
+      errs.utr = 'That does not look right \u2014 it should be 6\u201340 letters or digits, exactly as shown on your payment slip';
     }
     if (!amountAck)  errs.amountAck = 'Please confirm you have paid the exact amount shown';
     if (!confirmed)  errs.confirmed = 'Please confirm your details and non-refund policy';
@@ -575,9 +575,9 @@ const Register = () => {
                   <span className={classes.amountTag}>(total amount)</span>.
                 </li>
                 <li>
-                  Complete the payment. The gateway shows a receipt with a
-                  <strong> transaction / reference number</strong> — keep it, you will enter it
-                  just below, and you may be asked for the receipt at the reporting desk.
+                  Complete the payment. You will get a payment slip with a
+                  <strong> payment reference number</strong> — keep it, you will enter it
+                  just below, and you may be asked for the slip at the reporting desk.
                 </li>
                 <li className={classes.payStepKey}>
                   <strong>Do not close this page after paying.</strong> Come back here and submit
@@ -616,16 +616,16 @@ const Register = () => {
 
             <div className={classes.utrBlock} ref={utrRef}>
               <Field
-                label="Payment Reference Number (UTR)"
+                label="Payment Reference Number (from payment slip)"
                 name="utr"
                 value={utr}
                 onChange={e => { setUtr(e.target.value); setErrors(p => { const n={...p}; delete n.utr; return n; }); }}
                 error={errors.utr}
-                placeholder="e.g. DKT5TPS1V34SDFVS (from your downloaded receipt)"
+                placeholder="e.g. DKT5TPS1V34SDFVS"
                 required
               />
               <p className={classes.utrHelp}>
-                After paying, download your receipt — the transaction / reference number is
+                After paying, download your payment slip — the payment reference number is
                 printed on it (it looks like <strong>DKT5TPS1V34SDFVS</strong>). Copy it here
                 exactly. We match your payment against this number, so a wrong or made-up
                 reference will hold up your registration.
