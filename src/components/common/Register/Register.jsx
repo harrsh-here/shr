@@ -15,6 +15,13 @@ import classes from './Register.module.css';
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 const YEAR_OPTIONS = ['1st Year', '2nd Year', '3rd Year', '4th Year'];
 
+// First-year students have no university or class roll number yet, so their
+// Roll No. field is hidden rather than left for them to guess at. The sheet
+// records this instead of a blank, so a missing number reads as intentional
+// and nobody chases it during verification.
+const FIRST_YEAR = '1st Year';
+const FIRST_YEAR_ROLL_NO = 'Not issued (1st year)';
+
 // Reference numbers get copied out of a receipt, an SMS or a screenshot, so
 // they arrive with stray spaces, hyphens and mixed case. Normalise before it is
 // validated, stored or compared, so the same payment always looks the same.
@@ -41,7 +48,7 @@ const validateMember = (m, index) => {
   else if (!/\S+@\S+\.\S+/.test(m.email)) errs[`${index}_email`] = `${label}: Invalid email`;
   if (!m.phone.trim())   errs[`${index}_phone`]    = `${label}: Phone is required`;
   else if (!/^\d{10}$/.test(m.phone)) errs[`${index}_phone`] = `${label}: Must be 10 digits`;
-  if (!m.rollNo.trim())  errs[`${index}_rollNo`]   = `${label}: Roll No. is required`;
+  if (m.year !== FIRST_YEAR && !m.rollNo.trim()) errs[`${index}_rollNo`] = `${label}: Roll No. is required`;
   return errs;
 };
 
@@ -98,7 +105,9 @@ const MemberCard = ({ member, index, isLeader, canRemove, onChange, onRemove, er
       <Field label="College Name" name="college" value={member.college} onChange={e => onChange(index, 'college', e.target.value)} error={errors[`${index}_college`]} placeholder="College name" required />
       <SelectField label="Year" name="year" value={member.year} onChange={e => onChange(index, 'year', e.target.value)} error={errors[`${index}_year`]} required />
       <Field label="Branch" name="branch" value={member.branch} onChange={e => onChange(index, 'branch', e.target.value)} error={errors[`${index}_branch`]} placeholder="e.g. Computer Science" required />
-      <Field label="University Roll No." name="rollNo" value={member.rollNo} onChange={e => onChange(index, 'rollNo', e.target.value)} error={errors[`${index}_rollNo`]} placeholder="e.g. 22BTECH1234" required />
+      {member.year !== FIRST_YEAR && (
+        <Field label="University Roll No." name="rollNo" value={member.rollNo} onChange={e => onChange(index, 'rollNo', e.target.value)} error={errors[`${index}_rollNo`]} placeholder="e.g. 22BTECH1234" required />
+      )}
     </div>
   </div>
 );
@@ -371,12 +380,15 @@ const Register = () => {
       // Every key here maps to a column the Apps Script backend writes; it
       // records its own server-side Timestamp, so nothing else is sent.
       // See project-docs/apps-script-backend.gs.
+      // Applied here rather than in state, so a student who typed a roll number,
+      // switched to 1st Year and back again still finds what they typed.
+      const forSheet = members.map(m => (m.year === FIRST_YEAR ? { ...m, rollNo: FIRST_YEAR_ROLL_NO } : m));
       const payload = {
         event: event.name,
         teamName: teamName.trim(),
         utr: normaliseUtr(utr),
-        leader: members[0],
-        members: members.slice(1),
+        leader: forSheet[0],
+        members: forSheet.slice(1),
         totalMembers: members.length,
         totalAmount,
       };
