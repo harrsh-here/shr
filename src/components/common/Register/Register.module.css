@@ -499,6 +499,37 @@
   margin-top: 0.2rem;
 }
 
+/* Counts down to the moment registrations close, so nobody starts a long form
+   believing they have all evening. */
+.closingSoon {
+  display: flex;
+  gap: 1.1rem;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  padding: 1.2rem 1.5rem;
+  border: 1px solid rgba(232, 163, 61, 0.35);
+  border-left: 4px solid #E8A33D;
+  border-radius: 10px;
+  background: rgba(232, 163, 61, 0.08);
+  font-family: 'Inter', sans-serif;
+  font-size: 1.28rem;
+  line-height: 1.6;
+  color: rgba(240, 220, 180, 0.88);
+}
+
+.closingSoon strong { color: #FFD700; }
+
+.closingIcon {
+  margin-top: 0.3rem;
+  color: #E8A33D;
+  flex-shrink: 0;
+}
+
+.closingClock {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
 /* ── Checkbox ── */
 .checkboxRow {
   display: flex;

@@ -9,7 +9,7 @@ import { parseContact, telHref } from '../../../utils/contactInfo';
 import { loadDraft, saveDraft, clearDraft } from '../../../utils/registrationDraft';
 import { findEvent, eventPath, registerPath, isLegacyKey } from '../../../utils/eventRoutes';
 import useRegistrationCountdown from '../../../hooks/useRegistrationCountdown';
-import { OPENS_AT_LABEL } from '../../../config/registrationWindow';
+import { OPENS_AT_LABEL, CLOSES_AT_LABEL, isRegistrationOpen } from '../../../config/registrationWindow';
 import classes from './Register.module.css';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -208,6 +208,26 @@ const LockedScreen = ({ event, countdown, onBack }) => (
   </div>
 );
 
+// Shown once the window has ended. Kept separate from LockedScreen so the page
+// says "no longer" rather than "not yet".
+const ClosedScreen = ({ event, onBack }) => (
+  <div className={classes.successWrap}>
+    <div className={classes.lockedBadge}>
+      <FontAwesomeIcon icon={faLock} /> Registrations Closed
+    </div>
+    <h1 className={classes.successHeading}>Registrations Have Closed</h1>
+    <p className={classes.successBody}>
+      Registration for <strong>{event.name}</strong> closed on <strong>{CLOSES_AT_LABEL}</strong>.
+      If you have already paid but could not submit this form, please contact the event
+      coordinators listed on the event page.
+    </p>
+
+    <button type="button" className={classes.backHome} onClick={onBack}>
+      ← Back to Event Details
+    </button>
+  </div>
+);
+
 // ─── Main Register Component ──────────────────────────────────────────────────
 const Register = () => {
   const navigate = useNavigate();
@@ -362,6 +382,13 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitError('');
+
+    // The window can end while someone is still filling this in.
+    if (!isRegistrationOpen()) {
+      setSubmitError(`Registrations closed at ${CLOSES_AT_LABEL}. This form can no longer be submitted.`);
+      return;
+    }
+
     const errs = validate();
     if (Object.keys(errs).length) {
       setErrors(errs);
@@ -448,7 +475,9 @@ const Register = () => {
   if (!countdown.open) {
     return (
       <div className={classes.page}>
-        <LockedScreen event={event} countdown={countdown} onBack={() => navigate(eventPath(event))} />
+        {countdown.closed
+          ? <ClosedScreen event={event} onBack={() => navigate(eventPath(event))} />
+          : <LockedScreen event={event} countdown={countdown} onBack={() => navigate(eventPath(event))} />}
       </div>
     );
   }
@@ -472,6 +501,17 @@ const Register = () => {
           <p className={classes.formMeta}>
             Min {event.minMembers} members · max {event.maxMembers} on stage at once · ₹{event.feePerPerson ?? event.price} per person
           </p>
+        </div>
+
+        <div className={classes.closingSoon} role="status" aria-live="polite">
+          <FontAwesomeIcon icon={faLock} className={classes.closingIcon} />
+          <span>
+            Registrations close at <strong>{CLOSES_AT_LABEL}</strong> —{' '}
+            <strong className={classes.closingClock}>
+              {countdown.days > 0 ? `${countdown.days}d ` : ''}{pad(countdown.hours)}h {pad(countdown.minutes)}m {pad(countdown.seconds)}s
+            </strong>{' '}
+            left. Finish and submit before then.
+          </span>
         </div>
 
         {/* Non-refundable warning */}

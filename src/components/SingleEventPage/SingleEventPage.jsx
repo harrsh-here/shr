@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import classes from "./SingleEventPage.module.css";
 import { parseContact, telHref } from "../../utils/contactInfo";
 import useRegistrationCountdown from "../../hooks/useRegistrationCountdown";
-import { OPENS_AT_LABEL } from "../../config/registrationWindow";
+import { OPENS_AT_LABEL, CLOSES_AT_LABEL } from "../../config/registrationWindow";
 import { useParams, useNavigate } from "react-router-dom";
 import { findEvent, registerPath, eventPath, isLegacyKey } from "../../utils/eventRoutes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -210,9 +210,27 @@ const SingleEventPage = () => {
               )
             ) : link !== "" ? (
               registration.open ? (
-                <button className={classes.registerBtn} onClick={() => navigate(registerPath(requiredEvent))}>
-                  Register for {name}
-                </button>
+                <div className={classes.lockedWrap}>
+                  <button className={classes.registerBtn} onClick={() => navigate(registerPath(requiredEvent))}>
+                    Register for {name}
+                  </button>
+                  <p className={classes.closingNote} aria-live="polite">
+                    Closes in{' '}
+                    <strong>
+                      {registration.days > 0 ? `${registration.days}d ` : ''}{pad(registration.hours)}h {pad(registration.minutes)}m {pad(registration.seconds)}s
+                    </strong>
+                  </p>
+                </div>
+              ) : registration.closed ? (
+                <div className={classes.lockedWrap}>
+                  <button className={classes.registerBtnLocked} disabled>
+                    <FontAwesomeIcon icon={faLock} className={classes.lockIcon} />
+                    Registrations Closed
+                  </button>
+                  <p className={classes.lockedNote}>
+                    Registrations closed on {CLOSES_AT_LABEL}.
+                  </p>
+                </div>
               ) : (
                 <div className={classes.lockedWrap}>
                   <button className={classes.registerBtnLocked} disabled aria-live="polite">
