@@ -1,3 +1,4 @@
+import { EVENT_WHEN } from "../config/eventLifecycle";
 // Placeholder poster images — swap these files out when real posters are ready
 // File paths: src/assets/placeholders/gyration-poster-placeholder.jpg
 //             src/assets/placeholders/donde-mode-poster-placeholder.jpg
@@ -48,7 +49,7 @@ export const eventsData = [
     ],
     location: "Arya College of Engineering & I.T., Kukas, Jaipur",
     mapUrl: "https://maps.app.goo.gl/is9ex9H8gF7i2xP8A",
-    date: "19 September 2026 · 6:00 PM onwards",
+    date: EVENT_WHEN,
     note: [""],
     link: "#",
     rulebookLink: BROCHURE_URL,
@@ -86,7 +87,7 @@ export const eventsData = [
     ],
     location: "Arya College of Engineering & I.T., Kukas, Jaipur",
     mapUrl: "https://maps.app.goo.gl/is9ex9H8gF7i2xP8A",
-    date: "19 September 2026 · 6:00 PM onwards",
+    date: EVENT_WHEN,
     note: [""],
     link: "#",
     rulebookLink: BROCHURE_URL,

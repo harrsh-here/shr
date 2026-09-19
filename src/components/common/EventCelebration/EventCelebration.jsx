@@ -27,7 +27,7 @@ const EventCelebration = () => {
   const state = useEventLifecycle();
   const pieces = useMemo(makePieces, []);
 
-  if (state === "upcoming") return null;
+  if (state === "upcoming" || state === "postponed") return null;
 
   return (
     <>

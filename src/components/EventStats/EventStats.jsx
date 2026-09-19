@@ -1,11 +1,14 @@
 import React from "react";
 import classes from "./EventStats.module.css";
+import { EVENT_POSTPONED } from "../../config/eventLifecycle";
 
 const stats = [
   { value: "1", label: "Day", detail: "of cultural celebration" },
   { value: "2", label: "Events", detail: "on the main stage" },
   { value: "15+", label: "Colleges", detail: "welcome across Rajasthan" },
-  { value: "19 Sep", label: "2026", detail: "at ACEIT Jaipur" },
+  EVENT_POSTPONED
+    ? { value: "TBA", label: "2026", detail: "new date coming soon" }
+    : { value: "19 Sep", label: "2026", detail: "at ACEIT Jaipur" },
 ];
 
 const EventStats = () => (

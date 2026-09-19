@@ -1,6 +1,7 @@
 import { useState } from "react";
 import classes from "./Faq.module.css";
 import useScrollReveal from "../../hooks/useScrollReveal";
+import { EVENT_POSTPONED } from "../../config/eventLifecycle";
 
 const questions = [
   {
@@ -9,7 +10,9 @@ const questions = [
   },
   {
     question: "When and where is Shraddhanjali 2026 happening?",
-    answer: "Shraddhanjali 2026 takes place on 19 September 2026 at Arya College of Engineering & I.T., Jaipur. Final reporting times will be shared with registered participants."
+    answer: EVENT_POSTPONED
+      ? "Shraddhanjali 2026 has been postponed due to weather conditions. It will take place at Arya College of Engineering & I.T., Jaipur, and the new date will be announced soon. Existing registrations remain valid for the new date."
+      : "Shraddhanjali 2026 takes place on 19 September 2026 at Arya College of Engineering & I.T., Jaipur. Final reporting times will be shared with registered participants."
   },
   {
     question: "Who can participate in the events?",

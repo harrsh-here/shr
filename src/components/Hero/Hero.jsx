@@ -3,7 +3,13 @@ import classes from "./Hero.module.css";
 import { Link as ScrollLink } from "react-scroll";
 import collegeLogo from "../../assets/collegeLogo.png";
 import useEventLifecycle from "../../hooks/useEventLifecycle";
-import { EVENT_START } from "../../config/eventLifecycle";
+import {
+  EVENT_START,
+  EVENT_DATE_LABEL,
+  EVENT_TIME_LABEL,
+  POSTPONEMENT_NOTICE,
+  POSTPONEMENT_REGISTERED_NOTE,
+} from "../../config/eventLifecycle";
 
 
 
@@ -21,7 +27,7 @@ useEffect(() => {
   window.addEventListener("scroll", onScroll, { passive: true });
   return () => window.removeEventListener("scroll", onScroll);
 }, []);
-  // Countdown timer — counts down to EVENT_START (19 September 2026, 6:00 PM IST).
+  // Countdown timer — counts down to EVENT_START. Idle while postponed.
   useEffect(() => {
     const tick = () => {
       const now = Date.now();
@@ -116,10 +122,18 @@ useEffect(() => {
           </h4>
 
           {/* Date — stagger delay 0.8s */}
-          <p className={classes.date} style={{ animationDelay: '0.8s' }}>
-            19 September 2026
-          </p>
-          <p className={classes.eventTime} style={{ animationDelay: '0.9s' }}>6:00 PM onwards</p>
+          {phase === "postponed" ? (
+            <p className={`${classes.date} ${classes.dateTba}`} style={{ animationDelay: '0.8s' }}>
+              Date to be announced
+            </p>
+          ) : (
+            <>
+              <p className={classes.date} style={{ animationDelay: '0.8s' }}>
+                {EVENT_DATE_LABEL}
+              </p>
+              <p className={classes.eventTime} style={{ animationDelay: '0.9s' }}>{EVENT_TIME_LABEL}</p>
+            </>
+          )}
 
           {/* CTA — stagger delay 1.0s — inline button, no old Button component */}
           <ScrollLink
@@ -134,7 +148,15 @@ useEffect(() => {
           </ScrollLink>
         </div>
 
-        {/* Countdown / Live / Over — phase-aware */}
+        {/* Countdown / Live / Over / Postponed — phase-aware */}
+        {phase === "postponed" && (
+          <div className={classes.postponedPanel} role="status" style={{ animationDelay: '1.1s' }}>
+            <p className={classes.postponedBadge}>Event Postponed</p>
+            <p className={classes.postponedText}>{POSTPONEMENT_NOTICE}</p>
+            <p className={classes.postponedNote}>{POSTPONEMENT_REGISTERED_NOTE}</p>
+          </div>
+        )}
+
         {phase === "upcoming" && (
           <div className={classes.countdownbox} style={{ animationDelay: '1.1s' }}>
             <div className={classes.countdown}>

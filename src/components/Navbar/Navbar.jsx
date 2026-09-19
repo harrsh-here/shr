@@ -10,7 +10,7 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { HashLink as Link } from "react-router-hash-link";
 // import Dropdown from "./Dropdown";
 import GrabBitBtn from "../common/GrabBitBtn/GrabBitBtn";
-import { siteStatus } from "../../config/siteStatus";
+import { getAnnouncement } from "../../config/siteStatus";
 
 const Scroll = require("react-scroll");
 
@@ -18,6 +18,7 @@ const Navbar = () => {
   const Drop = Scroll.Link;
   const [scrolled, isScrolled] = useState(false);
   const [mobile, setMobile] = useState(false);
+  const announcement = getAnnouncement();
 
   window.onscroll = () => {
     isScrolled(window.pageYOffset === 0 ? false : true);
@@ -89,10 +90,10 @@ const Navbar = () => {
     <header
       className={`${!scrolled ? classes.header : classes.scrolledHeader}`}
     >
-      {siteStatus.registrationsPaused && (
+      {announcement && (
         <div className={classes.announcement} role="status">
           <span className={classes.announcementMotif}>✦</span>
-          {siteStatus.pausedMessage}
+          {announcement}
           <span className={classes.announcementMotif}>✦</span>
         </div>
       )}
