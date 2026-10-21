@@ -169,4 +169,3 @@ This project is dedicated to the memory of Late Er. Shri T.K. Agarwal Ji and ref
 
 ---
 
-If you want, I can also create a second README version optimized for GitHub profile presentation or a more polished corporate-style README for the project.
